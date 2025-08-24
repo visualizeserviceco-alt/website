@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fader.classList.add("hidden");
     appearOnScroll.observe(fader);
   });
+
   // Smooth scroll for buttons with href starting with #
   const links = document.querySelectorAll('a[href^="#"]');
   links.forEach(link => {
@@ -28,4 +29,5 @@ document.addEventListener("DOMContentLoaded", () => {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
+  });
 });
