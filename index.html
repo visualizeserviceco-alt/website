@@ -235,7 +235,7 @@
             <li>• Custom digital graphics for web, mobile, and social platforms</li>
             <li>• Social media graphics (platform-specific)</li>
         </ul>
-        <a class="btn" href="/" target="_self">Contact</a>
+        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
       <div class="card">
         <div class="badge">Most popular</div>
@@ -250,7 +250,7 @@
             <li>• Ad creatives, hero sections, banners, thumbnails, and more</li>
             <li>• Social media graphics (platform-specific)</li>
         </ul>
-        <a class="btn" href="/" target="_self">Contact</a>
+        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
       <div class="card">
         <div class="badge">Pro</div>
@@ -269,7 +269,7 @@
             <li>• Business Breakdown & Tips (analysis and improvement suggestions)</li>
         </ul>
         
-        <a class="btn" href="/" target="_self">Contact</a>
+        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
     </div>
   </div>
@@ -332,6 +332,21 @@
   </div>
 </section>
 
+</script>
+<!-- Calendly badge widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<script type="text/javascript">
+  window.onload = function() {
+    Calendly.initBadgeWidget({
+      url: 'https://calendly.com/contact-visualizetm/15min-onboarding-meeting',
+      text: 'Schedule meeting with me',
+      color: '#e53e3b',
+      textColor: '#ffffff',
+      branding: true
+    });
+  }
+</script>
+<!-- Calendly badge widget end -->
 </body>
-<script src="main.js"></script>
 </html>
