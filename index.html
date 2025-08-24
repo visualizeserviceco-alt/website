@@ -308,25 +308,77 @@
 </section>
 
 
-<!-- =============== FOOTER (LIGHT) =============== -->
+<!-- =============== FOOTER (MODERN) =============== -->
 <section class="vh-footer">
   <style>
-    .vh-footer{font-family:Inter,system-ui,sans-serif;background:#1b1b1c;color:#e0e0e0;padding:28px 0;border-top:1px solid #222}
-    .vh-footer .wrap{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-    .vh-footer .brand{font-weight:900;letter-spacing:-.02em}
-    .vh-footer .links{display:flex;gap:16px;flex-wrap:wrap}
-    .vh-footer a{color:#e0e0e0;text-decoration:none}
+    .vh-footer {
+      font-family: Inter, system-ui, sans-serif;
+      background: #1b1b1c;
+      color: #e0e0e0;
+      padding: 48px 20px;
+      border-top: 1px solid #222;
+    }
+    .vh-footer .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+    }
+    .vh-footer .brand {
+      font-weight: 900;
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .vh-footer .links, .vh-footer .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .vh-footer .links a {
+      color: #e0e0e0;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .vh-footer .links a:hover {
+      color: #e53e3b;
+    }
+    .vh-footer .socials a img {
+      width: 28px;
+      height: 28px;
+      transition: filter 0.2s;
+    }
+    .vh-footer .socials a img:hover {
+      filter: brightness(1.2);
+    }
+    .vh-footer p.copy {
+      flex-basis: 100%;
+      margin-top: 24px;
+      font-size: 14px;
+      color: #9ca3af;
+    }
+    @media (max-width: 768px) {
+      .vh-footer .wrap { flex-direction: column; align-items: flex-start; }
+    }
   </style>
   <div class="wrap">
-    <div class="brand">Visualize™</div>
+    <div>
+      <div class="brand">Visualize™</div>
+      <p class="copy">© 2025 Visualize Studio. All rights reserved.</p>
+    </div>
     <div class="links">
       <a href="#features">Features</a>
       <a href="#showcase">Work</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a href="mailto:hello@example.com">Contact</a>
+      <a href="https://www.instagram.com/visualizetm/">Contact</a>
+    </div>
+    <div class="socials">
       <a href="https://www.instagram.com/visualizetm/" target="_blank">
-        <img src="/Media Storage/instagram.svg" alt="Instagram" style="width:24px; height:24px; filter: invert(29%) sepia(90%) saturate(6380%) hue-rotate(350deg) brightness(96%) contrast(101%);">
+        <img src="/Media Storage/instagram.svg" alt="Instagram" style="filter: invert(29%) sepia(90%) saturate(6380%) hue-rotate(350deg) brightness(96%) contrast(101%);">
       </a>
     </div>
   </div>
