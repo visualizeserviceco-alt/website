@@ -4,6 +4,12 @@ document.addEventListener("DOMContentLoaded", () => {
     "section, header, footer, .project-card, .vh-hero .copy, .vh-hero .visual img, .vh-services .card, .vh-pricing .card, .vh-process .step, .vh-faq .item, .vh-testimonials .card, .vh-showcase .tile, .vh-section, .section-card, .payment-methods li"
   );
 
+  // Fallback for browsers without IntersectionObserver support
+  if (!("IntersectionObserver" in window)) {
+    animatedElements.forEach(el => el.classList.add("visible"));
+    return;
+  }
+
   const appearOptions = {
     threshold: 0.15,
     rootMargin: "0px 0px -20px 0px"
