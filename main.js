@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Animate sections, cards, hero elements
+  // Animate sections, cards, hero elements, and site-wide components
   const animatedElements = document.querySelectorAll(
-    "section, .project-card, .vh-hero .copy, .vh-hero .visual img, .vh-services .card, .vh-pricing .card, .vh-process .step"
+    "section, header, footer, .project-card, .vh-hero .copy, .vh-hero .visual img, .vh-services .card, .vh-pricing .card, .vh-process .step, .vh-faq .item, .vh-testimonials .card, .vh-showcase .tile, .vh-section, .section-card, .payment-methods li"
   );
 
   const appearOptions = {
-    threshold: 0.1,
-    rootMargin: "0px 0px -40px 0px"
+    threshold: 0.15,
+    rootMargin: "0px 0px -20px 0px"
   };
 
   const appearOnScroll = new IntersectionObserver((entries, observer) => {
@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add a small delay for staggered effects
       setTimeout(() => {
         entry.target.classList.add("visible");
-      }, index * 100);
+        entry.target.classList.remove("hidden");
+        entry.target.style.willChange = "transform, opacity";
+      }, index * 120);
       observer.unobserve(entry.target);
     });
   }, appearOptions);
@@ -25,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     appearOnScroll.observe(el);
   });
 
-  // Smooth scroll for internal links
+  // Smooth scroll for internal links including buttons
   const links = document.querySelectorAll('a[href^="#"]');
   links.forEach(link => {
     link.addEventListener("click", e => {
@@ -40,14 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Hover animation for project cards
-  const projectCards = document.querySelectorAll(".project-card");
-  projectCards.forEach(card => {
-    card.addEventListener("mouseenter", () => {
-      card.classList.add("hovered");
+  // Hover animations for cards and buttons, only if device supports hover
+  if (window.matchMedia("(hover: hover)").matches) {
+    const hoverables = document.querySelectorAll(".project-card, .vh-services .card, .vh-pricing .card, .vh-testimonials .card, .vh-showcase .tile, .btn, .pay-btn");
+    hoverables.forEach(el => {
+      el.addEventListener("mouseenter", () => el.classList.add("hovered"));
+      el.addEventListener("mouseleave", () => el.classList.remove("hovered"));
     });
-    card.addEventListener("mouseleave", () => {
-      card.classList.remove("hovered");
-    });
-  });
+  }
 });

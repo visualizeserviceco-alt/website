@@ -4,23 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Process — Visualize Studio</title>
-  <link rel="stylesheet" href="ProcessStyle.css">
+  <link rel="stylesheet" href="Styles/ProcessStyle.css">
 </head>
 <body>
-  <header class="vh-header">
-    <div class="wrap">
-      <div class="brand">Visualize™</div>
-      <nav>
-        <ul>
-          <li><a href="index.html#services">Services</a></li>
-          <li><a href="index.html#work">Work</a></li>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="Process.html" class="active">Process</a></li>
-          <li><a href="index.html#contact" class="btn">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<!-- HEADER INCLUDE -->
+<div id="site-header"></div>
+<script>
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => { document.getElementById('site-header').innerHTML = data; });
+</script>
+<body>
 
   <section class="vh-hero process-hero">
     <div class="wrap">
@@ -93,23 +87,13 @@
     </div>
   </section>
 
-  <footer class="vh-footer">
-    <div class="wrap">
-      <div class="brand">Visualize™</div>
-      <nav class="links">
-        <a href="index.html#services">Services</a>
-        <a href="index.html#work">Work</a>
-        <a href="index.html#about">About</a>
-        <a href="Process.html" class="active">Process</a>
-      </nav>
-      <div class="socials">
-        <a href="https://www.instagram.com/visualizetm/" target="_blank">
-          <img src="/Media%20Storage/instagram.svg" alt="Instagram">
-        </a>
-      </div>
-      <p class="copy">© 2025 Visualize Studio. All rights reserved.</p>
-    </div>
-  </footer>
+  <!-- FOOTER INCLUDE -->
+  <div id="site-footer"></div>
+  <script>
+    fetch('footer.html')
+      .then(response => response.text())
+      .then(data => { document.getElementById('site-footer').innerHTML = data; });
+  </script>
 
   <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
   <script src="https://assets.calendly.com/assets/external/widget.js" async></script>

@@ -6,7 +6,7 @@
   <meta name="description" content="Visualize - Brand design, web design, and creative services." />
   <title>Visualize Studio</title>
   <link rel="icon" href="/Media Storage/favicon.png" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Styles/style.css">
 </head>
 
 <!-- HEADER INCLUDE -->
@@ -54,17 +54,17 @@
         <a class="btn ghost" href="#showcase">See Work</a>
       </div>
       <div class="stats">
-        <div class="stat"><div class="big">5+</div><div>Brands helped</div></div>
+        <div class="stat"><div class="big">100+</div><div>Brands helped</div></div>
         <div class="stat"><div class="big">5.0★</div><div>Client rating</div></div>
         <div class="stat"><div class="big">48h</div><div>Average turnaround</div></div>
       </div>
     </div>
     <div class="art">
       <div class="grid">
-        <div class="card"><img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%20268.png?updatedAt=1755910053617" alt="Case study mockup 1"></div>
-        <div class="card"><img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%207.png?updatedAt=1747610937425" alt="Case study mockup 2"></div>
-        <div class="card"><img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/MAIN%20T.png?updatedAt=1747610932122" alt="UI preview"></div>
-        <div class="card"><img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/logo-2.png?updatedAt=1747610933400" alt="UI preview"></div>
+        <div class="card"><img src="Media Storage/CitySpice1.png" alt="Case study mockup 1"></div>
+        <div class="card"><img src="Media Storage/PapsProd.png" alt="///"></div>
+        <div class="card"><img src="Media Storage/SopesAutoDetailing.png" alt="///"></div>
+        <div class="card"><img src="Media Storage/GhettoGarage.png" alt="///"></div>
       </div>
     </div>
   </div>
@@ -344,86 +344,12 @@
 </section>
 
 
-<!-- =============== FOOTER (MODERN) =============== -->
-<section class="vh-footer">
-  <style>
-    .vh-footer {
-      font-family: Inter, system-ui, sans-serif;
-      background: #1b1b1c;
-      color: #e0e0e0;
-      padding: 48px 20px;
-      border-top: 1px solid #222;
-    }
-    .vh-footer .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 24px;
-    }
-    .vh-footer .brand {
-      font-weight: 900;
-      font-size: 24px;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-    }
-    .vh-footer .links, .vh-footer .socials {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-    .vh-footer .links a {
-      color: #e0e0e0;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .vh-footer .links a:hover {
-      color: #e53e3b;
-    }
-    .vh-footer .socials a img {
-      width: 28px;
-      height: 28px;
-      transition: filter 0.2s;
-    }
-    .vh-footer .socials a img:hover {
-      filter: brightness(1.2);
-    }
-    .vh-footer p.copy {
-      flex-basis: 100%;
-      margin-top: 24px;
-      font-size: 14px;
-      color: #9ca3af;
-    }
-    @media (max-width: 768px) {
-      .vh-footer .wrap { flex-direction: column; align-items: flex-start; }
-      .vh-footer .socials { justify-content: center; width: 100%; margin-top: 14px; }
-    }
-    @media (max-width: 600px) {
-      .vh-footer .socials { justify-content: center; width: 100%; }
-    }
-  </style>
-  <div class="wrap">
-    <div>
-      <div class="brand">Visualize™</div>
-      <p class="copy">© 2025 Visualize Studio. All rights reserved.</p>
-    </div>
-    <div class="links">
-      <a href="#features">Features</a>
-      <a href="#showcase">Work</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="mailto:hello@example.com">Contact</a>
-    </div>
-    <div class="socials">
-      <a href="https://www.instagram.com/visualizetm/" target="_blank">
-        <img src="/Media Storage/instagram.svg" alt="Instagram" style="filter: invert(29%) sepia(90%) saturate(6380%) hue-rotate(350deg) brightness(96%) contrast(101%);">
-      </a>
-    </div>
-  </div>
-</section>
-
+<!-- FOOTER INCLUDE -->
+<div id="site-footer"></div>
+<script>
+  fetch('footer.html')
+    .then(response => response.text())
+    .then(data => { document.getElementById('site-footer').innerHTML = data; });
 </script>
 <!-- Calendly badge widget begin -->
 <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
@@ -440,5 +366,6 @@
   }
 </script>
 <!-- Calendly badge widget end -->
+ <script src="main.js"></script>
 </body>
 </html>

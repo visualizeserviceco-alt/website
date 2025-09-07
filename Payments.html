@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments & Terms | Visualize</title>
+    <link rel="stylesheet" href="Styles/PaymentStyle.css">
+</head>
+<body>
+    <!--#include file="header.html" -->
+    <!-- HEADER INCLUDE -->
+<div id="site-header"></div>
+<script>
+  fetch('header.html')
+    .then(response => response.text())
+    .then(data => { document.getElementById('site-header').innerHTML = data; });
+</script>
+<body>
+    <section class="vh-hero payments-hero">
+      <div class="wrap">
+        <h1>Simple, Secure Payments</h1>
+        <p class="sub">Clear terms, flexible options, and hassle-free checkout.</p>
+      </div>
+    </section>
+    <main>
+      <div class="wrap">
+        <!-- Terms -->
+        <section class="vh-section terms-conditions section-card">
+          <div class="card">
+            <h2>Terms &amp; Conditions</h2>
+            <p class="intro">Transparency matters—before you purchase, here’s what you need to know.</p>
+            <div class="divider"></div>
+            <ul>
+              <li>All payments are processed securely via trusted gateways.</li>
+              <li>Services begin only after your payment is confirmed.</li>
+              <li>Refunds are granted according to our refund policy.</li>
+              <li>Your personal data is handled in line with our privacy policy.</li>
+              <li>By making a payment, you agree to our terms of service.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="vh-section how-payments-work section-card">
+          <div class="card">
+            <h2>How Payments Work</h2>
+            <p class="intro">A quick overview of the checkout process from start to finish.</p>
+            <div class="divider"></div>
+            <ol>
+              <li><strong>Choose</strong> the service or package that fits your needs.</li>
+              <li><strong>Confirm</strong> your details before checkout.</li>
+              <li><strong>Proceed</strong> to our secure payment gateway.</li>
+              <li><strong>Receive</strong> instant confirmation and project onboarding.</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- Payment Options -->
+        <section class="vh-section payment-options section-card">
+          <div class="card">
+            <h2>Payment Options</h2>
+            <p class="intro">Multiple secure options to make transactions simple and convenient.</p>
+            <div class="divider"></div>
+            <ul class="payment-methods">
+              <li>
+                <strong>Cash App</strong><br>
+                Send payments directly with Cash App.<br>
+                <a href="#" class="btn pay-btn">Pay with Cash App</a>
+              </li>
+              <li>
+                <strong>Venmo</strong><br>
+                Fast, secure peer-to-peer payments.<br>
+                <a href="#" class="btn pay-btn">Pay with Venmo</a>
+              </li>
+              <li>
+                <strong>Apple Pay / Google Pay</strong><br>
+                Quick mobile checkout options for convenience.<br>
+                <a href="#" class="btn pay-btn">Pay with Apple/Google Pay</a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- FOOTER INCLUDE -->
+    <div id="site-footer"></div>
+    <script>
+      fetch('footer.html')
+        .then(response => response.text())
+        .then(data => { document.getElementById('site-footer').innerHTML = data; });
+    </script>
+<script src="main.js"></script>
+</body>
+</html>
