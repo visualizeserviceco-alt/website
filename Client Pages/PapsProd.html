@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal | Visualize</title>
+    <link rel="stylesheet" href="../Styles/PapsProd.css">
+</head>
+<body>
+    <div id="site-header"></div>
+    <script>
+      fetch('../header.html')
+        .then(response => response.text())
+        .then(data => { document.getElementById('site-header').innerHTML = data; });
+    </script>
+
+    <section class="vh-hero portal-hero">
+      <div class="wrap">
+        <h1>Your Client Portal</h1>
+        <p class="sub">Track projects, payments, and your journey with Visualize.</p>
+      </div>
+    </section>
+
+    <main>
+      <div class="wrap">
+        <!-- Client Portal Section -->
+        <section class="client-portal" id="portal">
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>Outstanding Invoices</h3>
+                    <p>$150</p>
+                </div>
+                <div class="card">
+                    <h3>Paid to Date</h3>
+                    <p>$150</p>
+                </div>
+                <div class="card">
+                    <h3>Overdue Payments</h3>
+                    <p>$0</p>
+                </div>
+                <div class="card">
+                    <h3>Active Projects</h3>
+                    <p>2</p>
+                </div>
+            </div>
+
+            <!-- Invoices & Payments Table -->
+            <div class="invoices-payments">
+                <h3>Invoices &amp; Payments</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Project</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>INV-1</td>
+                            <td>Branding</td>
+                            <td>$50</td>
+                            <td><span class="status status-paid">Paid</span></td>
+                            <td><a href="#" class="btn-action btn-view">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>INV-2</td>
+                            <td>Website</td>
+                            <td>$250</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                            <td><a href="#" class="btn-action btn-pay">Make Payment</a></td>
+                        </tr>
+                        <tr>
+                            <td>INV-3</td>
+                            <td>Business Cards</td>
+                            <td>$30</td>
+                            <td><span class="status status-pending">Pending</span></td>
+                            <td><a href="#" class="btn-action btn-pay">Make Payment</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="partial-payments">
+                <h3>Partial Payments</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Invoice #</th>
+                            <th>Project</th>
+                            <th>Total Amount</th>
+                            <th>Paid So Far</th>
+                            <th>Remaining</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>INV-2</td>
+                            <td>Website</td>
+                            <td>$250</td>
+                            <td>$100</td>
+                            <td>$150</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Current Projects -->
+            <div class="current-projects">
+                <h3>Current Projects</h3>
+                <div class="project-card">
+                  <h4>Website</h4>
+                  <p>Status: In Progress</p>
+                  <div class="project-meta">Last updated: Sep 18, 2025</div>
+                </div>
+                <div class="project-card">
+                  <h4>Business Cards</h4>
+                  <p>Status: Scheduled</p>
+                  <div class="project-meta">Last updated: Sep 10, 2025</div>
+                </div>
+            </div>
+
+            <!-- Client Details -->
+            <div class="client-details">
+                <h3>Your Client Details</h3>
+                <p>Loyalty Benefits: Valued Client</p>
+                <p>Client Since: Sep 2025</p>
+            </div>
+        </section>
+      </div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script>
+      fetch('../footer.html')
+        .then(response => response.text())
+        .then(data => { document.getElementById('site-footer').innerHTML = data; });
+    </script>
+</body>
+</html>
