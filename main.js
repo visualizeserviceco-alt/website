@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+(function() {
   // Animate sections, cards, hero elements, and site-wide components
   const animatedElements = document.querySelectorAll(
     "section, header, footer, .project-card, .vh-hero .copy, .vh-hero .visual img, .vh-services .card, .vh-pricing .card, .vh-process .step, .vh-faq .item, .vh-testimonials .card, .vh-showcase .tile, .vh-section, .section-card, .payment-methods li"
@@ -56,4 +56,4 @@ document.addEventListener("DOMContentLoaded", () => {
       el.addEventListener("mouseleave", () => el.classList.remove("hovered"));
     });
   }
-});
+})();

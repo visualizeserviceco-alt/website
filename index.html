@@ -48,7 +48,7 @@
   <div class="wrap">
     <div class="copy">
       <h1>Build visuals that make brands <span style="background:#e53e3b;padding:0 .35em;border-radius:.35em;color:#fff">unforgettable</span></h1>
-      <p class="lead">Visual identities, logos, and conversion-ready assets built to connect, grow, and thrive. At Visualize, we craft design systems that elevate your brand’s voice and presence in competitive spaces.</p>
+      <p class="lead">We design logos, brand identities, and marketing assets that help your business stand out, grow, and connect with your audience. At Visualize, we build systems that give your brand a strong, lasting voice.</p>
       <div class="cta">
         <a class="btn primary" href="#services">Explore Services</a>
         <a class="btn ghost" href="#showcase">See Work</a>
@@ -165,6 +165,7 @@
   </div>
 </section>
 
+
 <!-- =============== SHOWCASE / PORTFOLIO GRID =============== -->
 <section class="vh-showcase" id="showcase">
   <style>
@@ -188,7 +189,91 @@
         <img src="https://ik.imagekit.io/4syjuy3u5/Website.png" alt="City Spice">
         <div class="meta"><div class="tag">Web Design</div><div class="ttl">City Spice</div></div>
       </a>
-      </a>
+    </div>
+  </div>
+</section>
+
+<!-- =============== PORTFOLIO CATEGORIES BLOCK =============== -->
+<section class="vh-portfolio" id="portfolio">
+  <style>
+    /* Basic structure placeholders for vh-portfolio */
+    .vh-portfolio {
+      font-family: Inter, system-ui, sans-serif;
+      background: #fff;
+      color: #0f172a;
+      padding: 64px 0;
+    }
+    .vh-portfolio .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .vh-portfolio h2 {
+      font-size: clamp(24px,4.5vw,36px);
+      margin-bottom: 18px;
+    }
+    .vh-portfolio .category {
+      margin-bottom: 44px;
+    }
+    .vh-portfolio h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+      margin-top: 0;
+    }
+    .vh-portfolio .grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 16px;
+    }
+    .vh-portfolio .tile {
+      background: #f3f4f6;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 180px;
+    }
+    .vh-portfolio img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+    @media (max-width:900px){
+      .vh-portfolio .grid{grid-template-columns:1fr;}
+    }
+  </style>
+  <div class="wrap">
+    <h2>Portfolio</h2>
+    <div class="category">
+      <h3>Print Design</h3>
+      <div class="grid">
+        <div class="tile">
+          <img src="#" alt="Print Design: Brochure mockup placeholder">
+        </div>
+        <div class="tile">
+          <img src="#" alt="Print Design: Poster artwork placeholder">
+        </div>
+        <div class="tile">
+          <img src="#" alt="Print Design: Packaging design placeholder">
+        </div>
+      </div>
+    </div>
+    <div class="category">
+      <h3>Logos &amp; Brand Marks</h3>
+      <div class="grid">
+        <div class="tile">
+          <img src="#" alt="Logo Design: Modern logo mark placeholder">
+        </div>
+        <div class="tile">
+          <img src="#" alt="Logo Design: Minimal monogram placeholder">
+        </div>
+        <div class="tile">
+          <img src="#" alt="Logo Design: Brand emblem placeholder">
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -237,12 +322,33 @@
     .vh-pricing h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 18px}
     .vh-pricing p.sub{color:#9ca3af;margin:0 0 24px}
     .vh-pricing .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .vh-pricing .card{background:#1b1b1c;border:1px solid #222;border-radius:18px;padding:20px;box-shadow:0 12px 30px rgba(27,27,28,.4)}
+    .vh-pricing .card{
+      background:#1b1b1c;
+      border:1px solid #222;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 12px 30px rgba(27,27,28,.4);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
     .vh-pricing .badge{display:inline-block;background:#22c55e;color:#052e12;font-weight:800;border-radius:999px;padding:6px 10px;font-size:12px;margin-bottom:10px}
     .vh-pricing .price{font-size:36px;font-weight:800;margin:6px 0}
     .vh-pricing ul{list-style:none;padding:0;margin:14px 0;color:#cbd5e1}
     .vh-pricing li{margin:8px 0}
-    .vh-pricing .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#e53e3b;color:#fff;font-weight:800;border-radius:12px;padding:12px 14px;margin-top:10px}
+    .vh-pricing .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      background:#e53e3b;
+      color:#fff;
+      font-weight:800;
+      border-radius:12px;
+      padding:12px 14px;
+      margin-top:auto;
+      align-self:flex-start;
+    }
     @media (max-width:900px){.vh-pricing .grid{grid-template-columns:1fr}}
     @media (max-width:700px){
       .vh-pricing .wrap, .vh-pricing .grid, .vh-pricing .card, .vh-pricing h2, .vh-pricing p.sub {
