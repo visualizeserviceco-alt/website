@@ -83,8 +83,10 @@ def client_portal_page():
 @app.route('/<path:filename>')
 def serve_static_files(filename):
     """Serve static files from the existing website"""
-    # Skip authentication routes to avoid conflicts - these are handled by specific routes
-    if filename in ['login', 'signup', 'dashboard', 'client-info', 'logout', 'process', 'payments', 'client-portal']:
+    # Skip authentication and clean URL routes - these are handled by specific route handlers
+    skip_routes = ['login', 'signup', 'dashboard', 'client-info', 'logout', 'process', 'payments', 'client-portal']
+    
+    if filename in skip_routes:
         # Let Flask handle these with the specific route handlers
         return '', 404
     
