@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Registration - Visualize Studio</title>
+    <meta name="description" content="Private client registration for Visualize Studio">
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/favicon.png') }}">
+    
+    <!-- Visualize Studio Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/footer.css') }}">
+    
+    <style>
+        /* Portal-specific styles */
+        .portal-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 1rem;
+        }
+        
+        .portal-card {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .portal-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .portal-logo img {
+            height: 60px;
+            margin-bottom: 1rem;
+        }
+        
+        .portal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0 0 0.5rem 0;
+            text-align: center;
+        }
+        
+        .portal-subtitle {
+            color: #718096;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .required {
+            color: #e53e3e;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .btn-signup {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-signup:hover {
+            transform: translateY(-2px);
+        }
+        
+        .portal-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: #718096;
+        }
+        
+        .portal-footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        /* Flash messages */
+        .flash-messages {
+            margin-bottom: 2rem;
+        }
+        
+        .flash-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .flash-success {
+            background: #c6f6d5;
+            color: #2f855a;
+            border-left: 4px solid #38a169;
+        }
+        
+        .flash-error {
+            background: #fed7d7;
+            color: #c53030;
+            border-left: 4px solid #e53e3e;
+        }
+        
+        .password-requirements {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.5rem;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="portal-container">
+        <div class="portal-card">
+            <div class="portal-logo">
+                <img src="{{ url_for('static', filename='assets/images/Visualize.svg') }}" alt="Visualize Studio">
+                <h1 class="portal-title">Create Account</h1>
+                <p class="portal-subtitle">Welcome! Let's set up your client portal access</p>
+            </div>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Registration Form -->
+            <form method="POST" action="{{ url_for('portal.signup') }}">
+                <!-- Hidden access token -->
+                <input type="hidden" name="access_token" value="{{ access_token }}">
+                
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name <span class="required">*</span></label>
+                    <input type="text" 
+                           id="name" 
+                           name="name" 
+                           class="form-input"
+                           placeholder="Enter your full name"
+                           required 
+                           autocomplete="name">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address <span class="required">*</span></label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               class="form-input"
+                               placeholder="your@email.com"
+                               required 
+                               autocomplete="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="username" class="form-label">Username <span class="required">*</span></label>
+                        <input type="text" 
+                               id="username" 
+                               name="username" 
+                               class="form-input"
+                               placeholder="Choose username"
+                               required 
+                               autocomplete="username"
+                               pattern="[a-zA-Z0-9_]{3,20}"
+                               title="3-20 characters, letters, numbers, underscore only">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" 
+                           id="phone" 
+                           name="phone" 
+                           class="form-input"
+                           placeholder="(555) 123-4567"
+                           autocomplete="tel">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password <span class="required">*</span></label>
+                        <input type="password" 
+                               id="password" 
+                               name="password" 
+                               class="form-input"
+                               placeholder="Create password"
+                               required 
+                               autocomplete="new-password"
+                               minlength="6">
+                        <div class="password-requirements">
+                            Minimum 6 characters
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password" class="form-label">Confirm Password <span class="required">*</span></label>
+                        <input type="password" 
+                               id="confirm_password" 
+                               name="confirm_password" 
+                               class="form-input"
+                               placeholder="Confirm password"
+                               required 
+                               autocomplete="new-password"
+                               minlength="6">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-signup">
+                    Create Account
+                </button>
+            </form>
+            
+            <div class="portal-footer">
+                <p>Already have an account?<br>
+                   <a href="{{ url_for('portal.login') }}">Sign in here</a></p>
+                <p><a href="{{ url_for('index') }}">← Back to Visualize Studio</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password confirmation validation
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+        
+        function validatePasswords() {
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Passwords do not match');
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        }
+        
+        password.addEventListener('input', validatePasswords);
+        confirmPassword.addEventListener('input', validatePasswords);
+    </script>
+</body>
+</html>
