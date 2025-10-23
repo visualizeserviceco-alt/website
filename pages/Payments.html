@@ -16,12 +16,13 @@
 <!-- HEADER INCLUDE -->
 <div id="site-header"></div>
 <script>
-  const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
   fetch('../includes/header.html')
     .then(response => response.text())
     .then(data => { 
-      // Update asset paths in the loaded content
-      const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
+      // Update asset paths for pages subdirectory
+      const updatedData = data.replace(/src="assets\//g, 'src="../assets/')
+                              .replace(/href="index\.html"/g, 'href="../index.html"')
+                              .replace(/href="pages\//g, 'href="');
       document.getElementById('site-header').innerHTML = updatedData; 
     });
 </script>

@@ -8,28 +8,10 @@
     </div>
     <nav>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/process">Project Process</a></li>
-        <li><a href="/login">Client Login</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="pages/Process.html">Project Process</a></li>
+        <li><a href="pages/Payments.html">Payments</a></li>
       </ul>
     </nav>
   </div>
 </header>
-
-<script>
-function navigateToHome() {
-  if (window.location.pathname.includes('/pages/')) {
-    window.location.href = '../index.html';
-  } else {
-    window.location.href = 'index.html';
-  }
-}
-
-function navigateToProcess() {
-  if (window.location.pathname.includes('/pages/')) {
-    window.location.href = 'Process.html';
-  } else {
-    window.location.href = 'pages/Process.html';
-  }
-}
-</script>

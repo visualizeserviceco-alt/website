@@ -136,24 +136,32 @@ class VisualizeWebsite {
   }
 
   /**
-   * Navigation functions for clean URLs
+   * Navigation setup and global functions
    */
   setupNavigation() {
     // Ensure navigation functions are globally available
     window.navigateToHome = () => {
-      window.location.href = '/';
+      if (window.location.pathname.includes('/pages/')) {
+        window.location.href = '../index.html';
+      } else {
+        window.location.href = 'index.html';
+      }
     };
 
     window.navigateToProcess = () => {
-      window.location.href = '/process';
+      if (window.location.pathname.includes('/pages/')) {
+        window.location.href = 'Process.html';
+      } else {
+        window.location.href = 'pages/Process.html';
+      }
     };
 
     window.navigateToPayments = () => {
-      window.location.href = '/payments';
-    };
-
-    window.navigateToClientPortal = () => {
-      window.location.href = '/client-portal';
+      if (window.location.pathname.includes('/pages/')) {
+        window.location.href = 'Payments.html';
+      } else {
+        window.location.href = 'pages/Payments.html';
+      }
     };
 
     // Add active state to current page
