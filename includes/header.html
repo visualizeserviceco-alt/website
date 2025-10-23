@@ -1,0 +1,35 @@
+<header class="vh-header">
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/images/Visualize.svg" alt="Visualize Logo" style="height:32px; vertical-align:middle;">
+    </div>
+    <div class="hamburger" onclick="this.parentElement.querySelector('nav').classList.toggle('active')">
+      <span></span><span></span><span></span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/process">Project Process</a></li>
+        <li><a href="/login">Client Login</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+function navigateToHome() {
+  if (window.location.pathname.includes('/pages/')) {
+    window.location.href = '../index.html';
+  } else {
+    window.location.href = 'index.html';
+  }
+}
+
+function navigateToProcess() {
+  if (window.location.pathname.includes('/pages/')) {
+    window.location.href = 'Process.html';
+  } else {
+    window.location.href = 'pages/Process.html';
+  }
+}
+</script>

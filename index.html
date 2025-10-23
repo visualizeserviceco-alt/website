@@ -3,153 +3,130 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visualize - Brand design, web design, and creative services." />
-  <title>Visualize Studio</title>
-  <link rel="icon" href="/Media Storage/favicon.png" />
-  <link rel="stylesheet" href="Styles/style.css">
+  <meta name="description" content="Visualize Studio - Professional brand design, web design, and creative services. We create logos, brand identities, and marketing assets that help businesses stand out and connect with their audience." />
+  <meta name="keywords" content="brand design, logo design, web design, graphic design, marketing assets, business branding, visual identity" />
+  <meta name="author" content="Visualize Studio" />
+  <meta property="og:title" content="Visualize Studio - Brand & Web Design" />
+  <meta property="og:description" content="We design logos, brand identities, and marketing assets that help your business stand out, grow, and connect with your audience." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://visualizestudio.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Visualize Studio - Professional Brand & Web Design Services</title>
+  <link rel="icon" href="assets/images/favicon.png" />
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/footer.css">
 </head>
-
-<!-- HEADER INCLUDE -->
-<div id="site-header"></div>
-<script>
-  fetch('header.html')
-    .then(response => response.text())
-    .then(data => { document.getElementById('site-header').innerHTML = data; });
-</script>
 <body>
 
+<!-- HEADER INCLUDE -->
+<div id="site-header" role="banner"></div>
+<script>
+  const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
+  fetch('includes/header.html')
+    .then(response => response.text())
+    .then(data => { 
+      // Update asset paths in the loaded content
+      const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
+      document.getElementById('site-header').innerHTML = updatedData; 
+    });
+</script>
+
+<main role="main">
+
 <!-- =============== HERO BLOCK =============== -->
-<section class="vh-hero">
-  <style>
-    .vh-hero{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:#0f172a; background:radial-gradient(1200px 600px at 80% -10%,#c7d2fe33,transparent),linear-gradient(180deg,#ffffff 0%,#f8fafc 100%); padding:72px 0; overflow:hidden}
-    .vh-hero .wrap{max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center}
-    .vh-hero h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:0 0 16px;font-weight:800;letter-spacing:-0.02em}
-    .vh-hero p.lead{font-size:clamp(16px,2.3vw,20px);line-height:1.6;margin:0 0 28px;color:#333333}
-    .vh-hero .cta{display:flex;gap:12px;flex-wrap:wrap}
-    .vh-hero .btn{appearance:none;border:none;border-radius:14px;padding:14px 18px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;transition:.2s}
-    .vh-hero .btn.primary{background:#1b1b1c;color:#fff;box-shadow:0 8px 24px rgba(27,27,28,.15)}
-    .vh-hero .btn.primary:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(27,27,28,.18)}
-    .vh-hero .btn.ghost{background:#e5e7eb;color:#1b1b1c}
-    .vh-hero .stats{display:flex;gap:28px;flex-wrap:wrap;margin-top:28px;color:#0f172a}
-    .vh-hero .stat{min-width:120px}
-    .vh-hero .stat .big{font-weight:800;font-size:28px}
-    .vh-hero .art{position:relative}
-    .vh-hero .card{background:#ffffff;border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 10px 30px rgba(2,6,23,.06)}
-    .vh-hero .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .vh-hero img{width:100%;height:auto;border-radius:14px;display:block}
-    @media (max-width:960px){
-      .vh-hero .wrap{grid-template-columns:1fr;}
-      .vh-hero{padding:56px 0;}
-      .vh-hero .copy{align-items:center;text-align:center;}
-      .vh-hero .cta{justify-content:center;}
-      .vh-hero .art{margin-bottom:28px;}
-    }
-  </style>
+<section class="vh-hero" aria-labelledby="hero-heading">
   <div class="wrap">
     <div class="copy">
-      <h1>Build visuals that make brands <span style="background:#e53e3b;padding:0 .35em;border-radius:.35em;color:#fff">unforgettable</span></h1>
+      <h1 id="hero-heading">Build visuals that make brands <span class="highlight">unforgettable</span></h1>
       <p class="lead">We design logos, brand identities, and marketing assets that help your business stand out, grow, and connect with your audience. At Visualize, we build systems that give your brand a strong, lasting voice.</p>
-      <div class="cta">
-        <a class="btn primary" href="#services">Explore Services</a>
-        <a class="btn ghost" href="#showcase">See Work</a>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="big">100+</div><div>Brands helped</div></div>
-        <div class="stat"><div class="big">5.0★</div><div>Client rating</div></div>
-        <div class="stat"><div class="big">48h</div><div>Average turnaround</div></div>
-      </div>
+      <nav class="cta" aria-label="Primary actions">
+        <a class="btn primary" href="#services" aria-describedby="services-desc">
+          <span>Explore Services</span>
+          <span id="services-desc" class="sr-only">View our design and branding services</span>
+        </a>
+        <a class="btn ghost" href="#showcase" aria-describedby="portfolio-desc">
+          <span>See Work</span>
+          <span id="portfolio-desc" class="sr-only">Browse our portfolio and case studies</span>
+        </a>
+      </nav>
+      <aside class="stats" aria-label="Company statistics">
+        <div class="stat" role="img" aria-label="100 plus brands helped">
+          <div class="big">100+</div>
+          <div>Brands helped</div>
+        </div>
+        <div class="stat" role="img" aria-label="5.0 star client rating">
+          <div class="big">5.0★</div>
+          <div>Client rating</div>
+        </div>
+        <div class="stat" role="img" aria-label="48 hour average turnaround">
+          <div class="big">48h</div>
+          <div>Average turnaround</div>
+        </div>
+      </aside>
     </div>
-    <div class="art">
+    <aside class="art" aria-label="Portfolio showcase">
       <div class="grid">
-        <div class="card"><img src="Media Storage/CitySpice1.png" alt="Case study mockup 1"></div>
-        <div class="card"><img src="Media Storage/PapsProd.png" alt="///"></div>
-        <div class="card"><img src="Media Storage/SopesAutoDetailing.png" alt="///"></div>
-        <div class="card"><img src="Media Storage/GhettoGarage.svg" alt="///"></div>
+        <figure class="card">
+          <img src="assets/images/CitySpice1.png" alt="City Spice brand identity design featuring modern logo and packaging mockups" loading="lazy">
+        </figure>
+        <figure class="card">
+          <img src="assets/images/PapsProd.png" alt="Paps Production logo design with bold typography and geometric elements" loading="lazy">
+        </figure>
+        <figure class="card">
+          <img src="assets/images/SopesAutoDetailing.png" alt="Sopes Auto Detailing brand mark featuring automotive-inspired design elements" loading="lazy">
+        </figure>
+        <figure class="card">
+          <img src="assets/images/GhettoGarage.svg" alt="Ghetto Garage logo design with industrial aesthetic and custom lettering" loading="lazy">
+        </figure>
       </div>
-    </div>
+    </aside>
   </div>
 </section>
 
 <!-- =============== SERVICES BLOCK =============== -->
-<section class="vh-services" id="services">
-  <style>
-    .vh-services{font-family:Inter,system-ui,sans-serif;background:#ffffff;color:#0f172a;padding:64px 0}
-    .vh-services .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-    .vh-services h2{font-size:clamp(24px,4.5vw,36px);margin-bottom:16px}
-    .vh-services .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:24px}
-    .vh-services .card{border:1px solid #e5e7eb;border-radius:16px;padding:24px;background:#f9fafb}
-    .vh-services h3{margin-bottom:8px;font-size:20px}
-    .vh-services p{margin:0;color:#333333}
-    @media (max-width:768px){
-      .vh-services .grid{grid-template-columns:1fr;}
-    }
-  </style>
+<section class="vh-services" id="services" aria-labelledby="services-heading">
   <div class="wrap">
-    <h2>What I Offer</h2>
-    <div class="grid">
-      <div class="card">
+    <h2 id="services-heading">What I Offer</h2>
+    <div class="grid" role="list">
+      <article class="card" role="listitem">
         <h3>Visual Identity</h3>
         <p>I design logos, select typefaces, and build color systems that make your brand instantly recognizable. Every element is crafted to reflect your story.</p>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card" role="listitem">
         <h3>Brand Systems & Assets</h3>
         <p>Beyond the logo, I create full brand systems—templates, social media graphics, and usage guides—to keep your visuals consistent everywhere.</p>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card" role="listitem">
         <h3>Web Design & Development</h3>
         <p>I design and build websites that not only look great but function smoothly. From sleek landing pages to full online stores, I bring your brand to life on the web.</p>
-      </div>
-      <div class="card">
+      </article>
+      <article class="card" role="listitem">
         <h3>Merch & Print Solutions</h3>
         <p>I turn your brand into something people can hold. From merchandise to packaging, I create print-ready designs that make an impact.</p>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
 <!-- =============== TRUST / LOGOS BLOCK =============== -->
 <section class="vh-trust">
-  <style>
-    .vh-trust{font-family:Inter,system-ui,sans-serif;background:#1b1b1c;color:#e0e0e0;padding:28px 0}
-    .vh-trust .wrap{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;gap:28px;flex-wrap:wrap;align-items:center;justify-content:center}
-    .vh-trust .label{font-weight:600;color:#e0e0e0}
-    .vh-trust .logos{display:flex;gap:28px;flex-wrap:wrap;opacity:.9;justify-content:center;align-items:center;}
-    .vh-trust img{height:28px;filter:grayscale(1);opacity:.8}
-    @media (max-width:700px){
-      .vh-trust .logos{flex-wrap:wrap;justify-content:center;}
-    }
-  </style>
   <div class="wrap">
     <div class="label">Trusted by teams at</div>
     <div class="logos">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/MAIN%20T.png?updatedAt=1747610932122" alt="SopesAutoDetailing">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/logo-1.png?updatedAt=1747610934765" alt="GhettoGarage">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/logo-2.png?updatedAt=1747610933400" alt="GhettoGarage">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%207.png?updatedAt=1747610937425" alt="Glide">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Main%20Logo-2.png?updatedAt=1747610936116" alt="Nova">
-      <img src="https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%20268.png?updatedAt=1755910053617" alt="Nova">
+      <img src="assets/images/SopesAutoDetailing.png" alt="Sopes Auto Detailing">
+      <img src="assets/images/GhettoGarage.svg" alt="Ghetto Garage">
+      <img src="assets/images/PapsProd.png" alt="Paps Production">
+      <img src="assets/images/CitySpice1.png" alt="City Spice">
+      <img src="assets/images/CitySpice3.png" alt="City Spice variant">
+      <img src="assets/images/NellyCutz.svg" alt="Nelly Cutz">
     </div>
   </div>
 </section>
 
 <!-- =============== FEATURES BLOCK =============== -->
 <section class="vh-features" id="features">
-  <style>
-    .vh-features{font-family:Inter,system-ui,sans-serif;background:#ffffff;color:#0f172a;padding:64px 0}
-    .vh-features .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-    .vh-features .hd{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}
-    .vh-features h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 8px}
-    .vh-features p.sub{color:#333333;max-width:720px;margin:0}
-    .vh-features .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px}
-    .vh-features .card{border:1px solid #e5e7eb;border-radius:16px;padding:18px;background:#fff;box-shadow:0 6px 18px rgba(2,6,23,.04)}
-    .vh-features .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:#eef2ff;margin-bottom:12px;font-weight:800}
-    .vh-features h3{margin:0 0 6px;font-size:18px}
-    .vh-features p{margin:0;color:#333333}
-    @media (max-width:900px){.vh-features .grid{grid-template-columns:1fr}}
-    @media (max-width:700px){
-      .vh-features .hd{flex-direction:column;align-items:center;text-align:center;}
-    }
-  </style>
   <div class="wrap">
     <div class="hd">
       <div>
@@ -165,22 +142,8 @@
   </div>
 </section>
 
-
 <!-- =============== SHOWCASE / PORTFOLIO GRID =============== -->
 <section class="vh-showcase" id="showcase">
-  <style>
-    .vh-showcase{font-family:Inter,system-ui,sans-serif;background:#1b1b1c;color:#e0e0e0;padding:64px 0}
-    .vh-showcase .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-    .vh-showcase h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 18px}
-    .vh-showcase p.sub{color:#e0e0e0;max-width:720px;margin:0 0 22px}
-    .vh-showcase .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .vh-showcase .tile{background:#1b1b1c;border:1px solid #222;border-radius:16px;overflow:hidden}
-    .vh-showcase img{display:block;width:100%;height:220px;object-fit:cover}
-    .vh-showcase .meta{padding:14px}
-    .vh-showcase .tag{font-size:12px;color:#e53e3b}
-    .vh-showcase .ttl{font-weight:700;color:#fff;margin-top:6px}
-    @media (max-width:900px){.vh-showcase .grid{grid-template-columns:1fr}}
-  </style>
   <div class="wrap">
     <h2>Website Clients</h2>
     <p class="sub">A showcase of websites I've designed and developed for clients.</p>
@@ -195,56 +158,6 @@
 
 <!-- =============== PORTFOLIO CATEGORIES BLOCK =============== -->
 <section class="vh-portfolio" id="portfolio">
-  <style>
-    /* Basic structure placeholders for vh-portfolio */
-    .vh-portfolio {
-      font-family: Inter, system-ui, sans-serif;
-      background: #fff;
-      color: #0f172a;
-      padding: 64px 0;
-    }
-    .vh-portfolio .wrap {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    .vh-portfolio h2 {
-      font-size: clamp(24px,4.5vw,36px);
-      margin-bottom: 18px;
-    }
-    .vh-portfolio .category {
-      margin-bottom: 44px;
-    }
-    .vh-portfolio h3 {
-      font-size: 22px;
-      margin-bottom: 12px;
-      margin-top: 0;
-    }
-    .vh-portfolio .grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 16px;
-    }
-    .vh-portfolio .tile {
-      background: #f3f4f6;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 180px;
-    }
-    .vh-portfolio img {
-      max-width: 100%;
-      max-height: 100%;
-      display: block;
-      object-fit: contain;
-    }
-    @media (max-width:900px){
-      .vh-portfolio .grid{grid-template-columns:1fr;}
-    }
-  </style>
   <div class="wrap">
     <h2>Portfolio</h2>
     <div class="category">
@@ -280,34 +193,19 @@
 
 <!-- =============== TESTIMONIALS =============== -->
 <section class="vh-testimonials">
-  <style>
-    .vh-testimonials{font-family:Inter,system-ui,sans-serif;background:#ffffff;color:#0f172a;padding:64px 0}
-    .vh-testimonials .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-    .vh-testimonials h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 22px}
-    .vh-testimonials .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .vh-testimonials .card{border:1px solid #e5e7eb;border-radius:16px;background:#fff;padding:18px;box-shadow:0 6px 18px rgba(2,6,23,.04)}
-    .vh-testimonials .who{display:flex;align-items:center;gap:12px;margin-top:12px;color:#333333}
-    .vh-testimonials .avatar{
-      width:36px;
-      height:36px;
-      border-radius:50%;
-      background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%207.png?updatedAt=1747610937425') center/cover no-repeat;
-    }
-    @media (max-width:900px){.vh-testimonials .grid{grid-template-columns:1fr}}
-  </style>
   <div class="wrap">
     <h2>Clients say it better</h2>
     <div class="grid">
       <div class="card">
-        <div>“Visualize were experts at bringing my thoughts to life. I had ideas but no structure—until I met Rob. From building our website to helping us get more organized, they helped my business get on track. Thanks, bro.”</div>
+        <div>"Visualize were experts at bringing my thoughts to life. I had ideas but no structure—until I met Rob. From building our website to helping us get more organized, they helped my business get on track. Thanks, bro."</div>
         <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%207.png?updatedAt=1747610937425') center/cover no-repeat;"></div><div>— City Spice Scented Souvenirs</div></div>
       </div>
       <div class="card">
-        <div>“The Visualize team really helped my partner and I during our journey of starting a business and made it super easy and was very flexible with customization and customer service, I definitely recommend hitting them up for your business”</div>
+        <div>"The Visualize team really helped my partner and I during our journey of starting a business and made it super easy and was very flexible with customization and customer service, I definitely recommend hitting them up for your business"</div>
         <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/logo-2.png?updatedAt=1747610933400') center/cover no-repeat;"></div><div>— Ghetto Garage</div></div>
       </div>
       <div class="card">
-        <div>“Visualize work all around is very clean looking, professional, and appealing. Working with you was simple, efficient, and ties into your actual work itself. Your artworks speak themselves and you bring an individual energy that feels unique, bold, and creative, all during the process and final products as well!”</div>
+        <div>"Visualize work all around is very clean looking, professional, and appealing. Working with you was simple, efficient, and ties into your actual work itself. Your artworks speak themselves and you bring an individual energy that feels unique, bold, and creative, all during the process and final products as well!"</div>
         <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/HVO%20LOGO.png?updatedAt=1748725181341') center/cover no-repeat;"></div><div>— izkidj</div></div>
       </div>
     </div>
@@ -316,50 +214,9 @@
 
 <!-- =============== PRICING / PACKAGES =============== -->
 <section class="vh-pricing" id="pricing">
-  <style>
-    .vh-pricing{font-family:Inter,system-ui,sans-serif;background:#1b1b1c;color:#e0e0e0;padding:64px 0}
-    .vh-pricing .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-    .vh-pricing h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 18px}
-    .vh-pricing p.sub{color:#9ca3af;margin:0 0 24px}
-    .vh-pricing .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .vh-pricing .card{
-      background:#1b1b1c;
-      border:1px solid #222;
-      border-radius:18px;
-      padding:20px;
-      box-shadow:0 12px 30px rgba(27,27,28,.4);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
-    .vh-pricing .badge{display:inline-block;background:#22c55e;color:#052e12;font-weight:800;border-radius:999px;padding:6px 10px;font-size:12px;margin-bottom:10px}
-    .vh-pricing .price{font-size:36px;font-weight:800;margin:6px 0}
-    .vh-pricing ul{list-style:none;padding:0;margin:14px 0;color:#cbd5e1}
-    .vh-pricing li{margin:8px 0}
-    .vh-pricing .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      text-decoration:none;
-      background:#e53e3b;
-      color:#fff;
-      font-weight:800;
-      border-radius:12px;
-      padding:12px 14px;
-      margin-top:auto;
-      align-self:flex-start;
-    }
-    @media (max-width:900px){.vh-pricing .grid{grid-template-columns:1fr}}
-    @media (max-width:700px){
-      .vh-pricing .wrap, .vh-pricing .grid, .vh-pricing .card, .vh-pricing h2, .vh-pricing p.sub {
-        text-align:center;
-      }
-      .vh-pricing .btn{margin-left:auto;margin-right:auto;}
-    }
-  </style>
   <div class="wrap">
     <h2>Packages & transparent pricing</h2>
-    <p class="sub">Fixed‑scope options you can buy on Payhip. Customize descriptions to match your products.</p>
+    <p class="sub">Pre-Made packages created for simple selection, contact me in a meeting to fully discuss your needs.</p>
     <div class="grid">
       <div class="card">
         <div class="badge">Starter</div>
@@ -370,7 +227,6 @@
             <li>• Custom digital graphics for web, mobile, and social platforms</li>
             <li>• Social media graphics (platform-specific)</li>
         </ul>
-        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
       <div class="card">
         <div class="badge">Most popular</div>
@@ -385,7 +241,6 @@
             <li>• Ad creatives, hero sections, banners, thumbnails, and more</li>
             <li>• Social media graphics (platform-specific)</li>
         </ul>
-        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
       <div class="card">
         <div class="badge">Pro</div>
@@ -403,8 +258,6 @@
             <li>• Google Business Setup (verified local listings)</li>
             <li>• Business Breakdown & Tips (analysis and improvement suggestions)</li>
         </ul>
-        
-        <a class="btn" href="#" onclick="Calendly.showPopupWidget('https://calendly.com/contact-visualizetm/15min-onboarding-meeting');return false;">Contact</a>
       </div>
     </div>
   </div>
@@ -412,20 +265,9 @@
 
 <!-- =============== FAQ =============== -->
 <section class="vh-faq" id="faq">
-  <style>
-    .vh-faq{font-family:Inter,system-ui,sans-serif;background:#ffffff;color:#0f172a;padding:64px 0}
-    .vh-faq .wrap{max-width:920px;margin:0 auto;padding:0 20px}
-    .vh-faq h2{font-size:clamp(24px,4.5vw,36px);margin:0 0 16px}
-    .vh-faq .item{border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin:10px 0;background:#fff;word-break:break-word;}
-    .vh-faq .q{font-weight:700}
-    .vh-faq .a{color:#333333;margin-top:6px}
-    @media (max-width:700px){
-      .vh-faq .item{padding:14px;margin:8px 0;}
-    }
-  </style>
   <div class="wrap">
     <h2>FAQ</h2>
-    <div class="item"><div class="q">How fast is your turnaround time?</div><div class="a">It depends on the project, but most smaller designs are done within 2–3 days. I’ll always give you a timeframe upfront.</div></div>
+    <div class="item"><div class="q">How fast is your turnaround time?</div><div class="a">It depends on the project, but most smaller designs are done within 2–3 days. I'll always give you a timeframe upfront.</div></div>
     <div class="item"><div class="q">What files are included?</div><div class="a">Logo exports (SVG/PNG), PDF guidelines (if included), and a folder of ready‑to‑use assets.</div></div>
     <div class="item"><div class="q">Do you offer refunds?</div><div class="a">For services, refunds are limited to cases where no work has begun. Customize this to match your policy.</div></div>
   </div>
@@ -433,45 +275,29 @@
 
 <!-- =============== CTA =============== -->
 <section class="vh-cta">
-  <style>
-    .vh-cta{font-family:Inter,system-ui,sans-serif;background:linear-gradient(135deg,#1b1b1c 0%,#1b1b1c 100%);color:#e0e0e0;padding:56px 0}
-    .vh-cta .wrap{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-    .vh-cta h3{font-size:clamp(22px,3.5vw,30px);margin:0}
-    .vh-cta a.btn{background:#e53e3b;color:#fff;text-decoration:none;font-weight:800;border-radius:12px;padding:12px 16px}
-    @media (max-width:700px){
-      .vh-cta .wrap{flex-direction:column;align-items:center;gap:18px;text-align:center;}
-      .vh-cta h3{margin-bottom:10px;}
-    }
-  </style>
   <div class="wrap">
     <h3>Ready to make your brand unmistakable?</h3>
     <a class="btn" href="#pricing">Choose a package</a>
   </div>
 </section>
 
+</main>
 
 <!-- FOOTER INCLUDE -->
-<div id="site-footer"></div>
+<div id="site-footer" role="contentinfo"></div>
 <script>
-  fetch('footer.html')
+  const basePathFooter = window.location.pathname.includes('/pages/') ? '../' : '';
+  fetch('includes/footer.html')
     .then(response => response.text())
-    .then(data => { document.getElementById('site-footer').innerHTML = data; });
-</script>
-<!-- Calendly badge widget begin -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-<script type="text/javascript">
-  window.onload = function() {
-    Calendly.initBadgeWidget({
-      url: 'https://calendly.com/contact-visualizetm/15min-onboarding-meeting',
-      text: 'Schedule meeting with me',
-      color: '#e53e3b',
-      textColor: '#ffffff',
-      branding: true
+    .then(data => { 
+      // Update asset paths in the loaded content
+      const updatedData = data.replace(/src="assets\//g, `src="${basePathFooter}assets/`);
+      document.getElementById('site-footer').innerHTML = updatedData; 
     });
-  }
 </script>
-<!-- Calendly badge widget end -->
- <script src="main.js"></script>
+
+<script src="assets/js/main.js"></script>
+<div data-tf-live="01K6QWB04TXPZJ4V5CFV4TYAFN"></div>
+<script src="//embed.typeform.com/next/embed.js"></script>
 </body>
 </html>

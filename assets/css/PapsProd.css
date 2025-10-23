@@ -1,0 +1,412 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafb;
+  margin: 0;
+  padding: 0;
+  color: #222;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #1a1a1a;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
+  color: #444;
+}
+
+a {
+  color: #1a73e8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover, a:focus {
+  color: #155ab6;
+  text-decoration: underline;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.portal-hero {
+  background-color: #ffffff;
+  padding: 60px 20px 40px;
+  text-align: center;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 45px;
+}
+
+.portal-hero h1 {
+  font-size: 2.75rem;
+  margin-bottom: 15px;
+}
+
+.portal-hero p {
+  font-size: 1.25rem;
+  color: #555;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vh-section {
+  margin-bottom: 45px;
+}
+
+.section-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  padding: 30px 35px;
+  transition: box-shadow 0.3s ease;
+}
+
+.section-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.client-portal,
+.invoices-payments,
+.partial-payments,
+.current-projects,
+.client-details {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  padding: 30px 35px;
+  margin-bottom: 45px;
+  color: #333333;
+}
+
+.client-portal h3,
+.invoices-payments h3,
+.partial-payments h3,
+.current-projects h3,
+.client-details h3 {
+  margin: 0 0 15px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e53935;
+  font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 35px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 25px 35px;
+  flex: 1 1 250px;
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+  color: #333333;
+}
+
+.card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  margin: 0 0 12px;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.invoices-payments table,
+.partial-payments table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 0;
+  background: #f7fafd;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(45, 68, 102, 0.06);
+}
+
+.partial-payments table {
+  background: #fff9f9;
+  box-shadow: 0 4px 18px rgba(229, 83, 83, 0.12);
+}
+
+.invoices-payments th,
+.invoices-payments td,
+.partial-payments th,
+.partial-payments td {
+  background-color: #fff;
+  padding: 14px 18px;
+  text-align: left;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  vertical-align: middle;
+  border: none;
+}
+
+.invoices-payments th,
+.partial-payments th {
+  background-color: transparent;
+  color: #555;
+  font-weight: 600;
+  box-shadow: none;
+  padding-bottom: 8px;
+}
+
+.invoices-payments tr,
+.partial-payments tr {
+  transition: box-shadow 0.18s, background 0.18s;
+}
+
+.invoices-payments tbody tr:hover,
+.partial-payments tbody tr:hover {
+  background-color: #f0f4fa;
+  box-shadow: 0 2px 10px rgba(30,42,60,0.06);
+}
+
+.current-projects {
+  margin-bottom: 45px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.current-projects h3 {
+  font-size: 1.75rem;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: #d32f2f;
+  font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid #e53935;
+  padding-bottom: 8px;
+}
+
+.current-projects .project-card {
+  position: relative;
+  background: linear-gradient(145deg, #ffffff, #fef5f5);
+  border: 1px solid #f1f1f1;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(211, 47, 47, 0.2);
+  padding: 28px 24px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.current-projects .project-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+}
+
+.current-projects .project-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: linear-gradient(90deg, #e53935, #ff7043);
+  border-radius: 20px 20px 0 0;
+}
+
+.current-projects .project-card h4 {
+  font-size: 1.35rem;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #b71c1c;
+  font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.current-projects .project-card p {
+  font-size: 1rem;
+  color: #4a4a4a;
+  line-height: 1.6;
+  flex-grow: 1;
+}
+
+.current-projects .project-meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.client-details {
+  color: #2c3e50;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(44, 62, 80, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.client-details:hover {
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.18);
+}
+
+/* Status Badges */
+.status {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 18px;
+  font-size: 0.97rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+  transition: background 0.2s, color 0.2s;
+  margin-right: 4px;
+}
+.status-paid {
+  background-color: #e6f9e7;
+  color: #219653;
+  border: 1px solid #b5e5c2;
+}
+.status-pending {
+  background-color: #fff7e6;
+  color: #ff9100;
+  border: 1px solid #ffe0b2;
+}
+.status-overdue {
+  background-color: #ffeaea;
+  color: #e53935;
+  border: 1px solid #ffbdbd;
+}
+
+/* New project-status badges */
+.project-status {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 18px;
+  font-size: 0.97rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+  margin-right: 4px;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+.status-inprogress {
+  background-color: #f57c00; /* orange */
+}
+.status-scheduled {
+  background-color: #1976d2; /* blue */
+}
+.status-completed {
+  background-color: #388e3c; /* green */
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 8px;
+  background: #eee;
+  border-radius: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.progress-bar .progress {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #e53935, #ff7043);
+  transition: width 0.3s ease;
+}
+
+/* Action Buttons */
+.btn-action {
+  display: inline-block;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.96rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  margin-right: 8px;
+  outline: none;
+  box-shadow: 0 1px 3px rgba(30, 42, 60, 0.07);
+  text-decoration: none;
+}
+.btn-view {
+  background-color: #f2f4f8;
+  color: #333;
+  padding: 8px 20px;
+  border-radius: 10px;
+}
+.btn-view:hover, .btn-view:focus {
+  background-color: #e0e3ea;
+  color: #111;
+  box-shadow: 0 2px 8px rgba(30,42,60,0.12);
+}
+.btn-pay {
+  background-color: #1a73e8;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 10px;
+}
+.btn-pay:hover, .btn-pay:focus {
+  background-color: #155ab6;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(21, 90, 182, 0.5);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-cards {
+    flex-direction: column;
+  }
+
+  .card {
+    margin-bottom: 20px;
+    flex: none;
+    width: 100%;
+  }
+
+  .wrap {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .invoices-payments table,
+  .partial-payments table {
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .current-projects {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}

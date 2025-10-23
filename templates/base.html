@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Visualize Studio - Client Portal{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('serve_static_files', filename='assets/images/favicon.png') }}">
+    
+    <!-- Client Portal Styles -->
+    <style>
+        /* Base styles matching Visualize Studio branding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .portal-header {
+            background: #111111;
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+        }
+
+        .portal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .portal-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .portal-logo img {
+            height: 32px;
+        }
+
+        .portal-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .portal-user a {
+            color: #4f46e5;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .portal-user a:hover {
+            background: #1a1a1a;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+            min-height: calc(100vh - 140px);
+        }
+
+        /* Forms */
+        .form-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #333;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #cccccc;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .form-button {
+            width: 100%;
+            padding: 12px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .form-button:hover {
+            background: #3730a3;
+        }
+
+        .form-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .form-link a {
+            color: #4f46e5;
+            text-decoration: none;
+        }
+
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Flash Messages */
+        .flash-messages {
+            margin: 1rem 0;
+        }
+
+        .flash-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .flash-success {
+            background: #064e3b;
+            border: 1px solid #059669;
+            color: #d1fae5;
+        }
+
+        .flash-error {
+            background: #7f1d1d;
+            border: 1px solid #dc2626;
+            color: #fecaca;
+        }
+
+        .flash-info {
+            background: #1e3a8a;
+            border: 1px solid #3b82f6;
+            color: #dbeafe;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sidebar {
+            background: #111111;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+            height: fit-content;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-title {
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar-links {
+            list-style: none;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-links a {
+            color: #cccccc;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .sidebar-links a:hover {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .sidebar-links a.active {
+            background: #4f46e5;
+            color: #ffffff;
+        }
+
+        .dashboard-main {
+            background: #111111;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #333;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dashboard-card {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+        }
+
+        .card-title {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .card-description {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-current {
+            background: #064e3b;
+            color: #d1fae5;
+        }
+
+        .status-due {
+            background: #7f1d1d;
+            color: #fecaca;
+        }
+
+        .status-design {
+            background: #1e3a8a;
+            color: #dbeafe;
+        }
+
+        .status-development {
+            background: #581c87;
+            color: #e9d5ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .portal-nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ 'success' if category == 'success' else 'error' if category == 'error' else 'info' }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</body>
+</html>
