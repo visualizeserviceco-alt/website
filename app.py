@@ -80,21 +80,6 @@ def client_portal_page():
     """Serve the client portal page with clean URL"""
     return send_from_directory('pages', 'PapsProd.html')
 
-@app.route('/<path:filename>')
-def serve_static_files(filename):
-    """Serve static files from the existing website"""
-    # Skip authentication and clean URL routes - these are handled by specific route handlers
-    skip_routes = ['login', 'signup', 'dashboard', 'client-info', 'logout', 'process', 'payments', 'client-portal']
-    
-    if filename in skip_routes:
-        # Let Flask handle these with the specific route handlers
-        return '', 404
-    
-    try:
-        return send_from_directory('.', filename)
-    except:
-        return '', 404
-
 # Authentication Routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -210,6 +195,15 @@ def dashboard():
 def client_info():
     """Shared resources for all clients"""
     return render_template('client_info.html')
+
+# Static files catch-all (must be last route)
+@app.route('/<path:filename>')
+def serve_static_files(filename):
+    """Serve static files from the existing website"""
+    try:
+        return send_from_directory('.', filename)
+    except:
+        return '', 404
 
 # Error Handlers
 @app.errorhandler(404)
