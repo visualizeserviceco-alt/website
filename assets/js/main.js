@@ -139,29 +139,17 @@ class VisualizeWebsite {
    * Navigation setup and global functions
    */
   setupNavigation() {
-    // Ensure navigation functions are globally available
+    // Ensure navigation functions are globally available for clean URLs
     window.navigateToHome = () => {
-      if (window.location.pathname.includes('/pages/')) {
-        window.location.href = '../index.html';
-      } else {
-        window.location.href = 'index.html';
-      }
+      window.location.href = '/';
     };
 
     window.navigateToProcess = () => {
-      if (window.location.pathname.includes('/pages/')) {
-        window.location.href = 'Process.html';
-      } else {
-        window.location.href = 'pages/Process.html';
-      }
+      window.location.href = '/process';
     };
 
     window.navigateToPayments = () => {
-      if (window.location.pathname.includes('/pages/')) {
-        window.location.href = 'Payments.html';
-      } else {
-        window.location.href = 'pages/Payments.html';
-      }
+      window.location.href = '/payments';
     };
 
     // Add active state to current page
