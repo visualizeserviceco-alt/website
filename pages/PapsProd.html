@@ -18,11 +18,8 @@
   fetch('../includes/header.html')
     .then(response => response.text())
     .then(data => { 
-      // Update asset paths for pages subdirectory
-      const updatedData = data.replace(/src="assets\//g, 'src="../assets/')
-                              .replace(/href="\/"/g, 'href="../"')
-                              .replace(/href="\/process"/g, 'href="Process.html"')
-                              .replace(/href="\/payments"/g, 'href="Payments.html"');
+      // Update asset paths for pages subdirectory - keep clean URLs as-is
+      const updatedData = data.replace(/src="assets\//g, 'src="../assets/');
       document.getElementById('site-header').innerHTML = updatedData; 
     });
 </script>
