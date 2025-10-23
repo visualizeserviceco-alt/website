@@ -10,9 +10,9 @@ from .models import db, Client
 from .navigation import get_navigation_html
 import re
 
-# Create blueprint
+# Create blueprint with clean URLs (no prefix)
 auth_bp = Blueprint('portal', __name__, 
-                   url_prefix='/portal',
+                   url_prefix='',
                    template_folder='templates')
 
 def is_safe_url(target):

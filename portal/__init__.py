@@ -6,11 +6,11 @@ Setup portal blueprint, database, and authentication system
 from flask import Flask
 from flask_login import LoginManager
 from .models import db, Client
-from .auth import auth_bp
+from .routes import auth_bp
 
-def init_portal(app: Flask):
+def create_portal(app: Flask):
     """
-    Initialize the client portal system
+    Initialize the complete client portal system with clean URLs
     
     Args:
         app: Flask application instance
@@ -37,76 +37,69 @@ def init_portal(app: Flask):
         except (ValueError, TypeError):
             return None
     
-    # Register portal blueprint
+    # Register portal blueprint with clean URLs (no prefix)
     app.register_blueprint(auth_bp)
     
-    # Additional security configuration
-    app.config.setdefault('SESSION_COOKIE_SECURE', False)  # Set to True in production with HTTPS
-    app.config.setdefault('SESSION_COOKIE_HTTPONLY', True)
-    app.config.setdefault('SESSION_COOKIE_SAMESITE', 'Lax')
-    app.config.setdefault('PERMANENT_SESSION_LIFETIME', 86400)  # 24 hours
-    
-    # Portal-specific config
-    app.config.setdefault('SIGNUP_ACCESS_TOKEN', 'visualize-admin-2024')
+    # Initialize database and create sample data
+    with app.app_context():
+        db.create_all()
+        _create_sample_data_if_needed()
     
     return login_manager
 
-def create_sample_data(app: Flask):
+def _create_sample_data_if_needed():
     """
-    Create sample client data for testing
-    Only creates data if no clients exist
+    Create sample client data for testing if no clients exist
     """
-    with app.app_context():
-        # Create tables
-        db.create_all()
+    # Check if clients already exist
+    if Client.query.first():
+        return
+    
+    # Create sample clients
+    try:
+        # Client 1: Demo client
+        client1, success1, msg1 = Client.create_client(
+            name="Demo Client",
+            email="demo@client.com",
+            username="demo_client", 
+            password="demo123",
+            phone="555-123-4567",
+            project_status="Design Phase - Logo concepts in review",
+            payments_due=0.0
+        )
         
-        # Check if clients already exist
-        if Client.query.first():
-            print("Client data already exists, skipping sample creation.")
-            return
+        if success1:
+            client1.project_description = "Complete brand identity package including logo, business cards, letterhead, and basic website. Modern, professional aesthetic with blue and gray color scheme."
+            client1.notes = "Client prefers minimalist designs. Deadline: End of month. Very responsive to communications."
         
-        # Create sample clients
-        try:
-            # Client 1: Demo client
-            client1, success1, msg1 = Client.create_client(
-                name="Demo Client",
-                email="demo@client.com",
-                username="demo_client", 
-                password="demo123",
-                phone="555-123-4567",
-                project_status="Design Phase - Logo concepts in review",
-                payments_due=0.0
-            )
-            
-            if success1:
-                client1.project_description = "Complete brand identity package including logo, business cards, letterhead, and basic website. Modern, professional aesthetic with blue and gray color scheme."
-                client1.notes = "Client prefers minimalist designs. Deadline: End of month. Very responsive to communications."
-            
-            # Client 2: Jane Smith
-            client2, success2, msg2 = Client.create_client(
-                name="Jane Smith",
-                email="jane@company.com", 
-                username="jane_smith",
-                password="jane123",
-                phone="555-987-6543",
-                project_status="Development Phase - Website 80% complete",
-                payments_due=1500.0
-            )
-            
-            if success2:
-                client2.project_description = "E-commerce website development with custom shopping cart, payment integration, and inventory management. Built on modern tech stack with responsive design."
-                client2.notes = "Final payment due upon completion. Launch date: Next Friday. Client requested SSL certificate and backup system."
-            
-            db.session.commit()
-            
-            print("✅ Sample client data created successfully!")
-            print("\n🔐 Demo Login Credentials:")
-            print("   Username: demo_client | Password: demo123")
-            print("   Username: jane_smith  | Password: jane123")
-            print(f"\n🔗 Access URLs:")
-            print("   Login: /portal/login")
-            print("   Signup: /portal/signup?access=visualize-admin-2024")
-            
-        except Exception as e:
-            print(f"❌ Error creating sample data: {e}")
-            db.session.rollback()
+        # Client 2: Jane Smith
+        client2, success2, msg2 = Client.create_client(
+            name="Jane Smith",
+            email="jane@company.com", 
+            username="jane_smith",
+            password="jane123",
+            phone="555-987-6543",
+            project_status="Development Phase - Website 80% complete",
+            payments_due=1500.0
+        )
+        
+        if success2:
+            client2.project_description = "E-commerce website development with custom shopping cart, payment integration, and inventory management. Built on modern tech stack with responsive design."
+            client2.notes = "Final payment due upon completion. Launch date: Next Friday. Client requested SSL certificate and backup system."
+        
+        db.session.commit()
+        
+        print("✅ Sample client data created successfully!")
+        print("\n🔐 Demo Login Credentials:")
+        print("   Username: demo_client | Password: demo123")
+        print("   Username: jane_smith  | Password: jane123")
+        print(f"\n🔗 Access URLs:")
+        print("   Login: /login")
+        print("   Signup: /signup?access=visualize-client")
+        
+    except Exception as e:
+        print(f"❌ Error creating sample data: {e}")
+        db.session.rollback()
+
+# Backward compatibility
+init_portal = create_portal
