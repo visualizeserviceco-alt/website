@@ -116,7 +116,7 @@ a:hover, a:focus {
 
 .payments-hero p.sub {
   font-size: 1.15rem;
-  color: #b0b0b0;
+  color: #d0d0d0;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -147,7 +147,7 @@ a:hover, a:focus {
 }
 
 .section-card .intro {
-  color: #444;
+  color: #d0d0d0;
   font-size: 1rem;
   margin-bottom: 1.2em;
 }
@@ -173,7 +173,7 @@ a:hover, a:focus {
 
 .vh-process ul {
   list-style: disc inside;
-  color: #444;
+  color: #d0d0d0;
   font-size: 1rem;
   max-width: 700px;
   margin: 0 auto 2em;
@@ -190,7 +190,7 @@ a:hover, a:focus {
 .vh-section ol {
   margin: 0;
   padding-left: 1.2em;
-  color: #333;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
@@ -248,7 +248,7 @@ a:hover, a:focus {
 /* Footer Styles */
 .vh-footer {
   background: #1b1b1c;
-  color: #bbb;
+  color: #d0d0d0;
   padding: 3em 1.5em;
   font-size: 0.95em;
 }
@@ -275,7 +275,7 @@ a:hover, a:focus {
 }
 
 .vh-footer nav a {
-  color: #a0a0a0;
+  color: #c0c0c0;
   font-weight: 500;
   transition: color 0.2s;
   text-decoration: none;
@@ -294,7 +294,7 @@ a:hover, a:focus {
 }
 
 .vh-footer .footer-socials a {
-  color: #a0a0a0;
+  color: #c0c0c0;
   font-size: 1.4em;
   transition: color 0.2s;
 }

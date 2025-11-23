@@ -8,7 +8,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #1b1b1c;
+  color: #e0e0e0;
   font-weight: 700;
   margin-top: 0;
   margin-bottom: 0.5em;
@@ -18,7 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
   margin-top: 0;
   margin-bottom: 1em;
-  color: #c0c0c0;
+  color: #e0e0e0;
 }
 
 a {
@@ -56,7 +56,7 @@ a:hover, a:focus {
 
 .portal-hero p {
   font-size: 1.25rem;
-  color: #555;
+  color: #d0d0d0;
   max-width: 720px;
   margin-left: auto;
   margin-right: auto;
@@ -144,7 +144,7 @@ a:hover, a:focus {
   border-collapse: separate;
   border-spacing: 0 10px;
   font-size: 1rem;
-  color: #c0c0c0;
+  color: #e0e0e0;
   margin-bottom: 0;
   background: #2a2a2b;
   border-radius: 14px;
@@ -173,7 +173,7 @@ a:hover, a:focus {
 .invoices-payments th,
 .partial-payments th {
   background-color: transparent;
-  color: #555;
+  color: #d0d0d0;
   font-weight: 600;
   box-shadow: none;
   padding-bottom: 8px;
@@ -252,14 +252,14 @@ a:hover, a:focus {
 
 .current-projects .project-card p {
   font-size: 1rem;
-  color: #c0c0c0;
+  color: #e0e0e0;
   line-height: 1.6;
   flex-grow: 1;
 }
 
 .current-projects .project-meta {
   font-size: 0.85rem;
-  color: #b0b0b0;
+  color: #d0d0d0;
   margin-top: 10px;
   font-style: italic;
 }
@@ -359,13 +359,13 @@ a:hover, a:focus {
 }
 .btn-view {
   background-color: #2a2a2b;
-  color: #333;
+  color: #e0e0e0;
   padding: 8px 20px;
   border-radius: 10px;
 }
 .btn-view:hover, .btn-view:focus {
   background-color: #3a3a3b;
-  color: #111;
+  color: #e0e0e0;
   box-shadow: 0 2px 8px rgba(30,42,60,0.12);
 }
 .btn-pay {

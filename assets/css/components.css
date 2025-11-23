@@ -259,7 +259,7 @@
 }
 
 .vh-features p.sub {
-  color: #d0d0d0;
+  color: #e0e0e0;
   max-width: 720px;
   margin: 0;
 }
@@ -304,7 +304,7 @@
 
 .vh-features p {
   margin: 0;
-  color: #d0d0d0;
+  color: #e0e0e0;
 }
 
 /* === SHOWCASE SECTION === */
@@ -458,7 +458,7 @@
   align-items: center;
   gap: 12px;
   margin-top: 12px;
-  color: #d0d0d0;
+  color: #e0e0e0;
 }
 
 .vh-testimonials .avatar {
@@ -488,7 +488,7 @@
 }
 
 .vh-pricing p.sub {
-  color: #9ca3af;
+  color: #c0c0c0;
   margin: 0 0 24px;
 }
 
@@ -530,7 +530,7 @@
   list-style: none;
   padding: 0;
   margin: 14px 0;
-  color: #cbd5e1;
+  color: #e0e0e0;
 }
 
 .vh-pricing li {
@@ -627,7 +627,7 @@
 
 .comparison-table td {
   padding: 16px;
-  color: #d0d0d0;
+  color: #e0e0e0;
 }
 
 .comparison-table td:first-child {
@@ -729,7 +729,7 @@
 }
 
 .vh-faq .a {
-  color: #d0d0d0;
+  color: #e0e0e0;
   margin-top: 6px;
 }
 

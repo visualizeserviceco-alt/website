@@ -20,11 +20,11 @@
   
   /* Text Colors */
   --text-dark: #e0e0e0;
-  --text-secondary: #c0c0c0;
-  --text-muted: #a0a0a0;
+  --text-secondary: #d0d0d0;
+  --text-muted: #c0c0c0;
   --text-light: #ffffff;
-  --text-muted-light: #bbb;
-  --text-muted-dark: #888;
+  --text-muted-light: #d0d0d0;
+  --text-muted-dark: #c0c0c0;
   
   /* Border Colors */
   --border-light: #3a3a3b;

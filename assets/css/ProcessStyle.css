@@ -5,7 +5,7 @@ body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
   background: #1f1f20;
-  color: #1b1b1c;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
@@ -110,11 +110,11 @@ body {
 .vh-faq h3 {
   margin: 0 0 6px;
   font-size: 16px;
-  color: #1b1b1c;
+  color: #e0e0e0;
 }
 .vh-faq p {
   margin: 0;
-  color: #b0b0b0;
+  color: #d0d0d0;
 }
 
 /* Footer */
@@ -153,7 +153,7 @@ body {
   flex-basis: 100%;
   font-size: 14px;
   margin-top: 20px;
-  color: #9ca3af;
+  color: #c0c0c0;
 }
 
 /* Mobile */
