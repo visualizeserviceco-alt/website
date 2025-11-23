@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/footer.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -43,24 +44,29 @@
       <p class="lead">We design logos, brand identities, and marketing assets that help your business stand out, grow, and connect with your audience. At Visualize, we build systems that give your brand a strong, lasting voice.</p>
       <nav class="cta" aria-label="Primary actions">
         <a class="btn primary" href="#services" aria-describedby="services-desc">
+          <i data-lucide="arrow-right" class="btn-icon"></i>
           <span>Explore Services</span>
           <span id="services-desc" class="sr-only">View our design and branding services</span>
         </a>
         <a class="btn ghost" href="#showcase" aria-describedby="portfolio-desc">
+          <i data-lucide="eye" class="btn-icon"></i>
           <span>See Work</span>
           <span id="portfolio-desc" class="sr-only">Browse our portfolio and case studies</span>
         </a>
       </nav>
       <aside class="stats" aria-label="Company statistics">
         <div class="stat" role="img" aria-label="100 plus brands helped">
+          <i data-lucide="users" class="stat-icon"></i>
           <div class="big">100+</div>
           <div>Brands helped</div>
         </div>
         <div class="stat" role="img" aria-label="5.0 star client rating">
+          <i data-lucide="star" class="stat-icon"></i>
           <div class="big">5.0★</div>
           <div>Client rating</div>
         </div>
         <div class="stat" role="img" aria-label="48 hour average turnaround">
+          <i data-lucide="clock" class="stat-icon"></i>
           <div class="big">48h</div>
           <div>Average turnaround</div>
         </div>
@@ -91,18 +97,22 @@
     <h2 id="services-heading">What I Offer</h2>
     <div class="grid" role="list">
       <article class="card" role="listitem">
+        <i data-lucide="palette" class="service-icon"></i>
         <h3>Visual Identity</h3>
         <p>I design logos, select typefaces, and build color systems that make your brand instantly recognizable. Every element is crafted to reflect your story.</p>
       </article>
       <article class="card" role="listitem">
+        <i data-lucide="layers" class="service-icon"></i>
         <h3>Brand Systems & Assets</h3>
         <p>Beyond the logo, I create full brand systems—templates, social media graphics, and usage guides—to keep your visuals consistent everywhere.</p>
       </article>
       <article class="card" role="listitem">
+        <i data-lucide="globe" class="service-icon"></i>
         <h3>Web Design & Development</h3>
         <p>I design and build websites that not only look great but function smoothly. From sleek landing pages to full online stores, I bring your brand to life on the web.</p>
       </article>
       <article class="card" role="listitem">
+        <i data-lucide="package" class="service-icon"></i>
         <h3>Merch & Print Solutions</h3>
         <p>I turn your brand into something people can hold. From merchandise to packaging, I create print-ready designs that make an impact.</p>
       </article>
@@ -135,9 +145,9 @@
       </div>
     </div>
     <div class="grid">
-      <div class="card"><div class="ic">A</div><h3>Strategy‑first</h3><p>We turn your positioning into a visual system your audience actually remembers.</p></div>
-      <div class="card"><div class="ic">⚡</div><h3>Fast turnaround</h3><p>Compress weeks of back‑and‑forth into days with a tight, async‑friendly workflow.</p></div>
-      <div class="card"><div class="ic">✓</div><h3>Clear deliverables</h3><p>Get brand files, usage docs, and ready‑to‑launch assets you can plug in today.</p></div>
+      <div class="card"><i data-lucide="target" class="feature-icon"></i><h3>Strategy‑first</h3><p>We turn your positioning into a visual system your audience actually remembers.</p></div>
+      <div class="card"><i data-lucide="zap" class="feature-icon"></i><h3>Fast turnaround</h3><p>Compress weeks of back‑and‑forth into days with a tight, async‑friendly workflow.</p></div>
+      <div class="card"><i data-lucide="check-circle" class="feature-icon"></i><h3>Clear deliverables</h3><p>Get brand files, usage docs, and ready‑to‑launch assets you can plug in today.</p></div>
     </div>
   </div>
 </section>
@@ -217,47 +227,102 @@
   <div class="wrap">
     <h2>Packages & transparent pricing</h2>
     <p class="sub">Pre-Made packages created for simple selection, contact me in a meeting to fully discuss your needs.</p>
+    
+    <!-- Feature Comparison Table -->
+    <div class="pricing-comparison">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Features</th>
+            <th>Starter<br><span class="price-small">$50</span></th>
+            <th>Branding & Design<br><span class="price-small">$100</span><span class="badge-table">Most Popular</span></th>
+            <th>Full Identity<br><span class="price-small">$200</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary Logo</td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Secondary Logo</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Print & Packaging Design</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Merch & Print Mockups</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Custom Digital Graphics</td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Ad Creatives & Banners</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Social Media Graphics</td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Social Media Plan & Strategy</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Google Business Setup</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+          <tr>
+            <td>Business Breakdown & Tips</td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="x" class="icon-x"></i></td>
+            <td><i data-lucide="check" class="icon-check"></i></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Package Cards -->
     <div class="grid">
       <div class="card">
         <div class="badge">Starter</div>
         <div class="price">$50</div>
-        <div>Logo Design</div>
-        <ul>
-            <li>• Primary Logo</li>
-            <li>• Custom digital graphics for web, mobile, and social platforms</li>
-            <li>• Social media graphics (platform-specific)</li>
-        </ul>
+        <div class="package-title">Logo Design</div>
+        <a class="btn" href="#contact">Get Started</a>
       </div>
-      <div class="card">
+      <div class="card featured">
         <div class="badge">Most popular</div>
         <div class="price">$100</div>
-        <div>Branding & Design</div>
-        <ul>
-            <li>• Primary Logo</li>
-            <li>• Secondary Logo</li>
-            <li>• Print & Packaging Design</li>
-            <li>• Merch & Print Mockups</li>
-            <li>• Custom digital graphics for web, mobile, and social platforms</li>
-            <li>• Ad creatives, hero sections, banners, thumbnails, and more</li>
-            <li>• Social media graphics (platform-specific)</li>
-        </ul>
+        <div class="package-title">Branding & Design</div>
+        <a class="btn" href="#contact">Get Started</a>
       </div>
       <div class="card">
         <div class="badge">Pro</div>
         <div class="price">$200</div>
-        <div>Full Identity</div>
-        <ul>
-            <li>• Primary Logo</li>
-            <li>• Secondary Logo</li>
-            <li>• Print & Packaging Design</li>
-            <li>• Merch & Print Mockups</li>
-            <li>• Custom digital graphics for web, mobile, and social platforms</li>
-            <li>• Ad creatives, hero sections, banners, thumbnails, and more</li>
-            <li>• Social media graphics (platform-specific)</li>
-            <li>• Social Media Plan & Strategy (posting schedule, content ideas, creative guidance)</li>
-            <li>• Google Business Setup (verified local listings)</li>
-            <li>• Business Breakdown & Tips (analysis and improvement suggestions)</li>
-        </ul>
+        <div class="package-title">Full Identity</div>
+        <a class="btn" href="#contact">Get Started</a>
       </div>
     </div>
   </div>
@@ -267,9 +332,27 @@
 <section class="vh-faq" id="faq">
   <div class="wrap">
     <h2>FAQ</h2>
-    <div class="item"><div class="q">How fast is your turnaround time?</div><div class="a">It depends on the project, but most smaller designs are done within 2–3 days. I'll always give you a timeframe upfront.</div></div>
-    <div class="item"><div class="q">What files are included?</div><div class="a">Logo exports (SVG/PNG), PDF guidelines (if included), and a folder of ready‑to‑use assets.</div></div>
-    <div class="item"><div class="q">Do you offer refunds?</div><div class="a">For services, refunds are limited to cases where no work has begun. Customize this to match your policy.</div></div>
+    <div class="item">
+      <div class="q">
+        <i data-lucide="help-circle" class="faq-icon"></i>
+        How fast is your turnaround time?
+      </div>
+      <div class="a">It depends on the project, but most smaller designs are done within 2–3 days. I'll always give you a timeframe upfront.</div>
+    </div>
+    <div class="item">
+      <div class="q">
+        <i data-lucide="help-circle" class="faq-icon"></i>
+        What files are included?
+      </div>
+      <div class="a">Logo exports (SVG/PNG), PDF guidelines (if included), and a folder of ready‑to‑use assets.</div>
+    </div>
+    <div class="item">
+      <div class="q">
+        <i data-lucide="help-circle" class="faq-icon"></i>
+        Do you offer refunds?
+      </div>
+      <div class="a">For services, refunds are limited to cases where no work has begun. Customize this to match your policy.</div>
+    </div>
   </div>
 </section>
 
@@ -277,7 +360,10 @@
 <section class="vh-cta">
   <div class="wrap">
     <h3>Ready to make your brand unmistakable?</h3>
-    <a class="btn" href="#pricing">Choose a package</a>
+    <a class="btn" href="#pricing">
+      <i data-lucide="sparkles" class="btn-icon"></i>
+      Choose a package
+    </a>
   </div>
 </section>
 
@@ -297,5 +383,9 @@
 </script>
 
 <script src="assets/js/main.js"></script>
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+</script>
 </body>
 </html>

@@ -59,7 +59,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   transition: var(--transition-fast);
+}
+
+.btn-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .vh-hero .btn.primary {
@@ -93,6 +99,19 @@
 .vh-hero .stat .big {
   font-weight: 800;
   font-size: 28px;
+}
+
+.stat-icon {
+  width: 32px;
+  height: 32px;
+  color: #d44c43;
+  margin-bottom: 8px;
+}
+
+.vh-hero .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .vh-hero .art {
@@ -151,6 +170,16 @@
   border-radius: var(--radius-lg);
   padding: 24px;
   background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  color: #d44c43;
+  margin-bottom: 16px;
 }
 
 .vh-services h3 {
@@ -259,6 +288,13 @@
   background: #2a2a3a;
   margin-bottom: 12px;
   font-weight: 800;
+}
+
+.feature-icon {
+  width: 42px;
+  height: 42px;
+  color: #d44c43;
+  margin-bottom: 12px;
 }
 
 .vh-features h3 {
@@ -505,6 +541,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   text-decoration: none;
   background: #d44c43;
   color: #fff;
@@ -513,6 +550,140 @@
   padding: 12px 14px;
   margin-top: auto;
   align-self: flex-start;
+  width: 100%;
+}
+
+/* Pricing Comparison Table */
+.pricing-comparison {
+  margin-bottom: 48px;
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #252526;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.comparison-table thead {
+  background: #1b1b1c;
+}
+
+.comparison-table th {
+  padding: 20px 16px;
+  text-align: left;
+  font-weight: 700;
+  color: #e0e0e0;
+  border-bottom: 2px solid #3a3a3b;
+  position: relative;
+}
+
+.comparison-table th:first-child {
+  font-size: 18px;
+}
+
+.comparison-table th:not(:first-child) {
+  text-align: center;
+  font-size: 16px;
+}
+
+.price-small {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #d44c43;
+  margin-top: 8px;
+}
+
+.badge-table {
+  display: block;
+  background: #22c55e;
+  color: #052e12;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-top: 6px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comparison-table tbody tr {
+  border-bottom: 1px solid #3a3a3b;
+  transition: background 0.2s;
+}
+
+.comparison-table tbody tr:hover {
+  background: #2a2a2b;
+}
+
+.comparison-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.comparison-table td {
+  padding: 16px;
+  color: #d0d0d0;
+}
+
+.comparison-table td:first-child {
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.comparison-table td:not(:first-child) {
+  text-align: center;
+}
+
+.icon-check,
+.icon-x {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+}
+
+.icon-check {
+  color: #22c55e;
+}
+
+.icon-x {
+  color: #ef4444;
+}
+
+.vh-pricing .package-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0 20px;
+  color: #e0e0e0;
+}
+
+.vh-pricing .card.featured {
+  border: 2px solid #d44c43;
+  transform: scale(1.05);
+  box-shadow: 0 16px 40px rgba(212, 76, 67, 0.3);
+}
+
+@media (max-width: 900px) {
+  .vh-pricing .card.featured {
+    transform: scale(1);
+  }
+  
+  .comparison-table {
+    font-size: 14px;
+  }
+  
+  .comparison-table th,
+  .comparison-table td {
+    padding: 12px 8px;
+  }
+  
+  .price-small {
+    font-size: 20px;
+  }
 }
 
 /* === FAQ SECTION === */
@@ -545,6 +716,16 @@
 
 .vh-faq .q {
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.faq-icon {
+  width: 20px;
+  height: 20px;
+  color: #d44c43;
+  flex-shrink: 0;
 }
 
 .vh-faq .a {
@@ -583,6 +764,9 @@
   font-weight: 800;
   border-radius: 12px;
   padding: 12px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* === RESPONSIVE BREAKPOINTS === */
