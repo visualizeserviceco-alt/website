@@ -4,7 +4,7 @@
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: #ffffff;
+  background: #1f1f20;
   color: #1b1b1c;
   line-height: 1.6;
 }
@@ -83,11 +83,11 @@ body {
 }
 .vh-process .step p {
   margin-bottom: 16px;
-  color: #333;
+  color: #d0d0d0;
 }
 .vh-process .image-placeholder {
-  background: #f1f1f1;
-  border: 2px dashed #ddd;
+  background: #2a2a2b;
+  border: 2px dashed #3a3a3b;
   height: 200px;
   border-radius: 12px;
 }
@@ -101,11 +101,11 @@ body {
   margin-bottom: 20px;
 }
 .vh-faq .qa {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #3a3a3b;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 12px;
-  background: #fff;
+  background: #252526;
 }
 .vh-faq h3 {
   margin: 0 0 6px;
@@ -114,7 +114,7 @@ body {
 }
 .vh-faq p {
   margin: 0;
-  color: #555;
+  color: #b0b0b0;
 }
 
 /* Footer */

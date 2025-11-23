@@ -10,7 +10,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  background: #fafbfc;
+  background: #1f1f20;
   color: #1b1b1c;
   line-height: 1.6;
   min-height: 100vh;
@@ -26,7 +26,7 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
   margin-bottom: 1.2em;
-  color: #222;
+  color: #e0e0e0;
   font-size: 1.05rem;
 }
 
@@ -116,7 +116,7 @@ a:hover, a:focus {
 
 .payments-hero p.sub {
   font-size: 1.15rem;
-  color: #ddd;
+  color: #b0b0b0;
   max-width: 700px;
   margin: 0 auto;
 }
@@ -129,8 +129,8 @@ a:hover, a:focus {
 }
 
 .section-card {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: #252526;
+  border: 1px solid #3a3a3b;
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.04);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -154,16 +154,16 @@ a:hover, a:focus {
 
 .divider {
   height: 1px;
-  background: #e5e7eb;
+  background: #3a3a3b;
   margin: 1.5em 0;
 }
 
 /* Process Sections */
 .vh-process {
   padding: 3em 1.5em;
-  border-top: 1px solid #ececec;
-  border-bottom: 1px solid #ececec;
-  background: #fff;
+  border-top: 1px solid #3a3a3b;
+  border-bottom: 1px solid #3a3a3b;
+  background: #252526;
 }
 
 .vh-process h2 {
@@ -207,8 +207,8 @@ a:hover, a:focus {
 }
 
 .payment-methods li {
-  background: #fff;
-  border: 1px solid #ececec;
+  background: #252526;
+  border: 1px solid #3a3a3b;
   border-radius: 14px;
   padding: 1.5em;
   list-style: none;
@@ -275,7 +275,7 @@ a:hover, a:focus {
 }
 
 .vh-footer nav a {
-  color: #ccc;
+  color: #a0a0a0;
   font-weight: 500;
   transition: color 0.2s;
   text-decoration: none;
@@ -294,7 +294,7 @@ a:hover, a:focus {
 }
 
 .vh-footer .footer-socials a {
-  color: #ccc;
+  color: #a0a0a0;
   font-size: 1.4em;
   transition: color 0.2s;
 }

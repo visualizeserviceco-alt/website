@@ -3,9 +3,9 @@
   --brand-red: #d44c43;
   --brand-red-dark: #a83a32;
   --bg-dark: #1b1b1c;
-  --bg-light: #fafbfc;
-  --text-dark: #1b1b1c;
-  --text-grey: #6b7280;
+  --bg-light: #1f1f20;
+  --text-dark: #e0e0e0;
+  --text-grey: #a0a0a0;
   --radius-lg: 16px;
   --shadow-md: 0 6px 20px rgba(0,0,0,0.06);
   --shadow-lg: 0 12px 28px rgba(0,0,0,0.12);
@@ -105,7 +105,7 @@ section.visible {
 
 /* === Card & Button Styles === */
 .card {
-  background: #fff;
+  background: #252526;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   padding: 2em;

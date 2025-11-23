@@ -10,24 +10,24 @@
   --brand-red-light: #e66b63;
   
   /* Background Colors */
-  --bg-light: #fafbfc;
-  --bg-white: #ffffff;
+  --bg-light: #1f1f20;
+  --bg-white: #252526;
   --bg-dark: #1b1b1c;
   --bg-dark-start: #1b1b1c;
   --bg-dark-end: #0f0f0f;
-  --bg-card: #f9fafb;
-  --bg-neutral: #f3f4f6;
+  --bg-card: #2a2a2b;
+  --bg-neutral: #2a2a2b;
   
   /* Text Colors */
-  --text-dark: #0f172a;
-  --text-secondary: #333333;
-  --text-muted: #6b7280;
+  --text-dark: #e0e0e0;
+  --text-secondary: #c0c0c0;
+  --text-muted: #a0a0a0;
   --text-light: #ffffff;
   --text-muted-light: #bbb;
   --text-muted-dark: #888;
   
   /* Border Colors */
-  --border-light: #e5e7eb;
+  --border-light: #3a3a3b;
   --border-dark: #222;
   --border-accent: #333;
   

@@ -205,8 +205,8 @@
 /* === FEATURES SECTION === */
 .vh-features {
   font-family: Inter, system-ui, sans-serif;
-  background: #ffffff;
-  color: #0f172a;
+  background: #252526;
+  color: #e0e0e0;
   padding: 64px 0;
 }
 
@@ -230,7 +230,7 @@
 }
 
 .vh-features p.sub {
-  color: #333333;
+  color: #d0d0d0;
   max-width: 720px;
   margin: 0;
 }
@@ -243,10 +243,10 @@
 }
 
 .vh-features .card {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #3a3a3b;
   border-radius: 16px;
   padding: 18px;
-  background: #fff;
+  background: #252526;
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
 }
 
@@ -256,7 +256,7 @@
   border-radius: 10px;
   display: grid;
   place-items: center;
-  background: #eef2ff;
+  background: #2a2a3a;
   margin-bottom: 12px;
   font-weight: 800;
 }
@@ -268,7 +268,7 @@
 
 .vh-features p {
   margin: 0;
-  color: #333333;
+  color: #d0d0d0;
 }
 
 /* === SHOWCASE SECTION === */
@@ -334,8 +334,8 @@
 /* === PORTFOLIO SECTION === */
 .vh-portfolio {
   font-family: Inter, system-ui, sans-serif;
-  background: #fff;
-  color: #0f172a;
+  background: #252526;
+  color: #e0e0e0;
   padding: 64px 0;
 }
 
@@ -370,7 +370,7 @@
   background: #f3f4f6;
   border-radius: 14px;
   overflow: hidden;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #3a3a3b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -387,8 +387,8 @@
 /* === TESTIMONIALS SECTION === */
 .vh-testimonials {
   font-family: Inter, system-ui, sans-serif;
-  background: #ffffff;
-  color: #0f172a;
+  background: #252526;
+  color: #e0e0e0;
   padding: 64px 0;
 }
 
@@ -410,9 +410,9 @@
 }
 
 .vh-testimonials .card {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #3a3a3b;
   border-radius: 16px;
-  background: #fff;
+  background: #252526;
   padding: 18px;
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
 }
@@ -422,7 +422,7 @@
   align-items: center;
   gap: 12px;
   margin-top: 12px;
-  color: #333333;
+  color: #d0d0d0;
 }
 
 .vh-testimonials .avatar {
@@ -518,8 +518,8 @@
 /* === FAQ SECTION === */
 .vh-faq {
   font-family: Inter, system-ui, sans-serif;
-  background: #ffffff;
-  color: #0f172a;
+  background: #252526;
+  color: #e0e0e0;
   padding: 64px 0;
 }
 
@@ -535,11 +535,11 @@
 }
 
 .vh-faq .item {
-  border: 1px solid #e5e7eb;
+  border: 1px solid #3a3a3b;
   border-radius: 14px;
   padding: 16px;
   margin: 10px 0;
-  background: #fff;
+  background: #252526;
   word-break: break-word;
 }
 
@@ -548,7 +548,7 @@
 }
 
 .vh-faq .a {
-  color: #333333;
+  color: #d0d0d0;
   margin-top: 6px;
 }
 

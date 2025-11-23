@@ -1,9 +1,9 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9fafb;
+  background-color: #1f1f20;
   margin: 0;
   padding: 0;
-  color: #222;
+  color: #e0e0e0;
   line-height: 1.6;
 }
 
@@ -18,7 +18,7 @@ h1, h2, h3, h4, h5, h6 {
 p {
   margin-top: 0;
   margin-bottom: 1em;
-  color: #444;
+  color: #c0c0c0;
 }
 
 a {
@@ -41,7 +41,7 @@ a:hover, a:focus {
 }
 
 .portal-hero {
-  background-color: #ffffff;
+  background-color: #252526;
   padding: 60px 20px 40px;
   text-align: center;
   border-radius: 14px;
@@ -67,7 +67,7 @@ a:hover, a:focus {
 }
 
 .section-card {
-  background-color: #ffffff;
+  background-color: #252526;
   border-radius: 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
   padding: 30px 35px;
@@ -83,12 +83,12 @@ a:hover, a:focus {
 .partial-payments,
 .current-projects,
 .client-details {
-  background-color: #ffffff;
+  background-color: #252526;
   border-radius: 14px;
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
   padding: 30px 35px;
   margin-bottom: 45px;
-  color: #333333;
+  color: #d0d0d0;
 }
 
 .client-portal h3,
@@ -111,14 +111,14 @@ a:hover, a:focus {
 }
 
 .card {
-  background-color: #ffffff;
+  background-color: #252526;
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   padding: 25px 35px;
   flex: 1 1 250px;
   text-align: center;
   transition: box-shadow 0.3s ease;
-  color: #333333;
+  color: #d0d0d0;
 }
 
 .card:hover {
@@ -144,16 +144,16 @@ a:hover, a:focus {
   border-collapse: separate;
   border-spacing: 0 10px;
   font-size: 1rem;
-  color: #444;
+  color: #c0c0c0;
   margin-bottom: 0;
-  background: #f7fafd;
+  background: #2a2a2b;
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 4px 18px rgba(45, 68, 102, 0.06);
 }
 
 .partial-payments table {
-  background: #fff9f9;
+  background: #2a2525;
   box-shadow: 0 4px 18px rgba(212, 76, 67, 0.12);
 }
 
@@ -161,7 +161,7 @@ a:hover, a:focus {
 .invoices-payments td,
 .partial-payments th,
 .partial-payments td {
-  background-color: #fff;
+  background-color: #252526;
   padding: 14px 18px;
   text-align: left;
   border-radius: 10px;
@@ -186,7 +186,7 @@ a:hover, a:focus {
 
 .invoices-payments tbody tr:hover,
 .partial-payments tbody tr:hover {
-  background-color: #f0f4fa;
+  background-color: #2a2a2b;
   box-shadow: 0 2px 10px rgba(30,42,60,0.06);
 }
 
@@ -212,8 +212,8 @@ a:hover, a:focus {
 
 .current-projects .project-card {
   position: relative;
-  background: linear-gradient(145deg, #ffffff, #fef5f5);
-  border: 1px solid #f1f1f1;
+  background: linear-gradient(145deg, #252526, #2a2525);
+  border: 1px solid #3a3a3b;
   border-radius: 20px;
   box-shadow: 0 6px 18px rgba(212, 76, 67, 0.2);
   padding: 28px 24px;
@@ -246,26 +246,26 @@ a:hover, a:focus {
   font-weight: 700;
   color: #a83a32;
   font-family: 'Segoe UI Semibold', Tahoma, Geneva, Verdana, sans-serif;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #3a3a3b;
   padding-bottom: 8px;
 }
 
 .current-projects .project-card p {
   font-size: 1rem;
-  color: #4a4a4a;
+  color: #c0c0c0;
   line-height: 1.6;
   flex-grow: 1;
 }
 
 .current-projects .project-meta {
   font-size: 0.85rem;
-  color: #666;
+  color: #b0b0b0;
   margin-top: 10px;
   font-style: italic;
 }
 
 .client-details {
-  color: #2c3e50;
+  color: #d0d0d0;
   font-weight: 600;
   text-align: center;
   box-shadow: 0 4px 14px rgba(44, 62, 80, 0.12);
@@ -289,17 +289,17 @@ a:hover, a:focus {
   margin-right: 4px;
 }
 .status-paid {
-  background-color: #e6f9e7;
+  background-color: #1a2a1a;
   color: #219653;
   border: 1px solid #b5e5c2;
 }
 .status-pending {
-  background-color: #fff7e6;
+  background-color: #2a2a25;
   color: #ff9100;
   border: 1px solid #ffe0b2;
 }
 .status-overdue {
-  background-color: #ffeaea;
+  background-color: #2a1a1a;
   color: #d44c43;
   border: 1px solid #ffbdbd;
 }
@@ -330,7 +330,7 @@ a:hover, a:focus {
 /* Progress Bar */
 .progress-bar {
   height: 8px;
-  background: #eee;
+  background: #3a3a3b;
   border-radius: 6px;
   margin-top: 8px;
   overflow: hidden;
@@ -358,13 +358,13 @@ a:hover, a:focus {
   text-decoration: none;
 }
 .btn-view {
-  background-color: #f2f4f8;
+  background-color: #2a2a2b;
   color: #333;
   padding: 8px 20px;
   border-radius: 10px;
 }
 .btn-view:hover, .btn-view:focus {
-  background-color: #e0e3ea;
+  background-color: #3a3a3b;
   color: #111;
   box-shadow: 0 2px 8px rgba(30,42,60,0.12);
 }
