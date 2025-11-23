@@ -5,15 +5,15 @@
 /* === CSS CUSTOM PROPERTIES (VARIABLES) === */
 :root {
   /* Brand Colors */
-  --brand-red: #e53e3b;
-  --brand-red-dark: #b71c1c;
-  --brand-red-light: #ff6b6b;
+  --brand-red: #d44c43;
+  --brand-red-dark: #a83a32;
+  --brand-red-light: #e66b63;
   
   /* Background Colors */
   --bg-light: #fafbfc;
   --bg-white: #ffffff;
   --bg-dark: #1b1b1c;
-  --bg-dark-start: #1a1a1a;
+  --bg-dark-start: #1b1b1c;
   --bg-dark-end: #0f0f0f;
   --bg-card: #f9fafb;
   --bg-neutral: #f3f4f6;

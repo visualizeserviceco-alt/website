@@ -1,10 +1,10 @@
 /* === Brand & Theme Variables === */
 :root {
-  --brand-red: #e53e3b;
-  --brand-red-dark: #b71c1c;
-  --bg-dark: #181a1b;
+  --brand-red: #d44c43;
+  --brand-red-dark: #a83a32;
+  --bg-dark: #1b1b1c;
   --bg-light: #fafbfc;
-  --text-dark: #181a1b;
+  --text-dark: #1b1b1c;
   --text-grey: #6b7280;
   --radius-lg: 16px;
   --shadow-md: 0 6px 20px rgba(0,0,0,0.06);

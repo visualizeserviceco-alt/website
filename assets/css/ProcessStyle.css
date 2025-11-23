@@ -32,7 +32,7 @@ body {
 }
 .vh-header .brand {
   font-weight: 900;
-  color: #e53e3b;
+  color: #d44c43;
 }
 .vh-header nav ul {
   list-style: none;
@@ -49,10 +49,10 @@ body {
 }
 .vh-header nav a:hover,
 .vh-header nav a.active {
-  color: #e53e3b;
+  color: #d44c43;
 }
 .vh-header .btn {
-  background: #e53e3b;
+  background: #d44c43;
   padding: 8px 14px;
   border-radius: 8px;
   font-weight: 600;
@@ -78,7 +78,7 @@ body {
   gap: 40px;
 }
 .vh-process .step h2 {
-  color: #e53e3b;
+  color: #d44c43;
   margin-bottom: 10px;
 }
 .vh-process .step p {
@@ -132,7 +132,7 @@ body {
 }
 .vh-footer .brand {
   font-weight: 900;
-  color: #e53e3b;
+  color: #d44c43;
 }
 .vh-footer .links {
   display: flex;
@@ -143,7 +143,7 @@ body {
   text-decoration: none;
 }
 .vh-footer .links a:hover {
-  color: #e53e3b;
+  color: #d44c43;
 }
 .vh-footer .socials img {
   width: 28px;

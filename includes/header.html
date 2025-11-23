@@ -11,36 +11,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/process">Project Process</a></li>
         <li><a href="/payments">Payments</a></li>
-        <li><a href="/portal/login">Client Login</a></li>
       </ul>
     </nav>
   </div>
 </header>
-
-<script>
-// Enhanced navigation with authentication context
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if we're running with Flask backend (has /portal/nav endpoint)
-    fetch('/portal/nav')
-        .then(response => {
-            if (response.ok) {
-                return response.text();
-            }
-            // If Flask backend not available, keep static navigation
-            return null;
-        })
-        .then(dynamicNav => {
-            if (dynamicNav) {
-                // Replace with dynamic navigation
-                const headerElement = document.querySelector('.vh-header');
-                if (headerElement) {
-                    headerElement.outerHTML = dynamicNav;
-                }
-            }
-        })
-        .catch(() => {
-            // Fallback to static navigation if fetch fails
-            console.log('Using static navigation (Flask backend not available)');
-        });
-});
-</script>

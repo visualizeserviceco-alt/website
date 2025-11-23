@@ -11,14 +11,14 @@ body {
   padding: 0;
   font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   background: #fafbfc;
-  color: #181a1b;
+  color: #1b1b1c;
   line-height: 1.6;
   min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
-  color: #e53935;
+  color: #d44c43;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   letter-spacing: -0.02em;
@@ -31,18 +31,18 @@ p {
 }
 
 a {
-  color: #e53935;
+  color: #d44c43;
   text-decoration: none;
   transition: color 0.2s;
 }
 a:hover, a:focus {
-  color: #b71c1c;
+  color: #a83a32;
   text-decoration: underline;
 }
 
 /* Header Styles */
 .vh-header {
-  background: #181a1b;
+  background: #1b1b1c;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -60,7 +60,7 @@ a:hover, a:focus {
 .vh-header .brand {
   font-weight: 700;
   font-size: 1.5em;
-  color: #e53935;
+  color: #d44c43;
   text-decoration: none;
 }
 
@@ -79,13 +79,13 @@ a:hover, a:focus {
 
 .vh-header nav a:hover,
 .vh-header nav a:focus {
-  color: #e53935;
-  background: rgba(229, 57, 53, 0.1);
+  color: #d44c43;
+  background: rgba(212, 76, 67, 0.1);
   text-decoration: none;
 }
 
 .vh-header .contact-btn {
-  background: #e53935;
+  background: #d44c43;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -97,12 +97,12 @@ a:hover, a:focus {
 }
 
 .vh-header .contact-btn:hover {
-  background: #b71c1c;
+  background: #a83a32;
 }
 
 /* Payments Hero */
 .payments-hero {
-  background: #181a1b;
+  background: #1b1b1c;
   color: #fff;
   text-align: center;
   padding: 6em 1.5em 5em;
@@ -167,7 +167,7 @@ a:hover, a:focus {
 }
 
 .vh-process h2 {
-  color: #e53935;
+  color: #d44c43;
   margin-bottom: 1em;
 }
 
@@ -217,20 +217,20 @@ a:hover, a:focus {
 }
 
 .payment-methods li:hover {
-  border-color: #e53935;
+  border-color: #d44c43;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 .payment-methods li strong {
-  color: #e53935;
+  color: #d44c43;
   font-size: 1.1rem;
 }
 
 .pay-btn {
   display: inline-block;
   margin-top: 0.8em;
-  background: #e53935;
+  background: #d44c43;
   color: #fff;
   font-weight: 600;
   border-radius: 8px;
@@ -240,14 +240,14 @@ a:hover, a:focus {
 }
 
 .pay-btn:hover {
-  background: #b71c1c;
+  background: #a83a32;
   transform: translateY(-2px);
   text-decoration: none;
 }
 
 /* Footer Styles */
 .vh-footer {
-  background: #181a1b;
+  background: #1b1b1c;
   color: #bbb;
   padding: 3em 1.5em;
   font-size: 0.95em;
@@ -264,7 +264,7 @@ a:hover, a:focus {
 .vh-footer .brand {
   font-weight: 700;
   font-size: 1.3em;
-  color: #e53935;
+  color: #d44c43;
   text-decoration: none;
 }
 
@@ -283,7 +283,7 @@ a:hover, a:focus {
 
 .vh-footer nav a:hover,
 .vh-footer nav a:focus {
-  color: #e53935;
+  color: #d44c43;
   text-decoration: underline;
 }
 
@@ -301,7 +301,7 @@ a:hover, a:focus {
 
 .vh-footer .footer-socials a:hover,
 .vh-footer .footer-socials a:focus {
-  color: #e53935;
+  color: #d44c43;
 }
 
 .vh-footer .copyright {
