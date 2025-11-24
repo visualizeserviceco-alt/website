@@ -40,6 +40,11 @@ def create_app(config_name=None):
         """Serve the payments page with clean URL"""
         return send_from_directory('pages', 'Payments.html')
 
+    @app.route('/terms')
+    def terms_page():
+        """Serve the terms page with clean URL"""
+        return send_from_directory('pages', 'Terms.html')
+
     @app.route('/client-portal')
     def client_portal_page():
         """Serve the client portal page with clean URL"""

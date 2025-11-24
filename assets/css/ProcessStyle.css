@@ -156,6 +156,38 @@ body {
   color: #c0c0c0;
 }
 
+/* Payment Process Section */
+.payment-process {
+  padding: 3em 1.5em;
+  background: #252526;
+}
+
+.payment-process .section-card {
+  background: #252526;
+  border: 1px solid #3a3a3b;
+  border-radius: 16px;
+  padding: 2.5em 2em;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+}
+
+.payment-process h2 {
+  color: #d44c43;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.payment-process .intro {
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.payment-process strong {
+  color: #d44c43;
+  font-weight: 700;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .vh-header nav ul {

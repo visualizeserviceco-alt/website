@@ -312,6 +312,38 @@ a:hover, a:focus {
   text-align: center;
 }
 
+/* Payment Breakdown */
+.payment-breakdown {
+  display: grid;
+  gap: 2em;
+  margin-top: 1.5em;
+}
+
+.breakdown-item {
+  padding: 1.5em;
+  background: #2a2a2b;
+  border-radius: 12px;
+  border: 1px solid #3a3a3b;
+}
+
+.breakdown-item h3 {
+  color: #d44c43;
+  margin-top: 0;
+  margin-bottom: 0.8em;
+  font-size: 1.3rem;
+}
+
+.breakdown-item p {
+  margin: 0;
+  color: #e0e0e0;
+  line-height: 1.7;
+}
+
+.breakdown-item strong {
+  color: #d44c43;
+  font-weight: 700;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .vh-footer .wrap {
