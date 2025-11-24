@@ -42,13 +42,8 @@ def create_app(config_name=None):
 
     @app.route('/terms')
     def terms_page():
-        """Serve the terms page with clean URL"""
+        """Serve the Terms of Service page with clean URL"""
         return send_from_directory('pages', 'Terms.html')
-
-    @app.route('/client-portal')
-    def client_portal_page():
-        """Serve the client portal page with clean URL"""
-        return send_from_directory('pages', 'PapsProd.html')
 
     # Static files catch-all (must be last route)
     @app.route('/<path:filename>')

@@ -344,6 +344,57 @@ a:hover, a:focus {
   font-weight: 700;
 }
 
+/* Terms of Service Styling */
+.terms-of-service .card {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.terms-of-service .last-updated {
+  color: #c0c0c0;
+  font-size: 0.95rem;
+  margin-bottom: 1.5em;
+}
+
+.terms-of-service .terms-section {
+  margin: 2em 0;
+}
+
+.terms-of-service .terms-section h2 {
+  color: #d44c43;
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1em;
+}
+
+.terms-of-service .terms-section p {
+  color: #e0e0e0;
+  line-height: 1.7;
+  margin-bottom: 1em;
+}
+
+.terms-of-service .terms-section ul {
+  color: #e0e0e0;
+  line-height: 1.8;
+  padding-left: 1.5em;
+}
+
+.terms-of-service .terms-section li {
+  margin-bottom: 0.8em;
+}
+
+.terms-of-service .terms-section strong {
+  color: #d44c43;
+  font-weight: 700;
+}
+
+.terms-of-service .contact-section {
+  background: #2a2a2b;
+  padding: 1.5em;
+  border-radius: 12px;
+  border: 1px solid #3a3a3b;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .vh-footer .wrap {
