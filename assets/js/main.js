@@ -24,6 +24,7 @@ class VisualizeWebsite {
       this.setupHoverEffects();
       this.setupNavigation();
       this.setupMobileMenu();
+      this.optimizeScrollPerformance();
       console.log('✓ Visualize Website initialized successfully');
     } catch (error) {
       console.error('✗ Error initializing website:', error);
@@ -31,7 +32,42 @@ class VisualizeWebsite {
   }
 
   /**
+   * Optimize scroll performance on mobile
+   */
+  optimizeScrollPerformance() {
+    // Add passive scroll listeners for better performance
+    let ticking = false;
+    
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // Any scroll-based updates can go here
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    // Use passive listener for better scroll performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Optimize images for mobile
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+      // Add loading optimization
+      if (!img.hasAttribute('loading')) {
+        img.setAttribute('loading', 'lazy');
+      }
+      // Prevent layout shift
+      if (!img.hasAttribute('decoding')) {
+        img.setAttribute('decoding', 'async');
+      }
+    });
+  }
+
+  /**
    * Scroll-triggered animations using Intersection Observer
+   * Optimized for mobile with better performance and smoother animations
    */
   setupScrollAnimations() {
     const animatedElements = document.querySelectorAll(`
@@ -48,25 +84,41 @@ class VisualizeWebsite {
       return;
     }
 
+    // Detect mobile device for optimized settings
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Mobile-optimized observer options
     const observerOptions = {
-      threshold: 0.15,
-      rootMargin: '0px 0px -20px 0px'
+      threshold: isMobile ? 0.1 : 0.15,
+      rootMargin: isMobile ? '0px 0px -10px 0px' : '0px 0px -20px 0px'
+    };
+
+    // Use requestAnimationFrame for smoother animations
+    const animateWithRAF = (element, callback) => {
+      requestAnimationFrame(() => {
+        callback();
+      });
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, index) => {
         if (!entry.isIntersecting) return;
         
-        // Staggered animation delay
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-          entry.target.classList.remove('hidden');
-          
-          // Optimize performance by removing will-change after animation
+        // Reduced delay on mobile and for reduced motion
+        const staggerDelay = prefersReducedMotion ? 0 : (isMobile ? index * 60 : index * 120);
+        
+        animateWithRAF(entry.target, () => {
           setTimeout(() => {
-            entry.target.style.willChange = 'auto';
-          }, 800);
-        }, index * 120);
+            entry.target.classList.add('visible');
+            entry.target.classList.remove('hidden');
+            
+            // Optimize performance by removing will-change after animation
+            setTimeout(() => {
+              entry.target.style.willChange = 'auto';
+            }, isMobile ? 600 : 800);
+          }, staggerDelay);
+        });
 
         observer.unobserve(entry.target);
       });
@@ -74,18 +126,51 @@ class VisualizeWebsite {
 
     animatedElements.forEach(el => {
       el.classList.add('hidden');
+      // Use transform3d for better GPU acceleration on mobile
       el.style.willChange = 'transform, opacity';
+      el.style.transform = 'translate3d(0, 0, 0)';
       observer.observe(el);
     });
   }
 
   /**
    * Smooth scrolling for anchor links
+   * Optimized for mobile with iOS Safari compatibility
    */
   setupSmoothScrolling() {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    
+    // Smooth scroll polyfill for better mobile support
+    const smoothScrollTo = (element, offset = 0) => {
+      const targetPosition = element.offsetTop - offset;
+      const startPosition = window.pageYOffset;
+      const distance = targetPosition - startPosition;
+      const duration = isMobile ? 400 : 600;
+      let start = null;
+
+      const step = (timestamp) => {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const percentage = Math.min(progress / duration, 1);
+        
+        // Easing function for smooth animation
+        const ease = percentage < 0.5
+          ? 2 * percentage * percentage
+          : 1 - Math.pow(-2 * percentage + 2, 3) / 2;
+        
+        window.scrollTo(0, startPosition + distance * ease);
+        
+        if (progress < duration) {
+          requestAnimationFrame(step);
+        }
+      };
+      
+      requestAnimationFrame(step);
+    };
     
     anchorLinks.forEach(link => {
+      // Use passive listener for better scroll performance
       link.addEventListener('click', (e) => {
         const targetId = link.getAttribute('href');
         
@@ -98,17 +183,30 @@ class VisualizeWebsite {
           
           // Add offset for sticky header
           const headerHeight = document.querySelector('.vh-header')?.offsetHeight || 0;
-          const targetPosition = target.offsetTop - headerHeight - 20;
+          const offset = headerHeight + (isMobile ? 10 : 20);
           
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
+          // Use native smooth scroll if available, otherwise use polyfill
+          if ('scrollBehavior' in document.documentElement.style && !isMobile) {
+            window.scrollTo({
+              top: target.offsetTop - offset,
+              behavior: 'smooth'
+            });
+          } else {
+            smoothScrollTo(target, offset);
+          }
           
           // Update URL without jumping
           history.pushState(null, null, targetId);
+          
+          // Close mobile menu if open
+          const nav = document.querySelector('.vh-header nav');
+          const hamburger = document.querySelector('.hamburger');
+          if (nav && nav.classList.contains('active')) {
+            nav.classList.remove('active');
+            if (hamburger) hamburger.classList.remove('active');
+          }
         }
-      });
+      }, { passive: false });
     });
   }
 
@@ -158,32 +256,74 @@ class VisualizeWebsite {
 
   /**
    * Mobile menu functionality
+   * Optimized with smooth animations and touch-friendly interactions
    */
   setupMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const nav = document.querySelector('.vh-header nav');
+    const body = document.body;
 
     if (hamburger && nav) {
-      hamburger.addEventListener('click', () => {
+      const toggleMenu = () => {
+        const isActive = nav.classList.contains('active');
         nav.classList.toggle('active');
         hamburger.classList.toggle('active');
+        
+        // Prevent body scroll when menu is open (mobile)
+        if (window.matchMedia('(max-width: 768px)').matches) {
+          if (!isActive) {
+            body.style.overflow = 'hidden';
+            body.style.position = 'fixed';
+            body.style.width = '100%';
+          } else {
+            body.style.overflow = '';
+            body.style.position = '';
+            body.style.width = '';
+          }
+        }
+      };
+
+      hamburger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleMenu();
+      }, { passive: true });
+
+      // Close menu when clicking on nav links
+      const navLinks = nav.querySelectorAll('a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          if (nav.classList.contains('active')) {
+            toggleMenu();
+          }
+        }, { passive: true });
       });
 
       // Close menu when clicking outside
       document.addEventListener('click', (e) => {
-        if (!hamburger.contains(e.target) && !nav.contains(e.target)) {
-          nav.classList.remove('active');
-          hamburger.classList.remove('active');
+        if (nav.classList.contains('active') && 
+            !hamburger.contains(e.target) && 
+            !nav.contains(e.target)) {
+          toggleMenu();
         }
-      });
+      }, { passive: true });
 
       // Close menu on escape key
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          nav.classList.remove('active');
-          hamburger.classList.remove('active');
+        if (e.key === 'Escape' && nav.classList.contains('active')) {
+          toggleMenu();
         }
-      });
+      }, { passive: true });
+
+      // Handle window resize - close menu if switching to desktop
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          if (window.innerWidth > 768 && nav.classList.contains('active')) {
+            toggleMenu();
+          }
+        }, 250);
+      }, { passive: true });
     }
   }
 

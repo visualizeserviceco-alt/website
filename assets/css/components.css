@@ -75,8 +75,22 @@
 }
 
 .vh-hero .btn.primary:hover {
-  transform: translateY(-1px);
+  transform: translate3d(0, -1px, 0);
   box-shadow: var(--shadow-xl);
+}
+
+/* Mobile button touch feedback */
+@media (max-width: 768px) {
+  .vh-hero .btn:active,
+  .btn:active {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    transition: transform 0.1s ease;
+  }
+  
+  .btn {
+    -webkit-tap-highlight-color: rgba(212, 76, 67, 0.2);
+    touch-action: manipulation;
+  }
 }
 
 .vh-hero .btn.ghost {
@@ -343,6 +357,27 @@
   border: 1px solid #222;
   border-radius: 16px;
   overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+              box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.vh-showcase .tile:hover {
+  transform: translate3d(0, -4px, 0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile touch feedback for tiles */
+@media (max-width: 768px) {
+  .vh-showcase .tile:active {
+    transform: translate3d(0, -2px, 0) scale(0.98);
+    transition: transform 0.15s ease;
+  }
+  
+  .vh-showcase .tile {
+    -webkit-tap-highlight-color: rgba(212, 76, 67, 0.1);
+    touch-action: manipulation;
+  }
 }
 
 .vh-showcase img {

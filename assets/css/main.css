@@ -81,6 +81,17 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* iOS smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling container for mobile */
+body {
+  overflow-x: hidden;
+  /* Better touch scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
@@ -91,6 +102,13 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
   font-size: var(--font-size-base);
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  /* Better touch scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Improve text rendering on mobile */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* === TYPOGRAPHY === */
@@ -158,9 +176,17 @@ a:hover, a:focus {
 }
 
 .btn:hover, .btn:focus {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   text-decoration: none;
   outline: none;
+}
+
+/* Mobile touch feedback for buttons */
+@media (max-width: 768px) {
+  .btn:active {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    transition: transform 0.1s ease;
+  }
 }
 
 .btn.primary {
@@ -208,8 +234,16 @@ a:hover, a:focus {
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translate3d(0, -4px, 0);
   box-shadow: var(--shadow-lg);
+}
+
+/* Mobile touch feedback */
+@media (max-width: 768px) {
+  .card:active {
+    transform: translate3d(0, -2px, 0) scale(0.98);
+    transition: transform 0.1s ease;
+  }
 }
 
 .card h3 {
@@ -250,46 +284,85 @@ a:hover, a:focus {
 @keyframes fadeInAnimation {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.98);
+    transform: translate3d(0, 30px, 0) scale(0.98);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
 
-/* Scroll reveal animations */
+/* Mobile-optimized fade-in */
+@media (max-width: 768px) {
+  @keyframes fadeInAnimation {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0) scale(0.99);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+}
+
+/* Scroll reveal animations - Optimized for mobile */
 section.hidden, .hidden {
   opacity: 0;
-  transform: translateY(60px) scale(0.98);
-  transition: opacity 0.8s var(--transition-base),
-              transform 0.8s var(--transition-base);
+  transform: translate3d(0, 40px, 0) scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1),
+              transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
   will-change: opacity, transform;
+  /* GPU acceleration */
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 section.visible, .visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
-/* Stagger animation utility */
+/* Mobile-optimized animation distances */
+@media (max-width: 768px) {
+  section.hidden, .hidden {
+    transform: translate3d(0, 30px, 0) scale(0.99);
+    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1),
+                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+}
+
+/* Stagger animation utility - Mobile optimized */
 .stagger-child > * {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translate3d(0, 20px, 0);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 }
 
 .stagger-child.visible > * {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
-.stagger-child.visible > *:nth-child(1) { transition-delay: 0.1s; }
-.stagger-child.visible > *:nth-child(2) { transition-delay: 0.2s; }
-.stagger-child.visible > *:nth-child(3) { transition-delay: 0.3s; }
-.stagger-child.visible > *:nth-child(4) { transition-delay: 0.4s; }
-.stagger-child.visible > *:nth-child(5) { transition-delay: 0.5s; }
-.stagger-child.visible > *:nth-child(6) { transition-delay: 0.6s; }
+.stagger-child.visible > *:nth-child(1) { transition-delay: 0.05s; }
+.stagger-child.visible > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger-child.visible > *:nth-child(3) { transition-delay: 0.15s; }
+.stagger-child.visible > *:nth-child(4) { transition-delay: 0.2s; }
+.stagger-child.visible > *:nth-child(5) { transition-delay: 0.25s; }
+.stagger-child.visible > *:nth-child(6) { transition-delay: 0.3s; }
+
+/* Reduced delays on mobile */
+@media (max-width: 768px) {
+  .stagger-child.visible > *:nth-child(1) { transition-delay: 0.03s; }
+  .stagger-child.visible > *:nth-child(2) { transition-delay: 0.06s; }
+  .stagger-child.visible > *:nth-child(3) { transition-delay: 0.09s; }
+  .stagger-child.visible > *:nth-child(4) { transition-delay: 0.12s; }
+  .stagger-child.visible > *:nth-child(5) { transition-delay: 0.15s; }
+  .stagger-child.visible > *:nth-child(6) { transition-delay: 0.18s; }
+}
 
 /* === RESPONSIVE BREAKPOINTS === */
 @media (max-width: 1200px) {
@@ -342,7 +415,12 @@ section.visible, .visible {
   section.hidden,
   .hidden {
     opacity: 1;
-    transform: none;
+    transform: translate3d(0, 0, 0) !important;
+  }
+  
+  .stagger-child > * {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) !important;
   }
 }
 

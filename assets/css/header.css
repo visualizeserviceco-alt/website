@@ -108,17 +108,21 @@
   display: block;
 }
 
-/* Hamburger cross animation */
+/* Hamburger cross animation - Smooth and mobile optimized */
+.vh-header .hamburger.active span:nth-child(1),
 .vh-header nav.active ~ .hamburger span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
+  transform: translate3d(0, 7px, 0) rotate(45deg);
 }
 
+.vh-header .hamburger.active span:nth-child(2),
 .vh-header nav.active ~ .hamburger span:nth-child(2) {
   opacity: 0;
+  transform: scale(0);
 }
 
+.vh-header .hamburger.active span:nth-child(3),
 .vh-header nav.active ~ .hamburger span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+  transform: translate3d(0, -7px, 0) rotate(-45deg);
 }
 
 @media (max-width: 768px) {
@@ -127,29 +131,84 @@
     top: 0;
     right: 0;
     height: 100%;
-    width: 250px;
+    width: 280px;
+    max-width: 85vw;
     background: var(--bg-dark);
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translate3d(100%, 0, 0);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     display: block;
     padding: 0;
     z-index: 1001;
-    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+    /* Better touch scrolling */
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .vh-header nav.active {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   .vh-header nav ul {
     flex-direction: column;
-    padding: 40px 20px;
+    padding: 60px 24px 40px;
     align-items: flex-start;
-    gap: 22px;
+    gap: 24px;
+    /* Stagger animation for menu items */
+    animation: slideInNav 0.4s ease-out 0.1s both;
+  }
+
+  @keyframes slideInNav {
+    from {
+      opacity: 0;
+      transform: translate3d(20px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vh-header nav ul li {
+    width: 100%;
+    animation: fadeInNavItem 0.3s ease-out both;
+  }
+
+  .vh-header nav.active ul li:nth-child(1) { animation-delay: 0.1s; }
+  .vh-header nav.active ul li:nth-child(2) { animation-delay: 0.15s; }
+  .vh-header nav.active ul li:nth-child(3) { animation-delay: 0.2s; }
+  .vh-header nav.active ul li:nth-child(4) { animation-delay: 0.25s; }
+  .vh-header nav.active ul li:nth-child(5) { animation-delay: 0.3s; }
+
+  @keyframes fadeInNavItem {
+    from {
+      opacity: 0;
+      transform: translate3d(10px, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .vh-header nav a {
+    display: block;
+    padding: 12px 0;
+    font-size: 18px;
+    -webkit-tap-highlight-color: rgba(212, 76, 67, 0.2);
+    touch-action: manipulation;
+  }
+
+  .vh-header nav a:active {
+    transform: translate3d(4px, 0, 0);
+    transition: transform 0.1s ease;
   }
 
   .vh-header .hamburger {
     display: flex;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   /* Overlay for mobile nav */
@@ -160,8 +219,21 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(27, 27, 28, 0.65);
+    background: rgba(27, 27, 28, 0.75);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: -1;
     pointer-events: auto;
+    opacity: 0;
+    animation: fadeInOverlay 0.3s ease forwards;
+  }
+  
+  @keyframes fadeInOverlay {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
