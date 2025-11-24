@@ -261,7 +261,24 @@ class VisualizeWebsite {
   setupMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const nav = document.querySelector('.vh-header nav');
+    const header = document.querySelector('.vh-header');
     const body = document.body;
+
+    // Debug: Log if elements are found
+    if (!hamburger) {
+      console.warn('Hamburger menu not found');
+      return;
+    }
+    if (!nav) {
+      console.warn('Navigation menu not found');
+      return;
+    }
+
+    // Prevent duplicate event listeners
+    if (hamburger.dataset.initialized === 'true') {
+      return;
+    }
+    hamburger.dataset.initialized = 'true';
 
     if (hamburger && nav) {
       const toggleMenu = () => {
@@ -269,16 +286,35 @@ class VisualizeWebsite {
         nav.classList.toggle('active');
         hamburger.classList.toggle('active');
         
+        // Toggle header class for overlay (fallback for browsers without :has())
+        if (header) {
+          if (!isActive) {
+            header.classList.add('nav-active');
+          } else {
+            header.classList.remove('nav-active');
+          }
+        }
+        
         // Prevent body scroll when menu is open (mobile)
         if (window.matchMedia('(max-width: 768px)').matches) {
           if (!isActive) {
-            body.style.overflow = 'hidden';
+            // Save current scroll position
+            const scrollY = window.scrollY;
             body.style.position = 'fixed';
+            body.style.top = `-${scrollY}px`;
             body.style.width = '100%';
+            body.style.overflow = 'hidden';
+            // Store scroll position for restoration
+            body.dataset.scrollY = scrollY;
           } else {
-            body.style.overflow = '';
+            // Restore scroll position
+            const scrollY = body.dataset.scrollY || 0;
             body.style.position = '';
+            body.style.top = '';
             body.style.width = '';
+            body.style.overflow = '';
+            window.scrollTo(0, parseInt(scrollY, 10));
+            delete body.dataset.scrollY;
           }
         }
       };
@@ -298,14 +334,22 @@ class VisualizeWebsite {
         }, { passive: true });
       });
 
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (nav.classList.contains('active') && 
-            !hamburger.contains(e.target) && 
-            !nav.contains(e.target)) {
-          toggleMenu();
+      // Close menu when clicking on overlay or outside
+      const handleOverlayClick = (e) => {
+        if (nav.classList.contains('active')) {
+          // Check if click is on overlay (header::after) or outside nav/hamburger
+          const isOverlay = !hamburger.contains(e.target) && !nav.contains(e.target);
+          if (isOverlay) {
+            toggleMenu();
+          }
         }
-      }, { passive: true });
+      };
+      
+      // Listen for clicks on document (including overlay)
+      document.addEventListener('click', handleOverlayClick, { passive: true });
+      
+      // Also listen for touch events on mobile
+      document.addEventListener('touchstart', handleOverlayClick, { passive: true });
 
       // Close menu on escape key
       document.addEventListener('keydown', (e) => {
@@ -346,8 +390,42 @@ class VisualizeWebsite {
 // Performance monitoring
 const perfStart = performance.now();
 
-// Initialize the website
-new VisualizeWebsite();
+// Initialize the website and store reference globally
+window.visualizeWebsite = new VisualizeWebsite();
+
+// Also listen for header loaded event (in case script loads before header)
+document.addEventListener('headerLoaded', () => {
+  if (window.visualizeWebsite) {
+    window.visualizeWebsite.setupMobileMenu();
+  }
+});
+
+// Fallback: Use MutationObserver to detect when header is added
+const headerObserver = new MutationObserver((mutations) => {
+  const hamburger = document.querySelector('.hamburger');
+  const nav = document.querySelector('.vh-header nav');
+  if (hamburger && nav && !hamburger.dataset.initialized) {
+    if (window.visualizeWebsite) {
+      window.visualizeWebsite.setupMobileMenu();
+      hamburger.dataset.initialized = 'true';
+    }
+  }
+});
+
+// Start observing when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    headerObserver.observe(document.getElementById('site-header'), {
+      childList: true,
+      subtree: true
+    });
+  });
+} else {
+  headerObserver.observe(document.getElementById('site-header'), {
+    childList: true,
+    subtree: true
+  });
+}
 
 // Log performance
 window.addEventListener('load', () => {

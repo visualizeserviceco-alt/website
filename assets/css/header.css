@@ -130,24 +130,30 @@
     position: fixed;
     top: 0;
     right: 0;
-    height: 100%;
+    height: 100vh;
     width: 280px;
     max-width: 85vw;
     background: var(--bg-dark);
     transform: translate3d(100%, 0, 0);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.35s ease,
+                opacity 0.35s ease;
     display: block;
     padding: 0;
-    z-index: 1001;
+    z-index: 1002;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
     /* Better touch scrolling */
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
     overflow-x: hidden;
+    visibility: hidden;
+    opacity: 0;
   }
 
   .vh-header nav.active {
     transform: translate3d(0, 0, 0);
+    visibility: visible;
+    opacity: 1;
   }
 
   .vh-header nav ul {
@@ -212,7 +218,7 @@
   }
 
   /* Overlay for mobile nav */
-  .vh-header nav.active::before {
+  .vh-header::after {
     content: "";
     position: fixed;
     top: 0;
@@ -222,18 +228,30 @@
     background: rgba(27, 27, 28, 0.75);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    z-index: -1;
-    pointer-events: auto;
+    z-index: 1001;
+    pointer-events: none;
     opacity: 0;
-    animation: fadeInOverlay 0.3s ease forwards;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
   
-  @keyframes fadeInOverlay {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  /* Show overlay when nav is active - using class toggle */
+  .vh-header.nav-active::after {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  /* Also show overlay when nav has active class (for :has() support) */
+  .vh-header:has(nav.active)::after {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  
+  /* Ensure hamburger is always visible and clickable on mobile */
+  .vh-header .hamburger {
+    position: relative;
+    z-index: 1100;
   }
 }

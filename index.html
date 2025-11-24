@@ -30,7 +30,15 @@
     .then(data => { 
       // Update asset paths in the loaded content
       const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
-      document.getElementById('site-header').innerHTML = updatedData; 
+      document.getElementById('site-header').innerHTML = updatedData;
+      
+      // Re-initialize mobile menu after header loads
+      if (window.visualizeWebsite && typeof window.visualizeWebsite.setupMobileMenu === 'function') {
+        window.visualizeWebsite.setupMobileMenu();
+      }
+      
+      // Also dispatch custom event for other scripts that might need it
+      document.dispatchEvent(new CustomEvent('headerLoaded'));
     });
 </script>
 
