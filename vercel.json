@@ -13,8 +13,8 @@
       "destination": "/pages/Payments.html"
     },
     {
-      "source": "/client-portal",
-      "destination": "/pages/PapsProd.html"
+      "source": "/terms",
+      "destination": "/pages/Terms.html"
     }
   ],
   "headers": [

@@ -70,18 +70,18 @@ Please learn this information about my business and website so you can provide i
 - **Homepage:** Brand introduction, services, portfolio showcase, testimonials
 - **Process Page:** 6-step workflow explanation, FAQ section
 - **Payments Page:** Payment options, terms & conditions, how payments work
-- **Client Portal:** Secure login system for existing clients (work in progress)
+- **Terms of Service:** Comprehensive terms and conditions page
 
 **Technology Stack:**
 - Frontend: HTML5, CSS3, JavaScript (ES6+ with modern class architecture)
-- Backend: Python Flask with SQLAlchemy database for client portal
+- Backend: Python Flask for serving static pages with clean URLs
 - Hosting: Vercel (static hosting with clean URLs via vercel.json configuration)
 - Database: SQLite for client authentication and project tracking
 
 **Recent Development Work:**
 - Implemented clean URLs (visualizestudio.org/process instead of /pages/Process.html)
 - Removed third-party integrations (Typeform, Calendly popups)
-- Built secure client portal with authentication system
+- Clean URL routing for all pages (/, /process, /payments, /terms)
 - Responsive design with mobile-first approach
 - Modular CSS architecture with organized file structure
 

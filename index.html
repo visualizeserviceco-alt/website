@@ -17,9 +17,26 @@
   <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/css/header.css">
   <link rel="stylesheet" href="assets/css/footer.css">
+  <link rel="stylesheet" href="assets/css/blackfriday.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+
+<!-- BLACK FRIDAY SALE BANNER -->
+<div id="blackfriday-banner" class="blackfriday-banner blackfriday-sale" role="banner" aria-label="Black Friday Sale">
+  <div class="banner-content">
+    <div class="banner-text">
+      <strong>🔥 Black Friday Sale</strong>
+      <span>50% Off All Services</span>
+    </div>
+    <div class="countdown banner-countdown blackfriday-countdown">
+      <!-- Countdown will be populated by JavaScript -->
+    </div>
+  </div>
+  <button class="banner-close" aria-label="Close banner" title="Close banner">
+    <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+  </button>
+</div>
 
 <!-- HEADER INCLUDE -->
 <div id="site-header" role="banner"></div>
@@ -103,26 +120,80 @@
 <section class="vh-services" id="services" aria-labelledby="services-heading">
   <div class="wrap">
     <h2 id="services-heading">What I Offer</h2>
+    <div class="blackfriday-sale pricing-sale-notice">
+      <h3>🎉 50% Off All Services — Today Only!</h3>
+      <p>Limited time offer: Get 50% off all design services. Discount ends tonight at 11:59 PM.</p>
+      <div class="payment-requirement">
+        ⚠️ Full payment required at booking to receive discount. Use code: <strong>BLACKFRIDAY50</strong>
+      </div>
+      <div class="service-countdown">
+        <div class="blackfriday-countdown">
+          <!-- Countdown will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
     <div class="grid" role="list">
-      <article class="card" role="listitem">
+      <article class="card blackfriday-sale" role="listitem">
+        <div class="service-sale-badge">50% Off Today</div>
         <i data-lucide="palette" class="service-icon"></i>
         <h3>Visual Identity</h3>
         <p>I design logos, select typefaces, and build color systems that make your brand instantly recognizable. Every element is crafted to reflect your story.</p>
+        <div class="service-countdown">
+          <div class="blackfriday-countdown">
+            <!-- Countdown will be populated by JavaScript -->
+          </div>
+        </div>
+        <a href="#pricing" class="btn btn-sale" style="margin-top: 12px; width: 100%; text-align: center; display: block;">
+          Book Now — 50% Off
+        </a>
       </article>
-      <article class="card" role="listitem">
+      <article class="card blackfriday-sale" role="listitem">
+        <div class="service-sale-badge">50% Off Today</div>
         <i data-lucide="layers" class="service-icon"></i>
         <h3>Brand Systems & Assets</h3>
         <p>Beyond the logo, I create full brand systems—templates, social media graphics, and usage guides—to keep your visuals consistent everywhere.</p>
+        <div class="service-countdown">
+          <div class="blackfriday-countdown">
+            <!-- Countdown will be populated by JavaScript -->
+          </div>
+        </div>
+        <a href="#pricing" class="btn btn-sale" style="margin-top: 12px; width: 100%; text-align: center; display: block;">
+          Book Now — 50% Off
+        </a>
       </article>
-      <article class="card" role="listitem">
+      <article class="card blackfriday-sale" role="listitem">
+        <div class="service-sale-badge">50% Off Today</div>
         <i data-lucide="globe" class="service-icon"></i>
         <h3>Web Design & Development</h3>
         <p>I design and build websites that not only look great but function smoothly. From sleek landing pages to full online stores, I bring your brand to life on the web.</p>
+        <div class="service-countdown">
+          <div class="blackfriday-countdown">
+            <!-- Countdown will be populated by JavaScript -->
+          </div>
+        </div>
+        <a href="#pricing" class="btn btn-sale" style="margin-top: 12px; width: 100%; text-align: center; display: block;">
+          Book Now — 50% Off
+        </a>
       </article>
-      <article class="card" role="listitem">
+      <article class="card blackfriday-sale" role="listitem">
+        <div class="service-sale-badge">50% Off Today</div>
         <i data-lucide="package" class="service-icon"></i>
         <h3>Merch & Print Solutions</h3>
         <p>I turn your brand into something people can hold. From merchandise to packaging, I create print-ready designs that make an impact.</p>
+        <div class="service-countdown">
+          <div class="blackfriday-countdown">
+            <!-- Countdown will be populated by JavaScript -->
+          </div>
+        </div>
+        <a href="#pricing" class="btn btn-sale" style="margin-top: 12px; width: 100%; text-align: center; display: block;">
+          Book Now — 50% Off
+        </a>
+      </article>
+      <article class="card coming-soon" role="listitem">
+        <div class="service-badge">Coming Soon</div>
+        <i data-lucide="tag" class="service-icon"></i>
+        <h3>Custom Sticker Prints</h3>
+        <p>High-quality custom sticker printing service coming soon! Get your designs printed on premium vinyl with various finishes and sizes. Perfect for branding, promotions, and personal projects.</p>
       </article>
     </div>
   </div>
@@ -236,15 +307,30 @@
     <h2>Packages & transparent pricing</h2>
     <p class="sub">Pre-Made packages created for simple selection, contact me in a meeting to fully discuss your needs.</p>
     
+    <!-- Black Friday Sale Notice -->
+    <div class="blackfriday-sale pricing-sale-notice">
+      <h3>🎉 Black Friday: 50% Off All Packages</h3>
+      <p><strong>Limited time offer — ends tonight at 11:59 PM!</strong></p>
+      <p>All services are 50% off when you book today. Full payment required at time of booking to receive discount.</p>
+      <div class="payment-requirement">
+        ⚠️ <strong>Important:</strong> Full payment must be completed at booking. Discount code: <strong>BLACKFRIDAY50</strong>
+      </div>
+      <div class="service-countdown" style="margin-top: 16px;">
+        <div class="blackfriday-countdown">
+          <!-- Countdown will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+    
     <!-- Feature Comparison Table -->
     <div class="pricing-comparison">
       <table class="comparison-table">
         <thead>
           <tr>
             <th>Features</th>
-            <th>Starter<br><span class="price-small">$50</span></th>
-            <th>Branding & Design<br><span class="price-small">$200</span><span class="badge-table">Most Popular</span></th>
-            <th>Full Identity<br><span class="price-small">$500</span></th>
+            <th>Starter<br><span class="price-small price-starter blackfriday-sale">$50</span></th>
+            <th>Branding & Design<br><span class="price-small price-branding blackfriday-sale">$200</span><span class="badge-table">Most Popular</span></th>
+            <th>Full Identity<br><span class="price-small price-full blackfriday-sale">$500</span></th>
           </tr>
         </thead>
         <tbody>
@@ -332,23 +418,26 @@
 
     <!-- Package Cards -->
     <div class="grid">
-      <div class="card">
+      <div class="card blackfriday-sale">
         <div class="badge">Starter</div>
-        <div class="price">$50</div>
+        <div class="price price-starter blackfriday-sale">$50</div>
         <div class="package-title">Logo Design</div>
-        <a class="btn" href="#contact">Get Started</a>
+        <a class="btn btn-sale blackfriday-sale" href="#contact">Book Now — 50% Off</a>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted); text-align: center;">Full payment required at booking</p>
       </div>
-      <div class="card featured">
+      <div class="card featured blackfriday-sale">
         <div class="badge">Most popular</div>
-        <div class="price">$200</div>
+        <div class="price price-branding blackfriday-sale">$200</div>
         <div class="package-title">Branding & Design</div>
-        <a class="btn" href="#contact">Get Started</a>
+        <a class="btn btn-sale blackfriday-sale" href="#contact">Book Now — 50% Off</a>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted); text-align: center;">Full payment required at booking</p>
       </div>
-      <div class="card">
+      <div class="card blackfriday-sale">
         <div class="badge">Pro</div>
-        <div class="price">$500</div>
+        <div class="price price-full blackfriday-sale">$500</div>
         <div class="package-title">Full Identity</div>
-        <a class="btn" href="#contact">Get Started</a>
+        <a class="btn btn-sale blackfriday-sale" href="#contact">Book Now — 50% Off</a>
+        <p style="margin-top: 12px; font-size: 13px; color: var(--text-muted); text-align: center;">Full payment required at booking</p>
       </div>
     </div>
   </div>
@@ -409,9 +498,17 @@
 </script>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/blackfriday.js"></script>
 <script>
   // Initialize Lucide icons
   lucide.createIcons();
+  
+  // Re-initialize icons after Black Friday banner loads
+  document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      lucide.createIcons();
+    }, 100);
+  });
 </script>
 </body>
 </html>

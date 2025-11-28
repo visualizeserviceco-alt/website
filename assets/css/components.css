@@ -196,6 +196,38 @@
   margin-bottom: 16px;
 }
 
+.service-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #d44c43 0%, #a83a32 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(212, 76, 67, 0.3);
+}
+
+.vh-services .card.coming-soon {
+  position: relative;
+  opacity: 0.9;
+  border-style: dashed;
+  border-color: var(--border-light);
+  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(212, 76, 67, 0.03) 100%);
+}
+
+.vh-services .card.coming-soon:hover {
+  opacity: 1;
+  border-color: var(--brand-red);
+  transform: translate3d(0, -2px, 0);
+}
+
+.vh-services .card.coming-soon .service-icon {
+  opacity: 0.8;
+}
+
 .vh-services h3 {
   margin-bottom: 8px;
   font-size: 20px;
