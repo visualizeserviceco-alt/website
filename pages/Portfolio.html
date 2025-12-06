@@ -17,10 +17,11 @@
 <!-- HEADER INCLUDE -->
 <div id="site-header" role="banner"></div>
 <script>
-  fetch('../includes/header.html')
+  const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
+  fetch(basePath + 'includes/header.html')
     .then(response => response.text())
     .then(data => { 
-      const updatedData = data.replace(/src="assets\//g, 'src="../assets/');
+      const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
       document.getElementById('site-header').innerHTML = updatedData;
       
       if (window.visualizeWebsite && typeof window.visualizeWebsite.setupMobileMenu === 'function') {
@@ -175,11 +176,11 @@
 <!-- FOOTER INCLUDE -->
 <div id="site-footer" role="contentinfo"></div>
 <script>
-  const basePathFooter = '../';
-  fetch('../includes/footer.html')
+  const basePathFooter = window.location.pathname.includes('/pages/') ? '../' : '';
+  fetch(basePathFooter + 'includes/footer.html')
     .then(response => response.text())
     .then(data => { 
-      const updatedData = data.replace(/src="assets\//g, 'src="../assets/');
+      const updatedData = data.replace(/src="assets\//g, `src="${basePathFooter}assets/`);
       document.getElementById('site-footer').innerHTML = updatedData; 
     });
 </script>

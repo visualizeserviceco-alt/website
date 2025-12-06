@@ -1,4 +1,4 @@
-# Media Folder Guide - Quick Reference
+`1# Media Folder Guide - Quick Reference
 
 ## 📁 Folder Structure Created
 
