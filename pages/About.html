@@ -18,7 +18,7 @@
 <div id="site-header" role="banner"></div>
 <script>
   const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
-  fetch(`${basePath}includes/header.html`)
+  fetch(basePath + 'includes/header.html')
     .then(response => response.text())
     .then(data => { 
       const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
@@ -163,7 +163,7 @@
 <div id="site-footer" role="contentinfo"></div>
 <script>
   const basePathFooter = window.location.pathname.includes('/pages/') ? '../' : '';
-  fetch(`${basePathFooter}includes/footer.html`)
+  fetch(basePathFooter + 'includes/footer.html')
     .then(response => response.text())
     .then(data => { 
       const updatedData = data.replace(/src="assets\//g, `src="${basePathFooter}assets/`);

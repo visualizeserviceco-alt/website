@@ -1048,7 +1048,7 @@
   color: #000;
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .vh-work .work-item {
     grid-template-columns: 1fr;
     gap: 40px;
