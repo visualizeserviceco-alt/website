@@ -45,6 +45,11 @@ def create_app(config_name=None):
         """Serve the Terms of Service page with clean URL"""
         return send_from_directory('pages', 'Terms.html')
 
+    @app.route('/portfolio')
+    def portfolio_page():
+        """Serve the Portfolio page with clean URL"""
+        return send_from_directory('pages', 'Portfolio.html')
+
     # Static files catch-all (must be last route)
     @app.route('/<path:filename>')
     def serve_static_files(filename):
@@ -75,5 +80,9 @@ if __name__ == '__main__':
     print("🚀 Starting Visualize Studio...")
     print("📋 Available routes:")
     print("   Main site: http://localhost:5001/")
+    print("   Portfolio: http://localhost:5001/portfolio")
+    print("   Process: http://localhost:5001/process")
+    print("   Payments: http://localhost:5001/payments")
+    print("   Terms: http://localhost:5001/terms")
     
     app.run(debug=True, port=5001)
