@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visualize Studio Work - View my portfolio including logos, websites, print design, and brand identities.">
+  <title>Work — Visualize Studio</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/Visualize.svg">
+  <link rel="stylesheet" href="../assets/css/main.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <link rel="stylesheet" href="../assets/css/footer.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+<!-- HEADER INCLUDE -->
+<div id="site-header" role="banner"></div>
+<script>
+  fetch('../includes/header.html')
+    .then(response => response.text())
+    .then(data => { 
+      const updatedData = data.replace(/src="assets\//g, 'src="../assets/');
+      document.getElementById('site-header').innerHTML = updatedData;
+      
+      if (window.visualizeWebsite && typeof window.visualizeWebsite.setupMobileMenu === 'function') {
+        window.visualizeWebsite.setupMobileMenu();
+      }
+      
+      document.dispatchEvent(new CustomEvent('headerLoaded'));
+    });
+</script>
+
+<main role="main">
+
+<!-- =============== WORK HERO =============== -->
+<section class="vh-hero" style="padding: 100px 0 60px;">
+  <div class="wrap">
+    <div class="hero-content">
+      <h1>My Work</h1>
+      <p class="hero-subtitle">Brands, websites, and designs I've created. Strategy-first. Delivered fast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =============== CLIENT WORK FEATURED =============== -->
+<section class="vh-work" style="background: #fff; color: #000; padding: 100px 0;">
+  <div class="wrap">
+    <div class="work-label" style="color: #666;">FEATURED WORK:</div>
+    
+    <div class="work-item">
+      <div class="work-image">
+        <img src="../assets/images/CitySpice1.png" alt="City Spice brand identity">
+      </div>
+      <div class="work-content">
+        <h3 style="color: #000;">I TURNED A RESTAURANT INTO A BRAND.</h3>
+        <p style="color: #333;">City Spice needed more than a logo—they needed a complete visual identity and website that captured their unique flavor. I delivered a full brand system, custom website, and all the assets they needed to launch. <strong style="color: var(--brand-red);">Strategy-first, delivered in 48 hours.</strong></p>
+        <a href="https://cityspicellc.com" target="_blank" class="work-link">View Live Site →</a>
+      </div>
+    </div>
+    
+    <div class="work-item reverse">
+      <div class="work-content">
+        <h3 style="color: #000;">I BUILT GHETTO GARAGE A BRAND THAT MATCHES THEIR ENERGY.</h3>
+        <p style="color: #333;">Ghetto Garage needed a visual identity as bold as their brand. I created a complete logo system, brand guidelines, and all the assets they needed. <strong style="color: var(--brand-red);">Fast turnaround, strategic design, ready to use.</strong></p>
+        <a href="/work#portfolio" class="work-link">View Portfolio →</a>
+      </div>
+      <div class="work-image">
+        <img src="../assets/images/GhettoGarage.svg" alt="Ghetto Garage logo">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== PORTFOLIO FILTERS =============== -->
+<section class="vh-portfolio-filters" style="background: #000; padding: 40px 0; border-bottom: 1px solid #333;">
+  <div class="wrap">
+    <div class="filter-buttons" style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+      <button class="filter-btn active" data-filter="all">All Work</button>
+      <button class="filter-btn" data-filter="logos">Logos</button>
+      <button class="filter-btn" data-filter="websites">Websites</button>
+      <button class="filter-btn" data-filter="print">Print</button>
+      <button class="filter-btn" data-filter="packaging">Packaging</button>
+      <button class="filter-btn" data-filter="merch">Merch</button>
+    </div>
+  </div>
+</section>
+
+<!-- =============== LOGOS & BRAND MARKS =============== -->
+<section class="vh-portfolio-section" data-category="logos" id="portfolio">
+  <div class="wrap">
+    <h2>Logos & Brand Marks</h2>
+    <p class="sub">Visual identities that make brands instantly recognizable.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img src="../assets/images/GhettoGarage.svg" alt="Ghetto Garage Logo">
+        <div class="portfolio-overlay">
+          <h3>Ghetto Garage</h3>
+          <p>Logo Design</p>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img src="../assets/images/NellyCutz.svg" alt="Nelly Cutz Logo">
+        <div class="portfolio-overlay">
+          <h3>Nelly Cutz</h3>
+          <p>Logo Design</p>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img src="../assets/images/PapsProd.png" alt="Paps Production Logo">
+        <div class="portfolio-overlay">
+          <h3>Paps Production</h3>
+          <p>Logo Design</p>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img src="../assets/images/SopesAutoDetailing.png" alt="Sopes Auto Detailing Logo">
+        <div class="portfolio-overlay">
+          <h3>Sopes Auto Detailing</h3>
+          <p>Logo Design</p>
+        </div>
+      </div>
+      <!-- Add more from assets/media/portfolio/logos/ as you add images -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== WEBSITES =============== -->
+<section class="vh-portfolio-section" data-category="websites" style="background: #111;">
+  <div class="wrap">
+    <h2>Websites</h2>
+    <p class="sub">Custom websites designed and developed for clients.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <a href="https://cityspicellc.com" target="_blank">
+          <img src="https://ik.imagekit.io/4syjuy3u5/Website.png" alt="City Spice Website">
+          <div class="portfolio-overlay">
+            <h3>City Spice</h3>
+            <p>Full Website Design & Development</p>
+            <span class="portfolio-link">View Live Site →</span>
+          </div>
+        </a>
+      </div>
+      <!-- Add more website portfolio items -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== PRINT DESIGN =============== -->
+<section class="vh-portfolio-section" data-category="print">
+  <div class="wrap">
+    <h2>Print Design</h2>
+    <p class="sub">Business cards, flyers, posters, and other print materials.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img src="../assets/images/Print/NellyCutzBusinessCard.png" alt="Nelly Cutz Business Card">
+        <div class="portfolio-overlay">
+          <h3>Nelly Cutz</h3>
+          <p>Business Card Design</p>
+        </div>
+      </div>
+      <!-- Add more print design items -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== PACKAGING =============== -->
+<section class="vh-portfolio-section" data-category="packaging" style="background: #111;">
+  <div class="wrap">
+    <h2>Packaging Design</h2>
+    <p class="sub">Product packaging and label designs.</p>
+    <div class="portfolio-grid">
+      <div class="portfolio-item">
+        <img src="../assets/images/CitySpice1.png" alt="City Spice Packaging">
+        <div class="portfolio-overlay">
+          <h3>City Spice</h3>
+          <p>Packaging Design</p>
+        </div>
+      </div>
+      <div class="portfolio-item">
+        <img src="../assets/images/CitySpice2.png" alt="City Spice Design">
+        <div class="portfolio-overlay">
+          <h3>City Spice</h3>
+          <p>Brand Design</p>
+        </div>
+      </div>
+      <!-- Add more packaging items -->
+    </div>
+  </div>
+</section>
+
+<!-- =============== CTA =============== -->
+<section class="vh-cta" style="background: #000; color: #fff;">
+  <div class="wrap">
+    <h2 style="color: #fff;">Ready to Start Your Project?</h2>
+    <p class="cta-description" style="color: #ccc;">Let's work together to build your brand.</p>
+    <div class="cta-buttons">
+      <a class="btn primary" href="/quote">Request A Quote</a>
+      <a class="btn secondary" href="/contact" style="border-color: #fff; color: #fff;">Let's Chat</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER INCLUDE -->
+<div id="site-footer" role="contentinfo"></div>
+<script>
+  fetch('../includes/footer.html')
+    .then(response => response.text())
+    .then(data => { 
+      const updatedData = data.replace(/src="assets\//g, 'src="../assets/');
+      document.getElementById('site-footer').innerHTML = updatedData; 
+    });
+</script>
+
+<script src="../assets/js/main.js"></script>
+<script>
+  // Portfolio filter functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioSections = document.querySelectorAll('.vh-portfolio-section');
+    
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const filter = this.getAttribute('data-filter');
+        
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        portfolioSections.forEach(section => {
+          if (filter === 'all' || section.getAttribute('data-category') === filter) {
+            section.style.display = 'block';
+          } else {
+            section.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+  
+  lucide.createIcons();
+</script>
+
+<style>
+.vh-portfolio-section {
+  padding: 80px 0;
+  background: #000;
+  color: #fff;
+}
+
+.vh-portfolio-section h2 {
+  font-size: clamp(36px, 6vw, 64px);
+  margin: 0 0 16px;
+  color: #fff;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.vh-portfolio-section .sub {
+  font-size: clamp(18px, 2.5vw, 22px);
+  color: #ccc;
+  margin: 0 0 48px;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #111;
+  border: 1px solid #333;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.portfolio-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(212, 76, 67, 0.3);
+  border-color: var(--brand-red);
+}
+
+.portfolio-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portfolio-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 24px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+  transform: translateY(0);
+}
+
+.portfolio-overlay h3 {
+  color: #fff;
+  font-size: 20px;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.portfolio-overlay p {
+  color: #ccc;
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.portfolio-link {
+  color: var(--brand-red);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 2px solid #333;
+  color: #fff;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--brand-red);
+  border-color: var(--brand-red);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-buttons {
+    justify-content: flex-start;
+  }
+  
+  .filter-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+</style>
+
+</body>
+</html>
+

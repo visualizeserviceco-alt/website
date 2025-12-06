@@ -50,6 +50,26 @@ def create_app(config_name=None):
         """Serve the Portfolio page with clean URL"""
         return send_from_directory('pages', 'Portfolio.html')
 
+    @app.route('/work')
+    def work_page():
+        """Serve the Work page with clean URL"""
+        return send_from_directory('pages', 'Work.html')
+
+    @app.route('/about')
+    def about_page():
+        """Serve the About page with clean URL"""
+        return send_from_directory('pages', 'About.html')
+
+    @app.route('/contact')
+    def contact_page():
+        """Serve the Contact/Let's Chat page with clean URL"""
+        return send_from_directory('pages', 'Contact.html')
+
+    @app.route('/quote')
+    def quote_page():
+        """Serve the Request a Quote page with clean URL"""
+        return send_from_directory('pages', 'Quote.html')
+
     # Static files catch-all (must be last route)
     @app.route('/<path:filename>')
     def serve_static_files(filename):
@@ -80,7 +100,10 @@ if __name__ == '__main__':
     print("🚀 Starting Visualize Studio...")
     print("📋 Available routes:")
     print("   Main site: http://localhost:5001/")
-    print("   Portfolio: http://localhost:5001/portfolio")
+    print("   Work: http://localhost:5001/work")
+    print("   About: http://localhost:5001/about")
+    print("   Contact: http://localhost:5001/contact")
+    print("   Quote: http://localhost:5001/quote")
     print("   Process: http://localhost:5001/process")
     print("   Payments: http://localhost:5001/payments")
     print("   Terms: http://localhost:5001/terms")
