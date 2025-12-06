@@ -1,10 +1,10 @@
 /* === FOOTER COMPONENT STYLES === */
 
 .vh-footer {
-  background: linear-gradient(180deg, var(--bg-dark-start), var(--bg-dark-end));
-  border-top: 1px solid var(--border-accent);
+  background: #000;
+  border-top: 1px solid #333;
   padding: var(--spacing-xl) var(--spacing-md);
-  color: var(--text-muted-light);
+  color: #999;
   font-size: 0.95em;
   font-family: var(--font-family);
   display: flex;
@@ -75,12 +75,15 @@
 }
 
 .vh-footer nav a {
-  color: var(--text-muted-light);
+  color: #999;
   font-weight: 500;
   position: relative;
   text-decoration: none;
   padding-bottom: 4px;
   transition: var(--transition-base);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .vh-footer nav a::after {
@@ -136,7 +139,7 @@
 .vh-footer .copyright {
   font-size: 0.85em;
   margin-top: 0.5em;
-  color: var(--text-muted-dark);
+  color: #666;
   user-select: none;
 }
 

@@ -98,8 +98,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--font-family);
-  background: var(--bg-light);
-  color: var(--text-dark);
+  background: #000;
+  color: #fff;
   line-height: 1.6;
   font-size: var(--font-size-base);
   /* Prevent horizontal scroll */
@@ -116,7 +116,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 0.8em 0 0.4em;
-  color: var(--brand-red);
+  color: #fff;
   line-height: 1.2;
 }
 
