@@ -33,6 +33,10 @@
       "destination": "/pages/OrderStickers.html"
     },
     {
+      "source": "/admin",
+      "destination": "/pages/Admin.html"
+    },
+    {
       "source": "/process",
       "destination": "/pages/Process.html"
     },

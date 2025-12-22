@@ -224,22 +224,74 @@
   lucide.createIcons();
   
   // Quote form handling
-  document.getElementById('quote-request-form').addEventListener('submit', function(e) {
+  document.getElementById('quote-request-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    const formData = new FormData(this);
     const messageDiv = document.getElementById('quote-message');
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalButtonText = submitButton.innerHTML;
     
-    // For now, just show a success message
-    messageDiv.style.display = 'block';
-    messageDiv.style.background = '#000';
-    messageDiv.style.border = '1px solid var(--brand-red)';
-    messageDiv.style.color = '#fff';
-    messageDiv.textContent = 'Thanks! I\'ll review your request and send you a detailed quote within 24 hours. For immediate inquiries, email me at contact@visualizestudio.org';
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Submitting...';
     
-    this.reset();
-    
-    // Scroll to message
-    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    try {
+      // Prepare data for API
+      const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        package: formData.get('package'),
+        project: formData.get('project')
+      };
+      
+      // Submit to API
+      const response = await fetch('/api/quote', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        // Success
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = '#000';
+        messageDiv.style.border = '1px solid var(--brand-red)';
+        messageDiv.style.color = '#fff';
+        messageDiv.textContent = 'Thanks! I\'ll review your request and send you a detailed quote within 24 hours. For immediate inquiries, email me at contact@visualizestudio.org';
+        
+        this.reset();
+        
+        // Scroll to message
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        // Error
+        messageDiv.style.display = 'block';
+        messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+        messageDiv.style.border = '1px solid #ef4444';
+        messageDiv.style.color = '#ef4444';
+        messageDiv.textContent = result.error || 'Failed to submit quote request. Please try again or email me directly.';
+        
+        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    } catch (error) {
+      // Network or other error
+      messageDiv.style.display = 'block';
+      messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+      messageDiv.style.border = '1px solid #ef4444';
+      messageDiv.style.color = '#ef4444';
+      messageDiv.textContent = 'Failed to submit quote request. Please try again or email me directly at contact@visualizestudio.org';
+      
+      messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } finally {
+      // Re-enable button
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonText;
+    }
   });
 </script>
 

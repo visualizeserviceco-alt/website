@@ -3,8 +3,11 @@ VISUALIZE STUDIO - MAIN APPLICATION
 """
 
 from flask import Flask, send_from_directory
+from flask_cors import CORS
 import os
 from config import config
+from models import db
+from api import api_bp
 
 def create_app(config_name=None):
     """
@@ -23,6 +26,23 @@ def create_app(config_name=None):
         config_name = os.environ.get('FLASK_CONFIG', 'development')
     
     app.config.from_object(config[config_name])
+    
+    # Database configuration
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'visualize_studio.db')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # Initialize extensions
+    db.init_app(app)
+    CORS(app)  # Enable CORS for API endpoints
+    
+    # Register blueprints
+    app.register_blueprint(api_bp)
+    
+    # Create database tables
+    with app.app_context():
+        db.create_all()
     
     # Main website routes (existing static site)
     @app.route('/')
@@ -80,6 +100,11 @@ def create_app(config_name=None):
         """Serve the Order Custom Stickers product page with clean URL"""
         return send_from_directory('pages', 'OrderStickers.html')
 
+    @app.route('/admin')
+    def admin_page():
+        """Serve the admin dashboard page"""
+        return send_from_directory('pages', 'Admin.html')
+
     # Static files catch-all (must be last route)
     @app.route('/<path:filename>')
     def serve_static_files(filename):
@@ -119,5 +144,11 @@ if __name__ == '__main__':
     print("   Process: http://localhost:5001/process")
     print("   Payments: http://localhost:5001/payments")
     print("   Terms: http://localhost:5001/terms")
+    print("   Admin Dashboard: http://localhost:5001/admin")
+    print("   API Endpoints:")
+    print("     POST /api/contact - Submit contact form")
+    print("     POST /api/quote - Submit quote form")
+    print("     GET /api/submissions/contact - Get contact submissions")
+    print("     GET /api/submissions/quote - Get quote submissions")
     
     app.run(debug=True, port=5001)
