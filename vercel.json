@@ -29,6 +29,10 @@
       "destination": "/pages/Stickers.html"
     },
     {
+      "source": "/order-stickers",
+      "destination": "/pages/OrderStickers.html"
+    },
+    {
       "source": "/process",
       "destination": "/pages/Process.html"
     },

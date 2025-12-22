@@ -75,6 +75,11 @@ def create_app(config_name=None):
         """Serve the Custom Stickers page with clean URL"""
         return send_from_directory('pages', 'Stickers.html')
 
+    @app.route('/order-stickers')
+    def order_stickers_page():
+        """Serve the Order Custom Stickers product page with clean URL"""
+        return send_from_directory('pages', 'OrderStickers.html')
+
     # Static files catch-all (must be last route)
     @app.route('/<path:filename>')
     def serve_static_files(filename):
@@ -110,6 +115,7 @@ if __name__ == '__main__':
     print("   Contact: http://localhost:5001/contact")
     print("   Quote: http://localhost:5001/quote")
     print("   Stickers: http://localhost:5001/stickers")
+    print("   Order Stickers: http://localhost:5001/order-stickers")
     print("   Process: http://localhost:5001/process")
     print("   Payments: http://localhost:5001/payments")
     print("   Terms: http://localhost:5001/terms")
