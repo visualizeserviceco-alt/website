@@ -254,7 +254,13 @@
         body: JSON.stringify(data)
       });
       
-      const result = await response.json();
+      let result;
+      try {
+        result = await response.json();
+      } catch (e) {
+        console.error('Failed to parse response:', e);
+        throw new Error('Invalid response from server');
+      }
       
       if (response.ok && result.success) {
         // Success
@@ -269,17 +275,20 @@
         // Scroll to message
         messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
-        // Error
+        // Error from API
+        console.error('API Error:', result);
         messageDiv.style.display = 'block';
         messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
         messageDiv.style.border = '1px solid #ef4444';
         messageDiv.style.color = '#ef4444';
-        messageDiv.textContent = result.error || 'Failed to submit quote request. Please try again or email me directly.';
+        const errorMsg = result.error || result.details || 'Failed to submit quote request. Please try again or email me directly.';
+        messageDiv.textContent = errorMsg;
         
         messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
     } catch (error) {
       // Network or other error
+      console.error('Submission error:', error);
       messageDiv.style.display = 'block';
       messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
       messageDiv.style.border = '1px solid #ef4444';

@@ -7,22 +7,42 @@ from datetime import datetime
 
 api_bp = Blueprint('api', __name__, url_prefix='/api')
 
-@api_bp.route('/contact', methods=['POST'])
+@api_bp.route('/test', methods=['GET'])
+def test_api():
+    """Test endpoint to verify API is working"""
+    return jsonify({'success': True, 'message': 'API is working!'}), 200
+
+@api_bp.route('/contact', methods=['POST', 'OPTIONS'])
 def submit_contact():
     """Handle contact form submission"""
+    if request.method == 'OPTIONS':
+        # Handle preflight request
+        response = jsonify({'status': 'ok'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
+    
     try:
+        # Get JSON data
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+        
         data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No data received'}), 400
         
         # Validate required fields
         if not data.get('name') or not data.get('email') or not data.get('message'):
-            return jsonify({'error': 'Missing required fields'}), 400
+            return jsonify({'error': 'Missing required fields: name, email, and message are required'}), 400
         
         # Create submission
         submission = ContactSubmission(
-            name=data.get('name'),
-            email=data.get('email'),
-            project_type=data.get('project'),
-            message=data.get('message')
+            name=data.get('name').strip(),
+            email=data.get('email').strip(),
+            project_type=data.get('project', '').strip() or None,
+            message=data.get('message').strip()
         )
         
         db.session.add(submission)
@@ -36,24 +56,42 @@ def submit_contact():
         
     except Exception as e:
         db.session.rollback()
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error in submit_contact: {error_details}")
         return jsonify({'error': 'Failed to submit form', 'details': str(e)}), 500
 
-@api_bp.route('/quote', methods=['POST'])
+@api_bp.route('/quote', methods=['POST', 'OPTIONS'])
 def submit_quote():
     """Handle quote request form submission"""
+    if request.method == 'OPTIONS':
+        # Handle preflight request
+        response = jsonify({'status': 'ok'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
+    
     try:
+        # Get JSON data
+        if not request.is_json:
+            return jsonify({'error': 'Content-Type must be application/json'}), 400
+        
         data = request.get_json()
+        
+        if not data:
+            return jsonify({'error': 'No data received'}), 400
         
         # Validate required fields
         if not data.get('name') or not data.get('email') or not data.get('project'):
-            return jsonify({'error': 'Missing required fields'}), 400
+            return jsonify({'error': 'Missing required fields: name, email, and project are required'}), 400
         
         # Create submission
         submission = QuoteSubmission(
-            name=data.get('name'),
-            email=data.get('email'),
-            package=data.get('package'),
-            project_details=data.get('project')
+            name=data.get('name').strip(),
+            email=data.get('email').strip(),
+            package=data.get('package', '').strip() or None,
+            project_details=data.get('project').strip()
         )
         
         db.session.add(submission)
@@ -67,6 +105,9 @@ def submit_quote():
         
     except Exception as e:
         db.session.rollback()
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error in submit_quote: {error_details}")
         return jsonify({'error': 'Failed to submit form', 'details': str(e)}), 500
 
 @api_bp.route('/submissions/contact', methods=['GET'])

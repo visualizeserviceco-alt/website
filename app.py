@@ -35,9 +35,10 @@ def create_app(config_name=None):
     
     # Initialize extensions
     db.init_app(app)
-    CORS(app)  # Enable CORS for API endpoints
+    # Enable CORS for API endpoints with proper configuration
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     
-    # Register blueprints
+    # Register blueprints (must be before catch-all routes)
     app.register_blueprint(api_bp)
     
     # Create database tables
@@ -105,10 +106,13 @@ def create_app(config_name=None):
         """Serve the admin dashboard page"""
         return send_from_directory('pages', 'Admin.html')
 
-    # Static files catch-all (must be last route)
+    # Static files catch-all (must be last route, exclude API routes)
     @app.route('/<path:filename>')
     def serve_static_files(filename):
         """Serve static files from the existing website"""
+        # Don't serve API routes as static files
+        if filename.startswith('api/'):
+            return '', 404
         try:
             return send_from_directory('.', filename)
         except:
@@ -146,9 +150,12 @@ if __name__ == '__main__':
     print("   Terms: http://localhost:5001/terms")
     print("   Admin Dashboard: http://localhost:5001/admin")
     print("   API Endpoints:")
+    print("     GET  /api/test - Test API connection")
     print("     POST /api/contact - Submit contact form")
     print("     POST /api/quote - Submit quote form")
     print("     GET /api/submissions/contact - Get contact submissions")
     print("     GET /api/submissions/quote - Get quote submissions")
+    print("     GET /api/submissions/stats - Get submission statistics")
+    print("\n💡 To test the API, run: python3 test_api.py")
     
     app.run(debug=True, port=5001)
