@@ -167,7 +167,35 @@
     .order-pricing-section-subtitle {
       font-size: 16px;
       color: #ccc;
-      margin: 0 0 32px;
+      margin: 0 0 16px;
+    }
+    
+    .order-minimum-notice {
+      background: rgba(212, 76, 67, 0.15);
+      border: 2px solid var(--brand-red);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .order-minimum-notice i {
+      width: 24px;
+      height: 24px;
+      color: var(--brand-red);
+      flex-shrink: 0;
+    }
+    
+    .order-minimum-notice-text {
+      font-size: 16px;
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .order-minimum-notice-text strong {
+      color: var(--brand-red);
     }
     
     /* Instagram Stickers Pricing Block */
@@ -671,6 +699,13 @@
     <div class="order-pricing-section">
       <h3 class="order-pricing-section-title">Custom Cutout Stickers</h3>
       <p class="order-pricing-section-subtitle">Pricing for custom die-cut stickers in various quantities</p>
+      
+      <div class="order-minimum-notice">
+        <i data-lucide="alert-circle"></i>
+        <div class="order-minimum-notice-text">
+          <strong>Minimum Order:</strong> Custom cutout stickers require a minimum order of 25 stickers.
+        </div>
+      </div>
       
       <div class="order-pricing-table-wrapper">
         <table class="order-pricing-table">
