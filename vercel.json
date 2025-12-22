@@ -5,6 +5,30 @@
       "destination": "/index.html"
     },
     {
+      "source": "/work",
+      "destination": "/pages/Work.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/pages/About.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/pages/Contact.html"
+    },
+    {
+      "source": "/quote",
+      "destination": "/pages/Quote.html"
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/pages/Portfolio.html"
+    },
+    {
+      "source": "/stickers",
+      "destination": "/pages/Stickers.html"
+    },
+    {
       "source": "/process",
       "destination": "/pages/Process.html"
     },
