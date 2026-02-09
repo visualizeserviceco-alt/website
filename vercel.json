@@ -1,70 +1,14 @@
 {
   "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/work",
-      "destination": "/pages/Work.html"
-    },
-    {
-      "source": "/about",
-      "destination": "/pages/About.html"
-    },
-    {
-      "source": "/contact",
-      "destination": "/pages/Contact.html"
-    },
-    {
-      "source": "/quote",
-      "destination": "/pages/Quote.html"
-    },
-    {
-      "source": "/portfolio",
-      "destination": "/pages/Portfolio.html"
-    },
-    {
-      "source": "/stickers",
-      "destination": "/pages/Stickers.html"
-    },
-    {
-      "source": "/order-stickers",
-      "destination": "/pages/OrderStickers.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/pages/Admin.html"
-    },
-    {
-      "source": "/process",
-      "destination": "/pages/Process.html"
-    },
-    {
-      "source": "/payments",
-      "destination": "/pages/Payments.html"
-    },
-    {
-      "source": "/terms",
-      "destination": "/pages/Terms.html"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
       ]
     }
   ]

@@ -3,701 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Visualize Studio - Professional brand design, web design, and creative services. I create logos, brand identities, and marketing assets that help businesses stand out and connect with their audience." />
-  <meta name="keywords" content="brand design, logo design, web design, graphic design, marketing assets, business branding, visual identity" />
-  <meta name="author" content="Visualize Studio" />
-  <meta property="og:title" content="Visualize Studio - Brand & Web Design" />
-  <meta property="og:description" content="I design logos, brand identities, and marketing assets that help your business stand out, grow, and connect with your audience." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://visualizestudio.org" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <title>Visualize Studio - Professional Brand & Web Design Services</title>
+  <meta name="description" content="Visualize Studio - Website under temporary maintenance." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Visualize Studio - Under Maintenance</title>
   <link rel="icon" type="image/svg+xml" href="assets/images/Visualize.svg" />
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/components.css">
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/footer.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100vh;
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1c 25%, #1b1b1c 50%, #151518 75%, #0d0d0f 100%);
+      color: #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .maintenance-wrap {
+      max-width: 420px;
+    }
+    .maintenance-wrap img {
+      height: 32px;
+      opacity: 0.6;
+      margin-bottom: 32px;
+    }
+    h1 {
+      font-size: clamp(22px, 4vw, 28px);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    p {
+      font-size: 16px;
+      color: #b0b0b0;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .instagram-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      background: transparent;
+      color: #e0e0e0;
+      border: 2px solid #3a3a3b;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+    .instagram-link:hover {
+      border-color: #d44c43;
+      color: #d44c43;
+      background: rgba(212, 76, 67, 0.08);
+    }
+    .instagram-link svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+  </style>
 </head>
 <body>
-
-<!-- HEADER INCLUDE -->
-<div id="site-header" role="banner"></div>
-<script>
-  const basePath = window.location.pathname.includes('/pages/') ? '../' : '';
-  fetch('includes/header.html')
-    .then(response => response.text())
-    .then(data => { 
-      // Update asset paths in the loaded content
-      const updatedData = data.replace(/src="assets\//g, `src="${basePath}assets/`);
-      document.getElementById('site-header').innerHTML = updatedData;
-      
-      // Re-initialize mobile menu after header loads
-      if (window.visualizeWebsite && typeof window.visualizeWebsite.setupMobileMenu === 'function') {
-        window.visualizeWebsite.setupMobileMenu();
-      }
-      
-      // Also dispatch custom event for other scripts that might need it
-      document.dispatchEvent(new CustomEvent('headerLoaded'));
-    });
-</script>
-
-<main role="main">
-
-<!-- =============== HERO BLOCK =============== -->
-<section class="vh-hero" aria-labelledby="hero-heading">
-  <div class="wrap">
-    <div class="hero-content">
-      <div class="hero-brand-mark">
-        <img src="assets/images/Visualize.svg" alt="Visualize" style="height: 24px; opacity: 0.3;">
-      </div>
-      <h1 id="hero-heading">I Build Brands That<br>Make An Impact.</h1>
-      <p class="hero-subtitle">Strategy-first design. 48-hour turnaround. No agency bloat. Just results.</p>
-      <nav class="hero-nav" aria-label="Primary actions">
-        <a class="btn primary" href="/work">My Work</a>
-        <a class="btn secondary" href="/about">About Me</a>
-        <a class="btn secondary" href="/contact">Let's Chat</a>
-        <a class="btn secondary" href="/order-stickers">Order Stickers</a>
-      </nav>
-      <div class="hero-stats">
-        <div class="stat-item">
-          <div class="stat-number">100+</div>
-          <div class="stat-label">Brands Helped</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">5.0★</div>
-          <div class="stat-label">Client Rating</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">48h</div>
-          <div class="stat-label">Avg Turnaround</div>
-        </div>
-      </div>
-    </div>
+  <div class="maintenance-wrap">
+    <img src="assets/images/Visualize.svg" alt="Visualize Studio" />
+    <h1>Website under temporary maintenance</h1>
+    <p>We’re making some updates and will be back shortly. For the latest updates, follow us on Instagram.</p>
+    <a class="instagram-link" href="https://www.instagram.com/visualizetm/" target="_blank" rel="noopener noreferrer" aria-label="Instagram @visualizetm">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+      @visualizetm
+    </a>
   </div>
-</section>
-
-<!-- =============== BOLD STATEMENT SECTION =============== -->
-<section class="vh-statement">
-  <div class="wrap">
-    <h2>I don't do decoration.<br>I build brands that work.</h2>
-    <p>Strategy-first design that turns your positioning into a visual system your audience actually remembers. Fast turnaround without sacrificing quality. Clear deliverables you can use today. No agency bloat—just results.</p>
-  </div>
-</section>
-
-<!-- =============== ABOUT / VALUE PROPS SECTION =============== -->
-<section class="vh-roi" id="about">
-  <div class="wrap">
-    <h2>Why Visualize?<br>Because speed doesn't mean compromise.</h2>
-    <p class="roi-intro">Most agencies take weeks. I deliver in 48 hours. But fast doesn't mean rushed—it means efficient. I've streamlined the process, cut the bloat, and focused on what actually matters: strategy-first design that gets results.</p>
-    
-    <div class="roi-grid">
-      <div class="roi-item">
-        <h3>Strategy-First Approach</h3>
-        <p>I don't start with pretty pictures. I start with your positioning, your audience, and your goals. Then I turn that strategy into a visual system that actually works. Every design decision is intentional, every element serves a purpose.</p>
-      </div>
-      <div class="roi-item">
-        <h3>48-Hour Turnaround</h3>
-        <p>While other agencies take weeks of back-and-forth, I compress the timeline without cutting corners. My streamlined, async-friendly workflow means you get quality work fast. No endless meetings. No agency bloat. Just results.</p>
-      </div>
-      <div class="roi-item">
-        <h3>Direct Access to Your Designer</h3>
-        <p>You work directly with me—no account managers, no middlemen, no confusion. One person, one vision, one point of contact. It's personal, it's efficient, and it means your project gets the attention it deserves.</p>
-      </div>
-      <div class="roi-item">
-        <h3>Clear Deliverables, Ready to Launch</h3>
-        <p>You get brand files, usage docs, and ready-to-launch assets you can plug in today. No guessing, no confusion. Everything you need to start using your brand immediately, with full usage rights across all platforms.</p>
-      </div>
-    </div>
-    
-    <div class="cta-section">
-      <a class="btn primary" href="/quote">Work With Me</a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== CLIENT WORK SECTION =============== -->
-<section class="vh-work" id="work">
-  <div class="wrap">
-    <div class="work-label">CLIENT WORK:</div>
-    
-    <div class="work-item">
-      <div class="work-image">
-        <img src="assets/images/CitySpice1.png" alt="City Spice brand identity">
-      </div>
-        <div class="work-content">
-        <h3>I TURNED A RESTAURANT INTO A BRAND.</h3>
-        <p>City Spice needed more than a logo—they needed a complete visual identity and website that captured their unique flavor. I delivered a full brand system, custom website, and all the assets they needed to launch. <strong>Strategy-first, delivered in 48 hours.</strong></p>
-        <a href="https://cityspicellc.com" target="_blank" class="work-link">View Live Site →</a>
-      </div>
-    </div>
-    
-    <div class="work-item reverse">
-      <div class="work-content">
-        <h3>I BUILT GHETTO GARAGE A BRAND THAT MATCHES THEIR ENERGY.</h3>
-        <p>Ghetto Garage needed a visual identity as bold as their brand. I created a complete logo system, brand guidelines, and all the assets they needed. <strong>Fast turnaround, strategic design, ready to use.</strong></p>
-        <a href="/portfolio" class="work-link">View Portfolio →</a>
-      </div>
-      <div class="work-image">
-        <img src="assets/images/GhettoGarage.svg" alt="Ghetto Garage logo">
-      </div>
-    </div>
-    
-    <div class="work-cta">
-      <a href="/portfolio" class="btn secondary">View All My Work</a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== TRUST / LOGOS BLOCK =============== -->
-<section class="vh-trust">
-  <div class="wrap">
-    <div class="label">Trusted by</div>
-    <div class="logos">
-      <img src="assets/images/SopesAutoDetailing.png" alt="Sopes Auto Detailing">
-      <img src="assets/images/GhettoGarage.svg" alt="Ghetto Garage">
-      <img src="assets/images/PapsProd.png" alt="Paps Production">
-      <img src="assets/images/CitySpice1.png" alt="City Spice">
-      <img src="assets/images/CitySpice3.png" alt="City Spice variant">
-      <img src="assets/images/NellyCutz.svg" alt="Nelly Cutz">
-    </div>
-  </div>
-</section>
-
-<!-- =============== BOLD QUOTE SECTION =============== -->
-<section class="vh-quote">
-  <div class="wrap">
-    <h2 class="quote-text">Great brands plant a flag.<br>They make it clear who they're for.</h2>
-    <p class="quote-sub">And they stop wasting time trying to be for everyone else.</p>
-  </div>
-</section>
-
-<!-- =============== SHOWCASE / PORTFOLIO GRID =============== -->
-<section class="vh-showcase" id="showcase">
-  <div class="wrap">
-    <h2>Website Clients</h2>
-    <p class="sub">A showcase of websites I've designed and developed for clients.</p>
-    <div class="grid">
-      <a class="tile" href="https://cityspicellc.com" target="_blank">
-        <img src="https://ik.imagekit.io/4syjuy3u5/Website.png" alt="City Spice">
-        <div class="meta"><div class="tag">Web Design</div><div class="ttl">City Spice</div></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- =============== PORTFOLIO CATEGORIES BLOCK =============== -->
-<section class="vh-portfolio" id="portfolio">
-  <div class="wrap">
-    <h2>Portfolio</h2>
-    <p class="sub" style="color: #ccc; margin-bottom: 48px;">A selection of my recent work. <a href="/portfolio" style="color: var(--brand-red);">View full portfolio →</a></p>
-    
-    <div class="category">
-      <h3>Logos &amp; Brand Marks</h3>
-      <div class="grid">
-        <!-- Images from assets/media/portfolio/logos/ -->
-        <div class="tile">
-          <img src="assets/media/portfolio/logos/placeholder.png" alt="Logo Design" onerror="this.parentElement.style.display='none'">
-        </div>
-        <div class="tile">
-          <img src="assets/images/GhettoGarage.svg" alt="Ghetto Garage Logo">
-        </div>
-        <div class="tile">
-          <img src="assets/images/NellyCutz.svg" alt="Nelly Cutz Logo">
-        </div>
-        <div class="tile">
-          <img src="assets/images/PapsProd.png" alt="Paps Production Logo">
-        </div>
-        <div class="tile">
-          <img src="assets/images/SopesAutoDetailing.png" alt="Sopes Auto Detailing Logo">
-        </div>
-      </div>
-    </div>
-    
-    <div class="category">
-      <h3>Print Design</h3>
-      <div class="grid">
-        <!-- Images from assets/media/portfolio/print/ -->
-        <div class="tile">
-          <img src="assets/images/Print/NellyCutzBusinessCard.png" alt="Nelly Cutz Business Card">
-        </div>
-        <div class="tile">
-          <img src="assets/media/portfolio/print/placeholder.png" alt="Print Design" onerror="this.parentElement.style.display='none'">
-        </div>
-        <div class="tile">
-          <img src="assets/media/portfolio/print/placeholder.png" alt="Print Design" onerror="this.parentElement.style.display='none'">
-        </div>
-      </div>
-    </div>
-    
-    <div class="category">
-      <h3>Packaging &amp; Merch</h3>
-      <div class="grid">
-        <!-- Images from assets/media/portfolio/packaging/ and merch/ -->
-        <div class="tile">
-          <img src="assets/images/CitySpice1.png" alt="City Spice Packaging">
-        </div>
-        <div class="tile">
-          <img src="assets/images/CitySpice2.png" alt="City Spice Design">
-        </div>
-        <div class="tile">
-          <img src="assets/media/portfolio/packaging/placeholder.png" alt="Packaging Design" onerror="this.parentElement.style.display='none'">
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- =============== TESTIMONIALS =============== -->
-<section class="vh-testimonials">
-  <div class="wrap">
-    <h2>Clients say it better</h2>
-    <div class="grid">
-      <div class="card">
-        <div>"Visualize were experts at bringing my thoughts to life. I had ideas but no structure—until I met Rob. From building our website to helping us get more organized, they helped my business get on track. Thanks, bro."</div>
-        <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/Artboard%207.png?updatedAt=1747610937425') center/cover no-repeat;"></div><div>— City Spice Scented Souvenirs</div></div>
-      </div>
-      <div class="card">
-        <div>"The Visualize team really helped my partner and I during our journey of starting a business and made it super easy and was very flexible with customization and customer service, I definitely recommend hitting them up for your business"</div>
-        <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/logo-2.png?updatedAt=1747610933400') center/cover no-repeat;"></div><div>— Ghetto Garage</div></div>
-      </div>
-      <div class="card">
-        <div>"Visualize work all around is very clean looking, professional, and appealing. Working with you was simple, efficient, and ties into your actual work itself. Your artworks speak themselves and you bring an individual energy that feels unique, bold, and creative, all during the process and final products as well!"</div>
-        <div class="who"><div class="avatar" style="background:url('https://ik.imagekit.io/4syjuy3u5/Client%20Logo%20Showcase/HVO%20LOGO.png?updatedAt=1748725181341') center/cover no-repeat;"></div><div>— izkidj</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- =============== PRICING / PACKAGES =============== -->
-<section class="vh-pricing" id="pricing">
-  <div class="wrap">
-    <h2>Packages & transparent pricing</h2>
-    <p class="sub">Choose your path: branding only, website only, or both. Every package scales to your budget.</p>
-
-    <!-- Package path comparison toggle -->
-    <div class="pricing-path-toggle" role="tablist" aria-label="Package type">
-      <button type="button" class="pricing-path-btn active" data-path="branding" role="tab" aria-selected="true">Branding Only</button>
-      <button type="button" class="pricing-path-btn" data-path="website" role="tab" aria-selected="false">Website Only</button>
-      <button type="button" class="pricing-path-btn" data-path="both" role="tab" aria-selected="false">Branding + Website</button>
-    </div>
-
-    <!-- Branding Only path -->
-    <div class="pricing-path-content active" id="path-branding" role="tabpanel">
-      <p class="pricing-path-desc">For businesses that need a logo, brand identity, or visual assets—no website.</p>
-      <div class="pricing-cards-grid">
-        <article class="pricing-card" data-tier="budget">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Budget</span>
-            <h3 class="pricing-card-title">Starter Logo</h3>
-            <p class="pricing-card-for">For startups and side projects that need a simple, professional mark.</p>
-            <div class="pricing-card-price">From $50</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-budget-details">View details</button>
-          <div class="pricing-card-details" id="branding-budget-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Primary logo (1–2 concepts)</li>
-              <li><i data-lucide="check" class="icon-check"></i> Final files: SVG, PNG</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Secondary logo +$25, social assets +$20</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card featured" data-tier="standard">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge popular">Most popular</span>
-            <h3 class="pricing-card-title">Branding & Design</h3>
-            <p class="pricing-card-for">For established businesses ready for a full visual identity.</p>
-            <div class="pricing-card-price">From $200</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-standard-details">View details</button>
-          <div class="pricing-card-details" id="branding-standard-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Primary + secondary logo</li>
-              <li><i data-lucide="check" class="icon-check"></i> Print & packaging design</li>
-              <li><i data-lucide="check" class="icon-check"></i> Merch & print mockups</li>
-              <li><i data-lucide="check" class="icon-check"></i> Social media graphics</li>
-              <li><i data-lucide="check" class="icon-check"></i> Ad creatives & banners</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Brand guidelines doc +$50, extra concepts +$40</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card" data-tier="premium">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Premium</span>
-            <h3 class="pricing-card-title">Full Identity</h3>
-            <p class="pricing-card-for">For brands that want strategy, identity, and ongoing visual support.</p>
-            <div class="pricing-card-price">From $500</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-premium-details">View details</button>
-          <div class="pricing-card-details" id="branding-premium-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Everything in Branding & Design</li>
-              <li><i data-lucide="check" class="icon-check"></i> Social media plan & strategy</li>
-              <li><i data-lucide="check" class="icon-check"></i> Google Business setup</li>
-              <li><i data-lucide="check" class="icon-check"></i> Business breakdown & tips</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Video content, campaign creatives—quote on request</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <!-- Website Only path -->
-    <div class="pricing-path-content" id="path-website" role="tabpanel" hidden>
-      <p class="pricing-path-desc">You already have a logo and brand—you need a professional website built.</p>
-      <div class="pricing-cards-grid">
-        <article class="pricing-card" data-tier="budget">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Budget</span>
-            <h3 class="pricing-card-title">Landing Page</h3>
-            <p class="pricing-card-for">Single-page site for services, portfolio, or lead capture.</p>
-            <div class="pricing-card-price">From $300</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-budget-details">View details</button>
-          <div class="pricing-card-details" id="website-budget-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> One-page responsive design</li>
-              <li><i data-lucide="check" class="icon-check"></i> Contact form</li>
-              <li><i data-lucide="check" class="icon-check"></i> Basic SEO</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Extra pages +$75 each, custom forms +$50</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card featured" data-tier="standard">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge popular">Most popular</span>
-            <h3 class="pricing-card-title">Business Website</h3>
-            <p class="pricing-card-for">Multi-page site with clear structure and strong conversion focus.</p>
-            <div class="pricing-card-price">From $600</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-standard-details">View details</button>
-          <div class="pricing-card-details" id="website-standard-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Up to 5 pages</li>
-              <li><i data-lucide="check" class="icon-check"></i> Contact + optional booking CTA</li>
-              <li><i data-lucide="check" class="icon-check"></i> Mobile-first, fast loading</li>
-              <li><i data-lucide="check" class="icon-check"></i> SEO basics</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Blog setup +$100, analytics +$50</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card" data-tier="premium">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Premium</span>
-            <h3 class="pricing-card-title">Full Web Solution</h3>
-            <p class="pricing-card-for">E‑commerce, booking, or complex functionality—built to scale.</p>
-            <div class="pricing-card-price">From $1,200</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-premium-details">View details</button>
-          <div class="pricing-card-details" id="website-premium-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> E-commerce / online store</li>
-              <li><i data-lucide="check" class="icon-check"></i> Appointment booking system</li>
-              <li><i data-lucide="check" class="icon-check"></i> Custom features per scope</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Maintenance plans, content updates—quote on request</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <!-- Branding + Website path -->
-    <div class="pricing-path-content" id="path-both" role="tabpanel" hidden>
-      <p class="pricing-path-desc">Starting from scratch or want a full refresh—brand identity and website together.</p>
-      <div class="pricing-cards-grid">
-        <article class="pricing-card" data-tier="budget">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Budget</span>
-            <h3 class="pricing-card-title">Starter Brand + Site</h3>
-            <p class="pricing-card-for">Logo plus a simple one-page site to get you online fast.</p>
-            <div class="pricing-card-price">From $350</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-budget-details">View details</button>
-          <div class="pricing-card-details" id="both-budget-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Primary logo</li>
-              <li><i data-lucide="check" class="icon-check"></i> One-page website</li>
-              <li><i data-lucide="check" class="icon-check"></i> Contact form</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Extra pages, social kit—quote on request</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card featured" data-tier="standard">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge popular">Most popular</span>
-            <h3 class="pricing-card-title">Brand + Website</h3>
-            <p class="pricing-card-for">Full visual identity and a professional multi-page website.</p>
-            <div class="pricing-card-price">From $800</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-standard-details">View details</button>
-          <div class="pricing-card-details" id="both-standard-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Logo + brand assets (as in Branding & Design)</li>
-              <li><i data-lucide="check" class="icon-check"></i> Multi-page business website</li>
-              <li><i data-lucide="check" class="icon-check"></i> Social graphics + web-ready assets</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> E-commerce, booking, extra pages—quote on request</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-        <article class="pricing-card" data-tier="premium">
-          <div class="pricing-card-header">
-            <span class="pricing-card-badge">Premium</span>
-            <h3 class="pricing-card-title">Full Identity + Web</h3>
-            <p class="pricing-card-for">Strategy, full identity, website, and optional e‑commerce or booking.</p>
-            <div class="pricing-card-price">From $1,700</div>
-          </div>
-          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-premium-details">View details</button>
-          <div class="pricing-card-details" id="both-premium-details" hidden>
-            <ul class="pricing-card-includes">
-              <li><i data-lucide="check" class="icon-check"></i> Full Identity (branding premium)</li>
-              <li><i data-lucide="check" class="icon-check"></i> Custom website or e-commerce</li>
-              <li><i data-lucide="check" class="icon-check"></i> Appointment booking if needed</li>
-            </ul>
-            <p class="pricing-card-addons"><strong>Add-ons:</strong> Ongoing support, content updates—quote on request</p>
-            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <!-- Custom Sticker Printing – bulk pricing -->
-    <div class="sticker-pricing-section">
-      <h3 class="sticker-pricing-heading">Custom Sticker Printing</h3>
-      <p class="sticker-pricing-sub">Bulk-based pricing. The more you order, the less per sticker.</p>
-
-      <div class="sticker-calculator-wrap">
-        <div class="sticker-tier-table">
-          <table class="comparison-table sticker-tier-table-inner">
-            <thead>
-              <tr>
-                <th>Quantity</th>
-                <th>Price per sticker</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Under 100 stickers</td>
-                <td class="sticker-price-cell">$0.50</td>
-              </tr>
-              <tr>
-                <td>100 – 249 stickers</td>
-                <td class="sticker-price-cell">$0.35</td>
-              </tr>
-              <tr>
-                <td>250+ stickers</td>
-                <td class="sticker-price-cell">$0.25</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="sticker-calculator">
-          <label for="sticker-qty" class="sticker-calculator-label">Quantity</label>
-          <div class="sticker-calculator-controls">
-            <input type="range" id="sticker-qty" class="sticker-qty-slider" min="1" max="1000" value="50" aria-label="Sticker quantity">
-            <input type="number" id="sticker-qty-num" class="sticker-qty-input" min="1" max="9999" value="50" aria-label="Sticker quantity number">
-          </div>
-          <div class="sticker-calculator-result">
-            <span class="sticker-calc-per">$<span id="sticker-per">0.50</span> per sticker</span>
-            <span class="sticker-calc-total">Total: $<span id="sticker-total">25.00</span></span>
-          </div>
-        </div>
-      </div>
-
-      <div class="sticker-specs-box">
-        <h4 class="sticker-specs-title">Sticker specifications</h4>
-        <ul class="sticker-specs-list">
-          <li><i data-lucide="check" class="icon-check"></i> Printed on glossy printable vinyl (WeLiu)</li>
-          <li><i data-lucide="check" class="icon-check"></i> Holographic laminate for water-resistance and scratch protection</li>
-          <li><i data-lucide="check" class="icon-check"></i> Water-resistant (not waterproof)</li>
-          <li><i data-lucide="check" class="icon-check"></i> Best for laptops, notebooks, phone cases, water bottles</li>
-          <li><i data-lucide="check" class="icon-check"></i> Silhouette Cameo 4 die-cut edges</li>
-          <li><i data-lucide="check" class="icon-check"></i> Not for long-term outdoor exposure</li>
-        </ul>
-      </div>
-      <div class="sticker-notes-box">
-        <h4 class="sticker-notes-title">Additional information</h4>
-        <ul class="sticker-notes-list">
-          <li><span class="sticker-note-highlight">Intricate die-cut shapes:</span> May include setup fee +$0.10–$0.20 per sticker or $10 flat</li>
-          <li><span class="sticker-note-highlight">Rush orders:</span> $15–$30 depending on turnaround</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Design Services Pricing -->
-    <div class="design-services-section">
-      <h3 class="design-services-heading">Design services pricing</h3>
-      <p class="design-services-desc">Design fees apply only when you don’t provide a print-ready file.</p>
-      <div class="pricing-comparison">
-        <table class="comparison-table">
-          <thead>
-            <tr>
-              <th>Service type</th>
-              <th>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Simple design</td>
-              <td class="price-cell">$25</td>
-            </tr>
-            <tr>
-              <td>Moderate / multi-element design</td>
-              <td class="price-cell">$40</td>
-            </tr>
-            <tr>
-              <td>Full custom artwork / complex design</td>
-              <td class="price-cell">$60+</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- =============== FAQ =============== -->
-<section class="vh-faq" id="faq">
-  <div class="wrap">
-    <h2>FAQ</h2>
-    <div class="item">
-      <div class="q">
-        <i data-lucide="help-circle" class="faq-icon"></i>
-        How fast is your turnaround time?
-      </div>
-      <div class="a">It depends on the project, but most smaller designs are done within 2–3 days. I'll always give you a timeframe upfront.</div>
-    </div>
-    <div class="item">
-      <div class="q">
-        <i data-lucide="help-circle" class="faq-icon"></i>
-        What files are included?
-      </div>
-      <div class="a">Logo exports (SVG/PNG), PDF guidelines (if included), and a folder of ready‑to‑use assets.</div>
-    </div>
-    <div class="item">
-      <div class="q">
-        <i data-lucide="help-circle" class="faq-icon"></i>
-        Do you offer refunds?
-      </div>
-      <div class="a">For services, refunds are limited to cases where no work has begun. Customize this to match your policy.</div>
-    </div>
-  </div>
-</section>
-
-<!-- =============== CTA =============== -->
-<section class="vh-cta" id="contact">
-  <div class="wrap">
-    <h2>Ready to Build Your Brand?</h2>
-    <p class="cta-description">Let's chat about your project. Fast turnaround. Clear pricing. No surprises.</p>
-    <div class="cta-info">
-      <div class="cta-item">
-        <strong>Email:</strong>
-        <a href="mailto:contact@visualizestudio.org">contact@visualizestudio.org</a>
-      </div>
-      <div class="cta-item">
-        <strong>Follow:</strong>
-        <a href="https://www.instagram.com/visualizetm/" target="_blank" rel="noopener noreferrer">@visualizetm</a>
-      </div>
-    </div>
-    <div class="cta-buttons">
-      <a class="btn primary" href="/quote">Request A Quote</a>
-      <a class="btn secondary" href="/process">View My Process</a>
-      <a class="btn secondary" href="/order-stickers">Order Custom Stickers</a>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<!-- FOOTER INCLUDE -->
-<div id="site-footer" role="contentinfo"></div>
-<script>
-  const basePathFooter = window.location.pathname.includes('/pages/') ? '../' : '';
-  fetch('includes/footer.html')
-    .then(response => response.text())
-    .then(data => { 
-      // Update asset paths in the loaded content
-      const updatedData = data.replace(/src="assets\//g, `src="${basePathFooter}assets/`);
-      document.getElementById('site-footer').innerHTML = updatedData; 
-    });
-</script>
-
-<script src="assets/js/main.js"></script>
-<script>
-  // Initialize Lucide icons
-  lucide.createIcons();
-
-  // Package path toggle & card expand
-  (function () {
-    var pathBtns = document.querySelectorAll('.pricing-path-btn');
-    var pathPanels = document.querySelectorAll('.pricing-path-content');
-    if (!pathBtns.length || !pathPanels.length) return;
-
-    pathBtns.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var path = btn.getAttribute('data-path');
-        pathBtns.forEach(function (b) {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        pathPanels.forEach(function (panel) {
-          var isActive = panel.id === 'path-' + path;
-          panel.classList.toggle('active', isActive);
-          panel.hidden = !isActive;
-        });
-      });
-    });
-
-    document.querySelectorAll('.pricing-card-toggle').forEach(function (toggle) {
-      toggle.addEventListener('click', function () {
-        var expanded = this.getAttribute('aria-expanded') === 'true';
-        var detailsId = this.getAttribute('aria-controls');
-        var details = detailsId ? document.getElementById(detailsId) : null;
-        if (!details) return;
-        this.setAttribute('aria-expanded', !expanded);
-        details.hidden = expanded;
-        this.textContent = expanded ? 'View details' : 'Hide details';
-      });
-    });
-  })();
-
-  // Sticker price calculator: under 100 = $0.50, 100–249 = $0.35, 250+ = $0.25
-  (function () {
-    var slider = document.getElementById('sticker-qty');
-    var input = document.getElementById('sticker-qty-num');
-    var perEl = document.getElementById('sticker-per');
-    var totalEl = document.getElementById('sticker-total');
-    if (!slider || !input || !perEl || !totalEl) return;
-
-    function pricePerUnit(qty) {
-      if (qty >= 250) return 0.25;
-      if (qty >= 100) return 0.35;
-      return 0.5;
-    }
-
-    function updateDisplay(qty) {
-      qty = Math.max(1, Math.min(9999, parseInt(qty, 10) || 1));
-      slider.value = Math.min(parseInt(slider.getAttribute('max'), 10) || 1000, qty);
-      input.value = qty;
-      var per = pricePerUnit(qty);
-      var total = (qty * per).toFixed(2);
-      perEl.textContent = per.toFixed(2);
-      totalEl.textContent = total;
-    }
-
-    slider.addEventListener('input', function () { updateDisplay(this.value); });
-    input.addEventListener('input', function () { updateDisplay(this.value); });
-    updateDisplay(slider.value);
-  })();
-</script>
 </body>
 </html>
