@@ -78,3 +78,11 @@ If you encounter database errors, delete `visualize_studio.db` and restart the a
 
 ### CORS errors
 CORS is enabled for all origins. In production, restrict CORS to your domain only.
+
+
+
+
+
+
+
+

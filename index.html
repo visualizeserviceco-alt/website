@@ -273,248 +273,288 @@
 <section class="vh-pricing" id="pricing">
   <div class="wrap">
     <h2>Packages & transparent pricing</h2>
-    <p class="sub">Pre-Made packages created for simple selection, contact me in a meeting to fully discuss your needs.</p>
-    
-    <!-- Feature Comparison Table -->
-    <div class="pricing-comparison">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Features</th>
-            <th>Starter<br><span class="price-small">$50</span></th>
-            <th>Branding & Design<br><span class="price-small">$200</span><span class="badge-table">Most Popular</span></th>
-            <th>Full Identity<br><span class="price-small">$500</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Primary Logo</td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Secondary Logo</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Print & Packaging Design</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Merch & Print Mockups</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Custom Digital Graphics</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Ad Creatives & Banners</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Social Media Graphics</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Social Media Plan & Strategy</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Google Business Setup</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Business Breakdown & Tips</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Custom Website Design</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>E-commerce / Online Store</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-          <tr>
-            <td>Appointment Booking System</td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="x" class="icon-x"></i></td>
-            <td><i data-lucide="check" class="icon-check"></i></td>
-          </tr>
-        </tbody>
-      </table>
+    <p class="sub">Choose your path: branding only, website only, or both. Every package scales to your budget.</p>
+
+    <!-- Package path comparison toggle -->
+    <div class="pricing-path-toggle" role="tablist" aria-label="Package type">
+      <button type="button" class="pricing-path-btn active" data-path="branding" role="tab" aria-selected="true">Branding Only</button>
+      <button type="button" class="pricing-path-btn" data-path="website" role="tab" aria-selected="false">Website Only</button>
+      <button type="button" class="pricing-path-btn" data-path="both" role="tab" aria-selected="false">Branding + Website</button>
     </div>
 
-    <!-- Package Cards -->
-    <div class="grid">
-      <div class="card">
-        <div class="badge">Starter</div>
-        <div class="price">$50</div>
-        <div class="package-title">Logo Design</div>
-        <a class="btn" href="#contact">Get Started</a>
-      </div>
-      <div class="card featured">
-        <div class="badge">Most popular</div>
-        <div class="price">$200</div>
-        <div class="package-title">Branding & Design</div>
-        <a class="btn" href="#contact">Get Started</a>
-      </div>
-      <div class="card">
-        <div class="badge">Pro</div>
-        <div class="price">$500</div>
-        <div class="package-title">Full Identity</div>
-        <a class="btn" href="#contact">Get Started</a>
+    <!-- Branding Only path -->
+    <div class="pricing-path-content active" id="path-branding" role="tabpanel">
+      <p class="pricing-path-desc">For businesses that need a logo, brand identity, or visual assets—no website.</p>
+      <div class="pricing-cards-grid">
+        <article class="pricing-card" data-tier="budget">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Budget</span>
+            <h3 class="pricing-card-title">Starter Logo</h3>
+            <p class="pricing-card-for">For startups and side projects that need a simple, professional mark.</p>
+            <div class="pricing-card-price">From $50</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-budget-details">View details</button>
+          <div class="pricing-card-details" id="branding-budget-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Primary logo (1–2 concepts)</li>
+              <li><i data-lucide="check" class="icon-check"></i> Final files: SVG, PNG</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Secondary logo +$25, social assets +$20</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card featured" data-tier="standard">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge popular">Most popular</span>
+            <h3 class="pricing-card-title">Branding & Design</h3>
+            <p class="pricing-card-for">For established businesses ready for a full visual identity.</p>
+            <div class="pricing-card-price">From $200</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-standard-details">View details</button>
+          <div class="pricing-card-details" id="branding-standard-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Primary + secondary logo</li>
+              <li><i data-lucide="check" class="icon-check"></i> Print & packaging design</li>
+              <li><i data-lucide="check" class="icon-check"></i> Merch & print mockups</li>
+              <li><i data-lucide="check" class="icon-check"></i> Social media graphics</li>
+              <li><i data-lucide="check" class="icon-check"></i> Ad creatives & banners</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Brand guidelines doc +$50, extra concepts +$40</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card" data-tier="premium">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Premium</span>
+            <h3 class="pricing-card-title">Full Identity</h3>
+            <p class="pricing-card-for">For brands that want strategy, identity, and ongoing visual support.</p>
+            <div class="pricing-card-price">From $500</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="branding-premium-details">View details</button>
+          <div class="pricing-card-details" id="branding-premium-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Everything in Branding & Design</li>
+              <li><i data-lucide="check" class="icon-check"></i> Social media plan & strategy</li>
+              <li><i data-lucide="check" class="icon-check"></i> Google Business setup</li>
+              <li><i data-lucide="check" class="icon-check"></i> Business breakdown & tips</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Video content, campaign creatives—quote on request</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
       </div>
     </div>
 
-    <!-- Custom Sticker Printing Section -->
-    <div class="sticker-pricing-section" style="margin-top: 48px; padding-top: 48px; border-top: 1px solid #3a3a3b;">
-      <h3 style="font-size: clamp(20px, 3.5vw, 28px); margin: 0 0 24px; color: #e0e0e0;">Custom Sticker Printing</h3>
-      
-      <!-- Sticker Pricing Table -->
-      <div class="pricing-comparison">
-        <table class="comparison-table sticker-pricing-table">
-          <thead>
-            <tr>
-              <th>Quantity</th>
-              <th>Price Per Sticker</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1 Sticker</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$3.00 – $4.00</td>
-            </tr>
-            <tr>
-              <td>5 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$2.50 each</td>
-            </tr>
-            <tr>
-              <td>10 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$2.25 each</td>
-            </tr>
-            <tr>
-              <td>25 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$2.00 each</td>
-            </tr>
-            <tr>
-              <td>50 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$1.75 each</td>
-            </tr>
-            <tr>
-              <td>100 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$1.50 each</td>
-            </tr>
-            <tr>
-              <td>250 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$1.25 each</td>
-            </tr>
-            <tr>
-              <td>500 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$1.10 each</td>
-            </tr>
-            <tr>
-              <td>1000 Stickers</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$0.90 – $1.00 each</td>
-            </tr>
-          </tbody>
-        </table>
+    <!-- Website Only path -->
+    <div class="pricing-path-content" id="path-website" role="tabpanel" hidden>
+      <p class="pricing-path-desc">You already have a logo and brand—you need a professional website built.</p>
+      <div class="pricing-cards-grid">
+        <article class="pricing-card" data-tier="budget">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Budget</span>
+            <h3 class="pricing-card-title">Landing Page</h3>
+            <p class="pricing-card-for">Single-page site for services, portfolio, or lead capture.</p>
+            <div class="pricing-card-price">From $300</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-budget-details">View details</button>
+          <div class="pricing-card-details" id="website-budget-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> One-page responsive design</li>
+              <li><i data-lucide="check" class="icon-check"></i> Contact form</li>
+              <li><i data-lucide="check" class="icon-check"></i> Basic SEO</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Extra pages +$75 each, custom forms +$50</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card featured" data-tier="standard">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge popular">Most popular</span>
+            <h3 class="pricing-card-title">Business Website</h3>
+            <p class="pricing-card-for">Multi-page site with clear structure and strong conversion focus.</p>
+            <div class="pricing-card-price">From $600</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-standard-details">View details</button>
+          <div class="pricing-card-details" id="website-standard-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Up to 5 pages</li>
+              <li><i data-lucide="check" class="icon-check"></i> Contact + optional booking CTA</li>
+              <li><i data-lucide="check" class="icon-check"></i> Mobile-first, fast loading</li>
+              <li><i data-lucide="check" class="icon-check"></i> SEO basics</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Blog setup +$100, analytics +$50</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card" data-tier="premium">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Premium</span>
+            <h3 class="pricing-card-title">Full Web Solution</h3>
+            <p class="pricing-card-for">E‑commerce, booking, or complex functionality—built to scale.</p>
+            <div class="pricing-card-price">From $1,200</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="website-premium-details">View details</button>
+          <div class="pricing-card-details" id="website-premium-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> E-commerce / online store</li>
+              <li><i data-lucide="check" class="icon-check"></i> Appointment booking system</li>
+              <li><i data-lucide="check" class="icon-check"></i> Custom features per scope</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Maintenance plans, content updates—quote on request</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Branding + Website path -->
+    <div class="pricing-path-content" id="path-both" role="tabpanel" hidden>
+      <p class="pricing-path-desc">Starting from scratch or want a full refresh—brand identity and website together.</p>
+      <div class="pricing-cards-grid">
+        <article class="pricing-card" data-tier="budget">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Budget</span>
+            <h3 class="pricing-card-title">Starter Brand + Site</h3>
+            <p class="pricing-card-for">Logo plus a simple one-page site to get you online fast.</p>
+            <div class="pricing-card-price">From $350</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-budget-details">View details</button>
+          <div class="pricing-card-details" id="both-budget-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Primary logo</li>
+              <li><i data-lucide="check" class="icon-check"></i> One-page website</li>
+              <li><i data-lucide="check" class="icon-check"></i> Contact form</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Extra pages, social kit—quote on request</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card featured" data-tier="standard">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge popular">Most popular</span>
+            <h3 class="pricing-card-title">Brand + Website</h3>
+            <p class="pricing-card-for">Full visual identity and a professional multi-page website.</p>
+            <div class="pricing-card-price">From $800</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-standard-details">View details</button>
+          <div class="pricing-card-details" id="both-standard-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Logo + brand assets (as in Branding & Design)</li>
+              <li><i data-lucide="check" class="icon-check"></i> Multi-page business website</li>
+              <li><i data-lucide="check" class="icon-check"></i> Social graphics + web-ready assets</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> E-commerce, booking, extra pages—quote on request</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+        <article class="pricing-card" data-tier="premium">
+          <div class="pricing-card-header">
+            <span class="pricing-card-badge">Premium</span>
+            <h3 class="pricing-card-title">Full Identity + Web</h3>
+            <p class="pricing-card-for">Strategy, full identity, website, and optional e‑commerce or booking.</p>
+            <div class="pricing-card-price">From $1,700</div>
+          </div>
+          <button type="button" class="pricing-card-toggle" aria-expanded="false" aria-controls="both-premium-details">View details</button>
+          <div class="pricing-card-details" id="both-premium-details" hidden>
+            <ul class="pricing-card-includes">
+              <li><i data-lucide="check" class="icon-check"></i> Full Identity (branding premium)</li>
+              <li><i data-lucide="check" class="icon-check"></i> Custom website or e-commerce</li>
+              <li><i data-lucide="check" class="icon-check"></i> Appointment booking if needed</li>
+            </ul>
+            <p class="pricing-card-addons"><strong>Add-ons:</strong> Ongoing support, content updates—quote on request</p>
+            <a class="btn primary pricing-card-cta" href="/quote">Get Started</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Custom Sticker Printing – bulk pricing -->
+    <div class="sticker-pricing-section">
+      <h3 class="sticker-pricing-heading">Custom Sticker Printing</h3>
+      <p class="sticker-pricing-sub">Bulk-based pricing. The more you order, the less per sticker.</p>
+
+      <div class="sticker-calculator-wrap">
+        <div class="sticker-tier-table">
+          <table class="comparison-table sticker-tier-table-inner">
+            <thead>
+              <tr>
+                <th>Quantity</th>
+                <th>Price per sticker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Under 100 stickers</td>
+                <td class="sticker-price-cell">$0.50</td>
+              </tr>
+              <tr>
+                <td>100 – 249 stickers</td>
+                <td class="sticker-price-cell">$0.35</td>
+              </tr>
+              <tr>
+                <td>250+ stickers</td>
+                <td class="sticker-price-cell">$0.25</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="sticker-calculator">
+          <label for="sticker-qty" class="sticker-calculator-label">Quantity</label>
+          <div class="sticker-calculator-controls">
+            <input type="range" id="sticker-qty" class="sticker-qty-slider" min="1" max="1000" value="50" aria-label="Sticker quantity">
+            <input type="number" id="sticker-qty-num" class="sticker-qty-input" min="1" max="9999" value="50" aria-label="Sticker quantity number">
+          </div>
+          <div class="sticker-calculator-result">
+            <span class="sticker-calc-per">$<span id="sticker-per">0.50</span> per sticker</span>
+            <span class="sticker-calc-total">Total: $<span id="sticker-total">25.00</span></span>
+          </div>
+        </div>
       </div>
 
-      <!-- Sticker Notes -->
-      <div style="background: #252526; border: 1px solid #3a3a3b; border-radius: 16px; padding: 24px; margin-top: 32px;">
-        <h4 style="font-size: 18px; margin: 0 0 16px; color: #e0e0e0; font-weight: 600;">Sticker Specifications</h4>
-        <ul style="list-style: none; padding: 0; margin: 0; color: #c0c0c0; font-size: 14px; line-height: 1.8;">
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Printed on glossy printable vinyl (WeLiu)
-          </li>
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Laminated with holographic vinyl laminate (Outus) for water-resistance and scratch protection
-          </li>
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Stickers are water-resistant (not waterproof)
-          </li>
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Best for laptops, notebooks, phone cases, water bottles (light use), and indoor surfaces
-          </li>
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Cut using Silhouette Cameo 4 — clean die-cut edges
-          </li>
-          <li style="margin: 8px 0; padding-left: 24px; position: relative;">
-            <i data-lucide="check" style="width: 16px; height: 16px; color: #22c55e; position: absolute; left: 0; top: 3px;"></i>
-            Not intended for long-term outdoor exposure
-          </li>
+      <div class="sticker-specs-box">
+        <h4 class="sticker-specs-title">Sticker specifications</h4>
+        <ul class="sticker-specs-list">
+          <li><i data-lucide="check" class="icon-check"></i> Printed on glossy printable vinyl (WeLiu)</li>
+          <li><i data-lucide="check" class="icon-check"></i> Holographic laminate for water-resistance and scratch protection</li>
+          <li><i data-lucide="check" class="icon-check"></i> Water-resistant (not waterproof)</li>
+          <li><i data-lucide="check" class="icon-check"></i> Best for laptops, notebooks, phone cases, water bottles</li>
+          <li><i data-lucide="check" class="icon-check"></i> Silhouette Cameo 4 die-cut edges</li>
+          <li><i data-lucide="check" class="icon-check"></i> Not for long-term outdoor exposure</li>
         </ul>
       </div>
-
-      <!-- Additional Notes -->
-      <div style="background: #1b1b1c; border: 1px solid #3a3a3b; border-radius: 16px; padding: 20px; margin-top: 24px;">
-        <h4 style="font-size: 16px; margin: 0 0 12px; color: #e0e0e0; font-weight: 600;">Additional Information</h4>
-        <ul style="list-style: none; padding: 0; margin: 0; color: #c0c0c0; font-size: 14px; line-height: 1.8;">
-          <li style="margin: 8px 0; padding-left: 20px; position: relative;">
-            <span style="color: #d44c43; font-weight: 600;">Intricate die-cut shapes:</span> May include a small setup fee: +$0.10 – $0.20 per sticker or $10 flat depending on complexity
-          </li>
-          <li style="margin: 8px 0; padding-left: 20px; position: relative;">
-            <span style="color: #d44c43; font-weight: 600;">Rush orders available:</span> $15 – $30 depending on turnaround time
-          </li>
+      <div class="sticker-notes-box">
+        <h4 class="sticker-notes-title">Additional information</h4>
+        <ul class="sticker-notes-list">
+          <li><span class="sticker-note-highlight">Intricate die-cut shapes:</span> May include setup fee +$0.10–$0.20 per sticker or $10 flat</li>
+          <li><span class="sticker-note-highlight">Rush orders:</span> $15–$30 depending on turnaround</li>
         </ul>
       </div>
     </div>
 
-    <!-- Design Services Pricing Section -->
-    <div class="design-services-section" style="margin-top: 48px; padding-top: 48px; border-top: 1px solid #3a3a3b;">
-      <h3 style="font-size: clamp(20px, 3.5vw, 28px); margin: 0 0 16px; color: #e0e0e0;">Design Services Pricing</h3>
-      <p style="color: #c0c0c0; margin: 0 0 24px; font-size: 15px;">Design fees apply ONLY when the client does not provide a print-ready file.</p>
-      
+    <!-- Design Services Pricing -->
+    <div class="design-services-section">
+      <h3 class="design-services-heading">Design services pricing</h3>
+      <p class="design-services-desc">Design fees apply only when you don’t provide a print-ready file.</p>
       <div class="pricing-comparison">
         <table class="comparison-table">
           <thead>
             <tr>
-              <th>Service Type</th>
+              <th>Service type</th>
               <th>Price</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Simple Design</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$25</td>
+              <td>Simple design</td>
+              <td class="price-cell">$25</td>
             </tr>
             <tr>
-              <td>Moderate / Multi-element Design</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$40</td>
+              <td>Moderate / multi-element design</td>
+              <td class="price-cell">$40</td>
             </tr>
             <tr>
-              <td>Full Custom Artwork / Complex Design</td>
-              <td style="text-align: center; font-weight: 600; color: #d44c43;">$60+</td>
+              <td>Full custom artwork / complex design</td>
+              <td class="price-cell">$60+</td>
             </tr>
           </tbody>
         </table>
@@ -593,6 +633,71 @@
 <script>
   // Initialize Lucide icons
   lucide.createIcons();
+
+  // Package path toggle & card expand
+  (function () {
+    var pathBtns = document.querySelectorAll('.pricing-path-btn');
+    var pathPanels = document.querySelectorAll('.pricing-path-content');
+    if (!pathBtns.length || !pathPanels.length) return;
+
+    pathBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var path = btn.getAttribute('data-path');
+        pathBtns.forEach(function (b) {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        pathPanels.forEach(function (panel) {
+          var isActive = panel.id === 'path-' + path;
+          panel.classList.toggle('active', isActive);
+          panel.hidden = !isActive;
+        });
+      });
+    });
+
+    document.querySelectorAll('.pricing-card-toggle').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var expanded = this.getAttribute('aria-expanded') === 'true';
+        var detailsId = this.getAttribute('aria-controls');
+        var details = detailsId ? document.getElementById(detailsId) : null;
+        if (!details) return;
+        this.setAttribute('aria-expanded', !expanded);
+        details.hidden = expanded;
+        this.textContent = expanded ? 'View details' : 'Hide details';
+      });
+    });
+  })();
+
+  // Sticker price calculator: under 100 = $0.50, 100–249 = $0.35, 250+ = $0.25
+  (function () {
+    var slider = document.getElementById('sticker-qty');
+    var input = document.getElementById('sticker-qty-num');
+    var perEl = document.getElementById('sticker-per');
+    var totalEl = document.getElementById('sticker-total');
+    if (!slider || !input || !perEl || !totalEl) return;
+
+    function pricePerUnit(qty) {
+      if (qty >= 250) return 0.25;
+      if (qty >= 100) return 0.35;
+      return 0.5;
+    }
+
+    function updateDisplay(qty) {
+      qty = Math.max(1, Math.min(9999, parseInt(qty, 10) || 1));
+      slider.value = Math.min(parseInt(slider.getAttribute('max'), 10) || 1000, qty);
+      input.value = qty;
+      var per = pricePerUnit(qty);
+      var total = (qty * per).toFixed(2);
+      perEl.textContent = per.toFixed(2);
+      totalEl.textContent = total;
+    }
+
+    slider.addEventListener('input', function () { updateDisplay(this.value); });
+    input.addEventListener('input', function () { updateDisplay(this.value); });
+    updateDisplay(slider.value);
+  })();
 </script>
 </body>
 </html>

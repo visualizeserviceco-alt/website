@@ -72,7 +72,7 @@ class VisualizeWebsite {
   setupScrollAnimations() {
     const animatedElements = document.querySelectorAll(`
       section, header, footer, .project-card, .vh-hero .copy, 
-      .vh-hero .visual img, .vh-services .card, .vh-pricing .card, 
+      .vh-hero .visual img, .vh-services .card, .vh-pricing .card, .vh-pricing .pricing-card, 
       .vh-process .step, .vh-faq .item, .vh-testimonials .card, 
       .vh-showcase .tile, .vh-section, .section-card, .payment-methods li
     `);
@@ -218,7 +218,7 @@ class VisualizeWebsite {
     if (!window.matchMedia('(hover: hover)').matches) return;
 
     const hoverableElements = document.querySelectorAll(`
-      .project-card, .vh-services .card, .vh-pricing .card, 
+      .project-card, .vh-services .card, .vh-pricing .card, .vh-pricing .pricing-card, 
       .vh-testimonials .card, .vh-showcase .tile, .btn, .pay-btn
     `);
 

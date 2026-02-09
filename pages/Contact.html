@@ -178,9 +178,17 @@
     });
 </script>
 
-<script src="../assets/js/main.js"></script>
-<script>
-  lucide.createIcons();
+  <script src="../assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    lucide.createIcons();
+    
+    // Initialize EmailJS
+    // Replace 'YOUR_PUBLIC_KEY' with your EmailJS public key
+    // Get it from https://dashboard.emailjs.com/admin/integration
+    (function(){
+      emailjs.init("YOUR_PUBLIC_KEY");
+    })();
   
   // Contact form handling
   document.getElementById('contact-form').addEventListener('submit', async function(e) {
@@ -196,63 +204,49 @@
     submitButton.innerHTML = 'Sending...';
     
     try {
-      // Prepare data for API
-      const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        project: formData.get('project'),
-        message: formData.get('message')
+      // Prepare data for EmailJS
+      const templateParams = {
+        from_name: formData.get('name'),
+        from_email: formData.get('email'),
+        project_type: formData.get('project') || 'Not specified',
+        message: formData.get('message'),
+        to_email: 'contact@visualizestudio.org'
       };
       
-      // Submit to API
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
+      // Submit via EmailJS
+      // Replace 'YOUR_SERVICE_ID' and 'YOUR_TEMPLATE_ID' with your EmailJS service and template IDs
+      await emailjs.send(
+        'YOUR_SERVICE_ID',  // Your EmailJS Service ID
+        'YOUR_TEMPLATE_ID', // Your EmailJS Template ID
+        templateParams
+      );
       
-      let result;
-      try {
-        result = await response.json();
-      } catch (e) {
-        console.error('Failed to parse response:', e);
-        throw new Error('Invalid response from server');
-      }
+      // Success
+      messageDiv.style.display = 'block';
+      messageDiv.style.background = '#111';
+      messageDiv.style.border = '1px solid var(--brand-red)';
+      messageDiv.style.color = '#fff';
+      messageDiv.textContent = 'Thanks! I\'ll get back to you within 24 hours. For immediate inquiries, email me at contact@visualizestudio.org';
       
-      if (response.ok && result.success) {
-        // Success
-        messageDiv.style.display = 'block';
-        messageDiv.style.background = '#111';
-        messageDiv.style.border = '1px solid var(--brand-red)';
-        messageDiv.style.color = '#fff';
-        messageDiv.textContent = 'Thanks! I\'ll get back to you within 24 hours. For immediate inquiries, email me at contact@visualizestudio.org';
-        
-        this.reset();
-        
-        // Scroll to message
-        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } else {
-        // Error from API
-        console.error('API Error:', result);
-        messageDiv.style.display = 'block';
-        messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-        messageDiv.style.border = '1px solid #ef4444';
-        messageDiv.style.color = '#ef4444';
-        const errorMsg = result.error || result.details || 'Failed to send message. Please try again or email me directly.';
-        messageDiv.textContent = errorMsg;
-        
-        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+      this.reset();
+      
+      // Scroll to message
+      messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      
     } catch (error) {
-      // Network or other error
+      // Error
       console.error('Submission error:', error);
       messageDiv.style.display = 'block';
       messageDiv.style.background = 'rgba(239, 68, 68, 0.1)';
       messageDiv.style.border = '1px solid #ef4444';
       messageDiv.style.color = '#ef4444';
-      messageDiv.textContent = 'Failed to send message. Please try again or email me directly at contact@visualizestudio.org';
+      
+      // Try fallback to API if EmailJS fails
+      if (error.text && error.text.includes('Invalid')) {
+        messageDiv.textContent = 'EmailJS not configured. Please configure EmailJS or use the API endpoint.';
+      } else {
+        messageDiv.textContent = 'Failed to send message. Please try again or email me directly at contact@visualizestudio.org';
+      }
       
       messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     } finally {

@@ -65,3 +65,11 @@ Images in this folder can be referenced using:
 The website will automatically pull from these folders when you add images.
 
 
+
+
+
+
+
+
+
+

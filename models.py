@@ -53,3 +53,11 @@ class QuoteSubmission(db.Model):
             'submitted_at': self.submitted_at.isoformat() if self.submitted_at else None,
             'read': self.read
         }
+
+
+
+
+
+
+
+

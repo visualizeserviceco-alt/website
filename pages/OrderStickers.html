@@ -569,6 +569,10 @@
       .order-pricing-total-price {
         font-size: 28px;
       }
+
+      .order-pricing-calc-grid {
+        grid-template-columns: 1fr !important;
+      }
       
       .order-cta-button {
         width: 100%;
@@ -698,62 +702,44 @@
     <!-- Custom Cutout Stickers Section -->
     <div class="order-pricing-section">
       <h3 class="order-pricing-section-title">Custom Cutout Stickers</h3>
-      <p class="order-pricing-section-subtitle">Pricing for custom die-cut stickers in various quantities</p>
+      <p class="order-pricing-section-subtitle">Bulk-based pricing: under 100 = $0.50 each, 100–249 = $0.35, 250+ = $0.25</p>
       
-      <div class="order-minimum-notice">
-        <i data-lucide="alert-circle"></i>
-        <div class="order-minimum-notice-text">
-          <strong>Minimum Order:</strong> Custom cutout stickers require a minimum order of 25 stickers.
+      <div class="order-pricing-calc-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-bottom: 24px;">
+        <div class="order-pricing-table-wrapper">
+          <table class="order-pricing-table">
+            <thead>
+              <tr>
+                <th>Quantity</th>
+                <th>Price per sticker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Under 100 stickers</td>
+                <td style="font-weight: 700; color: var(--brand-red);">$0.50</td>
+              </tr>
+              <tr>
+                <td>100 – 249 stickers</td>
+                <td style="font-weight: 700; color: var(--brand-red);">$0.35</td>
+              </tr>
+              <tr>
+                <td>250+ stickers</td>
+                <td style="font-weight: 700; color: var(--brand-red);">$0.25</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-      
-      <div class="order-pricing-table-wrapper">
-        <table class="order-pricing-table">
-          <thead>
-            <tr>
-              <th>Quantity</th>
-              <th>Price Per Sticker</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1 Sticker</td>
-              <td>$3.00 – $4.00</td>
-            </tr>
-            <tr>
-              <td>5 Stickers</td>
-              <td>$2.50 each</td>
-            </tr>
-            <tr>
-              <td>10 Stickers</td>
-              <td>$2.25 each</td>
-            </tr>
-            <tr>
-              <td>25 Stickers</td>
-              <td>$2.00 each</td>
-            </tr>
-            <tr>
-              <td>50 Stickers</td>
-              <td>$1.75 each</td>
-            </tr>
-            <tr>
-              <td>100 Stickers</td>
-              <td>$1.50 each</td>
-            </tr>
-            <tr>
-              <td>250 Stickers</td>
-              <td>$1.25 each</td>
-            </tr>
-            <tr>
-              <td>500 Stickers</td>
-              <td>$1.10 each</td>
-            </tr>
-            <tr>
-              <td>1000 Stickers</td>
-              <td>$0.90 – $1.00 each</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="order-pricing-calc" style="background: #111; border: 1px solid #333; border-radius: 16px; padding: 24px;">
+          <label for="order-sticker-qty" style="display: block; font-weight: 600; margin-bottom: 12px; color: #e0e0e0;">Quantity</label>
+          <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px;">
+            <input type="range" id="order-sticker-qty" min="1" max="1000" value="50" style="flex: 1; accent-color: var(--brand-red);">
+            <input type="number" id="order-sticker-qty-num" min="1" max="9999" value="50" style="width: 80px; padding: 10px; font-size: 16px; font-weight: 600; background: #252526; border: 1px solid #444; border-radius: 8px; color: #fff; text-align: center;">
+          </div>
+          <div>
+            <div style="font-size: 15px; color: #999;">$<span id="order-sticker-per">0.50</span> per sticker</div>
+            <div style="font-size: 22px; font-weight: 800; color: var(--brand-red);">Total: $<span id="order-sticker-total">25.00</span></div>
+          </div>
+        </div>
       </div>
       
       <!-- Additional Information for Custom Stickers -->
@@ -866,6 +852,31 @@
   
   // Initialize pricing
   updateTotalPrice();
+
+  // Custom cutout sticker bulk calculator: under 100 = $0.50, 100–249 = $0.35, 250+ = $0.25
+  (function() {
+    const slider = document.getElementById('order-sticker-qty');
+    const input = document.getElementById('order-sticker-qty-num');
+    const perEl = document.getElementById('order-sticker-per');
+    const totalEl = document.getElementById('order-sticker-total');
+    if (!slider || !input || !perEl || !totalEl) return;
+    function pricePerUnit(q) {
+      if (q >= 250) return 0.25;
+      if (q >= 100) return 0.35;
+      return 0.5;
+    }
+    function update(qty) {
+      qty = Math.max(1, Math.min(9999, parseInt(qty, 10) || 1));
+      slider.value = Math.min(1000, qty);
+      input.value = qty;
+      const per = pricePerUnit(qty);
+      perEl.textContent = per.toFixed(2);
+      totalEl.textContent = (qty * per).toFixed(2);
+    }
+    slider.addEventListener('input', () => update(slider.value));
+    input.addEventListener('input', () => update(input.value));
+    update(50);
+  })();
   
   // Typeform popup functionality
   function openTypeform() {
@@ -927,3 +938,11 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+

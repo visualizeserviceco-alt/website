@@ -180,3 +180,11 @@ def get_stats():
         }), 200
     except Exception as e:
         return jsonify({'error': 'Failed to fetch stats', 'details': str(e)}), 500
+
+
+
+
+
+
+
+
