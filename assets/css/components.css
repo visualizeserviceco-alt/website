@@ -126,6 +126,125 @@
   color: #000;
 }
 
+/* === HOME PAGE: Services & Pricing (clean, functional) === */
+.home-services {
+  background: var(--bg-white);
+  color: var(--text-dark);
+  padding: 64px 0;
+}
+
+.home-section-title {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 32px;
+  text-align: center;
+}
+
+.home-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .home-services-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-service-card {
+  display: block;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-service-card:hover {
+  border-color: var(--brand-red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.home-service-icon {
+  display: inline-flex;
+  color: var(--brand-red);
+  margin-bottom: 16px;
+}
+
+.home-service-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.home-service-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.home-service-card p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.home-pricing .home-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .home-pricing .home-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.home-pricing-card {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.home-pricing-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.home-pricing-card p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.home-pricing-from {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--brand-red);
+  margin: 0 0 20px !important;
+}
+
+.home-pricing-card .btn {
+  margin-top: auto;
+}
+
 /* Mobile button touch feedback */
 @media (max-width: 768px) {
   .vh-hero {
