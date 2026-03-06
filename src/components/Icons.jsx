@@ -148,6 +148,15 @@ export function IconCheckCircle(props) {
   );
 }
 
+export function IconX(props) {
+  return (
+    <IconWrap {...props}>
+      <path d="M6 6l12 12" />
+      <path d="M18 6l-12 12" />
+    </IconWrap>
+  );
+}
+
 export function IconArrowRight(props) {
   return (
     <IconWrap {...props}>

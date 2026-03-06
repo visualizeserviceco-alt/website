@@ -8,14 +8,12 @@ import {
   IconSticker,
   IconCard,
   IconMapPin,
-  IconRocket,
-  IconGrid,
-  IconBrandMark,
   IconChat,
   IconPencilRuler,
   IconRefresh,
   IconCheckCircle,
 } from '../components/Icons';
+import PricingTable from '../components/PricingTable';
 
 const Check = () => (
   <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -31,13 +29,6 @@ const serviceIcons = {
   'Sticker Production': IconSticker,
   'Business Cards': IconCard,
   'Google Business Profile': IconMapPin,
-};
-
-const packageIcons = {
-  'Launch Package': IconRocket,
-  'Build Package': IconGrid,
-  'Website Only': IconBrowser,
-  'Brand Only': IconBrandMark,
 };
 
 const processIcons = [IconChat, IconPencilRuler, IconRefresh, IconCheckCircle];
@@ -92,12 +83,7 @@ const catalogCategories = [
         name: 'Sticker Production',
         price: null,
         payment: 'Paid upfront before production begins.',
-        description: 'Custom branded stickers printed in-house for physical brand presence.',
-        pricingTable: [
-          { qty: '50 Stickers', price: '$45' },
-          { qty: '100 Stickers', price: '$75' },
-          { qty: '250 Stickers', price: '$99' },
-        ],
+        description: 'Custom branded stickers produced in-house for physical brand presence and handout materials.',
       },
       {
         name: 'Business Cards',
@@ -105,6 +91,13 @@ const catalogCategories = [
         payment: '50% upfront for design, balance before print submission.',
         description: 'Custom business card design and coordination with a professional print service.',
         includes: ['Custom design', 'Print-ready files', 'Print service coordination', 'Paper/finish options'],
+      },
+      {
+        name: 'Other Print Materials',
+        price: null,
+        payment: null,
+        description: 'If you have something you want printed, I can design it and source the right production partner.',
+        includes: ['Posters & flyers', 'Signage & banners', 'Apparel graphics', 'Merch and promotional items'],
       },
     ],
   },
@@ -121,41 +114,6 @@ const catalogCategories = [
         includes: ['Profile setup or updates', 'Service descriptions', 'Business info formatting', 'Photo upload guidance'],
       },
     ],
-  },
-];
-
-const packageCards = [
-  {
-    name: 'Launch Package',
-    price: '$750',
-    for: 'New businesses starting from scratch.',
-    includes: ['Logo Design', 'Full Brand Identity', '5-Page Website', 'Google Business Optimization', '100 Stickers', 'Business Card Design'],
-    timeline: '3–4 Weeks',
-    goal: 'Professional launch presence and credibility foundation.',
-  },
-  {
-    name: 'Build Package',
-    price: '$1,200',
-    for: 'Businesses upgrading their image and digital presence.',
-    includes: ['Full Brand Identity', '5-Page Website', 'Landing Page', 'Google Business Optimization', '100 Stickers', 'Business Card Design + Print Coordination'],
-    timeline: '4–5 Weeks',
-    goal: 'Complete, polished business presence online and offline.',
-  },
-  {
-    name: 'Website Only',
-    price: '$650',
-    for: 'You have branding. You need a website.',
-    includes: ['5-Page Website', 'Contact form', 'Basic SEO', 'Mobile responsive layout'],
-    timeline: '2–3 Weeks',
-    goal: null,
-  },
-  {
-    name: 'Brand Only',
-    price: '$150',
-    for: 'Branding without a website.',
-    includes: ['Logo suite', 'Color palette', 'Typography system', 'Brand guide'],
-    timeline: null,
-    goal: null,
   },
 ];
 
@@ -452,34 +410,7 @@ export default function ServicesPage() {
         <div className="wrap">
           <h2 className="sv-heading">Packages</h2>
           <p className="sv-heading-sub">Bundled services for a full launch or upgrade.</p>
-          <div className="sv-pkg-scroll">
-            <div className="sv-pkg-grid">
-              {packageCards.map((pkg) => {
-                const PkgIcon = packageIcons[pkg.name];
-                return (
-                <div key={pkg.name} className="sv-pkg-card">
-                  <div className="sv-pkg-card-accent" />
-                  {PkgIcon && (
-                    <div className="sv-pkg-card-icon" aria-hidden="true">
-                      <PkgIcon size={20} />
-                    </div>
-                  )}
-                  <h3 className="sv-pkg-name">{pkg.name}</h3>
-                  <p className="sv-pkg-price">{pkg.price}</p>
-                  <p className="sv-pkg-for">{pkg.for}</p>
-                  <ul className="sv-pkg-includes">
-                    {pkg.includes.map((item) => (
-                      <li key={item}><Check /> {item}</li>
-                    ))}
-                  </ul>
-                  {pkg.timeline && <p className="sv-pkg-timeline">Delivery: {pkg.timeline}</p>}
-                  {pkg.goal && <p className="sv-pkg-goal">{pkg.goal}</p>}
-                  <a href="/contact#book" className="btn btn-primary sv-pkg-cta">Start Your Project</a>
-                </div>
-              );
-              })}
-            </div>
-          </div>
+          <PricingTable />
         </div>
       </section>
 
@@ -671,6 +602,11 @@ export default function ServicesPage() {
           color: var(--text-secondary);
           margin-bottom: var(--space-12);
           max-width: 560px;
+        }
+        .sv-breakdown .sv-heading-sub,
+        .sv-packages .sv-heading-sub,
+        .sv-process .sv-heading + .sv-heading-sub {
+          max-width: 640px;
         }
         .svc-category {
           margin-bottom: var(--space-16);
@@ -906,106 +842,14 @@ export default function ServicesPage() {
         }
         .addon-card.is-expanded .addon-card-toggle { margin-top: var(--space-2); }
 
-        /* ----- Packages – Premium panels ----- */
+        /* ----- Packages – wrapper only (table handled in PricingTable) ----- */
         .sv-packages {
           padding: var(--space-24) 0;
           background: var(--bg-elevated);
           border-top: 1px solid var(--border);
         }
         .sv-packages .sv-heading,
-        .sv-packages .sv-heading-sub { color: var(--text); }
         .sv-packages .sv-heading-sub { color: var(--text-secondary); }
-        .sv-pkg-scroll {
-          overflow-x: auto;
-          margin: 0 calc(-1 * var(--space-6));
-          padding: var(--space-4) var(--space-6);
-          -webkit-overflow-scrolling: touch;
-        }
-        .sv-pkg-scroll::-webkit-scrollbar { height: 6px; }
-        .sv-pkg-scroll::-webkit-scrollbar-track { background: var(--border); border-radius: 3px; }
-        .sv-pkg-scroll::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
-        .sv-pkg-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(280px, 1fr));
-          gap: var(--space-8);
-          min-width: min-content;
-        }
-        @media (max-width: 1100px) { .sv-pkg-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 600px) { .sv-pkg-grid { grid-template-columns: 1fr; } }
-        .sv-pkg-card {
-          position: relative;
-          background: var(--bg-card);
-          border: 1px solid var(--border);
-          border-radius: var(--radius-lg);
-          padding: var(--space-10);
-          display: flex;
-          flex-direction: column;
-          transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
-        }
-        .sv-pkg-card:hover {
-          border-color: var(--brand);
-          box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-        }
-        .sv-pkg-card-accent {
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: var(--brand);
-          border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-        }
-        .sv-pkg-card-icon {
-          color: var(--brand);
-          margin-bottom: var(--space-3);
-        }
-        .sv-pkg-card-icon svg { display: block; }
-        .sv-pkg-name {
-          font-size: 1.375rem;
-          font-weight: 800;
-          color: var(--text);
-          margin-bottom: var(--space-2);
-        }
-        .sv-pkg-price {
-          font-size: 1.75rem;
-          font-weight: 800;
-          color: var(--brand);
-          margin-bottom: var(--space-3);
-        }
-        .sv-pkg-for {
-          font-size: 0.9375rem;
-          color: var(--text-secondary);
-          margin-bottom: var(--space-6);
-          line-height: 1.5;
-        }
-        .sv-pkg-includes {
-          list-style: none;
-          padding: 0;
-          margin: 0 0 var(--space-6);
-          flex: 1;
-        }
-        .sv-pkg-includes li {
-          display: flex;
-          align-items: center;
-          gap: var(--space-2);
-          font-size: 0.9375rem;
-          color: var(--text-secondary);
-          margin-bottom: var(--space-2);
-        }
-        .sv-pkg-includes svg { color: var(--brand); flex-shrink: 0; }
-        .sv-pkg-timeline {
-          font-size: 0.875rem;
-          font-weight: 600;
-          color: var(--text);
-          margin-bottom: var(--space-2);
-        }
-        .sv-pkg-goal {
-          font-size: 0.875rem;
-          color: var(--text-muted);
-          margin-bottom: var(--space-6);
-          line-height: 1.5;
-        }
-        .sv-pkg-cta { width: 100%; }
 
         /* ----- Process – Horizontal timeline ----- */
         .sv-process {
