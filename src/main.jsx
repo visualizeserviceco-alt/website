@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
-function Maintenance() {
+function Maintenance({ onUnlock }) {
+  const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (onUnlock) onUnlock(password.trim());
+  };
+
   return (
     <div className="maintenance-screen">
       <div className="maintenance-glow" aria-hidden="true" />
@@ -30,9 +37,21 @@ function Maintenance() {
           </span>
           Follow on Instagram
         </a>
-        <p className="maintenance-note">
-          You can still reach me by email at <span>hello@visualizestudio.com</span>.
-        </p>
+        <form className="maintenance-form" onSubmit={handleSubmit}>
+          <label className="maintenance-label">
+            Enter access password to continue:
+            <input
+              type="password"
+              className="maintenance-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+            />
+          </label>
+          <button type="submit" className="btn btn-secondary maintenance-enter">
+            Enter site
+          </button>
+        </form>
       </div>
     </div>
   );
@@ -40,14 +59,32 @@ function Maintenance() {
 
 const maintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
+const maintenancePassword = import.meta.env.VITE_MAINTENANCE_PASSWORD || '';
+
+function Root() {
+  const [unlocked, setUnlocked] = useState(false);
+
+  if (maintenanceMode && !unlocked) {
+    return (
+      <Maintenance
+        onUnlock={(entered) => {
+          if (!maintenancePassword || entered === maintenancePassword) {
+            setUnlocked(true);
+          }
+        }}
+      />
+    );
+  }
+
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {maintenanceMode ? (
-      <Maintenance />
-    ) : (
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    )}
+    <Root />
   </React.StrictMode>
 );
