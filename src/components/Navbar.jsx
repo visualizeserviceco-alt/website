@@ -38,7 +38,7 @@ export default function Navbar() {
             ))}
             <li>
               <a href="/contact#book" className="btn btn-primary" onClick={() => setOpen(false)}>
-                Book a Strategy Call
+                Book a Consultation
               </a>
             </li>
           </ul>

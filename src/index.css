@@ -166,31 +166,53 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* High contrast sections */
+/* Section backgrounds – brand dark only, no white */
 .section-dark {
   background: var(--bg);
   color: var(--text);
 }
 
+.section-elevated {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-top: 1px solid var(--border);
+}
+
+.section-elevated .section-subtitle,
+.section-elevated .text-secondary {
+  color: var(--text-secondary);
+}
+
+.section-elevated .btn-secondary {
+  border-color: var(--border-light);
+  color: var(--text);
+}
+
+.section-elevated .btn-secondary:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+/* Legacy: map section-light to elevated dark so nothing stays white */
 .section-light {
-  background: #fff;
-  color: #0a0a0a;
+  background: var(--bg-elevated);
+  color: var(--text);
+  border-top: 1px solid var(--border);
 }
 
 .section-light .section-subtitle,
 .section-light .text-secondary {
-  color: #525252;
+  color: var(--text-secondary);
 }
 
 .section-light .btn-secondary {
-  border-color: #d4d4d4;
-  color: #0a0a0a;
+  border-color: var(--border-light);
+  color: var(--text);
 }
 
 .section-light .btn-secondary:hover {
-  border-color: #0a0a0a;
-  background: #0a0a0a;
-  color: #fff;
+  border-color: var(--text-muted);
+  color: var(--text);
 }
 
 /* Animations */

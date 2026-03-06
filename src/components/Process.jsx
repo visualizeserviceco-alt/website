@@ -1,17 +1,17 @@
 const steps = [
-  { num: '01', title: 'Strategy', desc: 'We align on goals, audience, and positioning before any build.' },
-  { num: '02', title: 'Build', desc: 'Brand, website, and marketing assets designed to convert.' },
-  { num: '03', title: 'Launch', desc: 'Go live with tracking, optimization, and clear next steps.' },
-  { num: '04', title: 'Scale', desc: 'Ongoing management and strategy to grow your results.' },
+  { num: '01', title: 'Discovery', desc: 'I learn your goals, audience, and what your brand or website needs to communicate.' },
+  { num: '02', title: 'Design & Build', desc: 'I design the visuals and build a clean, structured site that matches your brand.' },
+  { num: '03', title: 'Review & Revisions', desc: 'You review the work and I refine the details until it feels right.' },
+  { num: '04', title: 'Launch & Handoff', desc: 'I publish the site and hand over files, access, and next-step guidance.' },
 ];
 
 export default function Process() {
   return (
-    <section className="process section section-light">
+    <section className="process section section-elevated">
       <div className="wrap">
-        <h2 className="section-title">How We Work</h2>
+        <h2 className="section-title">My Process</h2>
         <p className="section-subtitle">
-          A clear process from strategy to launch and scale.
+          A clear process from kickoff to launch.
         </p>
         <div className="process-timeline">
           {steps.map((step, i) => (
@@ -41,15 +41,15 @@ export default function Process() {
         .process-step {
           position: relative;
           padding: var(--space-8);
-          background: #fafafa;
-          border: 1px solid #e5e5e5;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
           margin: 0 var(--space-2);
           transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
         }
         .process-step:hover {
-          border-color: #d4d4d4;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+          border-color: var(--brand);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.2);
         }
         .process-num {
           font-size: 0.8125rem;
@@ -61,12 +61,12 @@ export default function Process() {
         .process-title {
           font-size: 1.25rem;
           font-weight: 700;
-          color: #0a0a0a;
+          color: var(--text);
           margin-bottom: var(--space-2);
         }
         .process-desc {
           font-size: 0.9375rem;
-          color: #525252;
+          color: var(--text-secondary);
           line-height: 1.6;
         }
       `}</style>

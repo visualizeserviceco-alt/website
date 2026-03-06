@@ -10,10 +10,11 @@ export default function ShowcasePreview() {
 
   return (
     <section className="showcase-preview section section-dark">
+      <div className="showcase-preview-bg" aria-hidden="true" />
       <div className="wrap">
-        <h2 className="section-title">Our Work</h2>
+        <h2 className="section-title">My Work</h2>
         <p className="section-subtitle">
-          Websites, brand identities, and print. Built to convert and scale.
+          Websites, brand identities, and print—designed with detail, clarity, and consistency.
         </p>
         <div className="showcase-grid">
           {websites.map((p) => (
@@ -40,6 +41,14 @@ export default function ShowcasePreview() {
         </div>
       </div>
       <style>{`
+        .showcase-preview { position: relative; }
+        .showcase-preview-bg {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(212, 76, 67, 0.05) 0%, transparent 50%);
+          pointer-events: none;
+        }
+        .showcase-preview .wrap { position: relative; z-index: 1; }
         .showcase-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);

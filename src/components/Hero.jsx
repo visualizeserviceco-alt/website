@@ -4,14 +4,19 @@ export default function Hero() {
   return (
     <section className="hero">
       <div className="hero-bg" aria-hidden="true" />
-      <div className="wrap hero-inner">
-        <h1 className="hero-title">Performance Marketing for Local Businesses</h1>
-        <p className="hero-sub">
-          We build brands, websites, and marketing systems that generate real customers.
-        </p>
-        <div className="hero-cta">
-          <a href="/contact#book" className="btn btn-primary">Book a Strategy Call</a>
-          <Link to="/showcase" className="btn btn-secondary">View Our Work</Link>
+      <div className="wrap hero-wrap">
+        <div className="hero-left">
+          <h1 className="hero-title">Branding & Websites for Real Businesses</h1>
+          <p className="hero-sub">
+            I design the visuals and build the digital foundation your business needs to show up professionally.
+          </p>
+          <div className="hero-cta">
+            <a href="/contact#book" className="btn btn-primary">Book a Consultation</a>
+            <Link to="/showcase" className="btn btn-secondary">View My Work</Link>
+          </div>
+        </div>
+        <div className="hero-right">
+          <div className="hero-visual" />
         </div>
       </div>
       <style>{`
@@ -26,13 +31,31 @@ export default function Hero() {
         .hero-bg {
           position: absolute;
           inset: 0;
-          background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 76, 67, 0.08) 0%, transparent 50%),
-                      linear-gradient(180deg, var(--bg) 0%, var(--bg-elevated) 100%);
+          background: linear-gradient(135deg, var(--bg) 0%, var(--bg-elevated) 50%, #0d0d0e 100%);
           pointer-events: none;
         }
-        .hero-inner {
+        .hero-bg::after {
+          content: '';
+          position: absolute;
+          top: -50%;
+          right: -20%;
+          width: 80%;
+          height: 140%;
+          background: radial-gradient(ellipse at center, rgba(212, 76, 67, 0.08) 0%, transparent 60%);
+          pointer-events: none;
+        }
+        .hero-wrap {
           position: relative;
           z-index: 1;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: var(--space-16);
+          align-items: center;
+        }
+        @media (max-width: 900px) {
+          .hero-wrap { grid-template-columns: 1fr; text-align: center; }
+          .hero-left .hero-cta { justify-content: center; }
+          .hero-right { min-height: 200px; order: -1; }
         }
         .hero-title {
           font-size: clamp(2.5rem, 6vw, 4rem);
@@ -40,7 +63,7 @@ export default function Hero() {
           letter-spacing: -0.03em;
           line-height: 1.1;
           margin-bottom: var(--space-6);
-          max-width: 14ch;
+          color: var(--text);
         }
         .hero-sub {
           font-size: clamp(1.125rem, 2vw, 1.25rem);
@@ -53,6 +76,28 @@ export default function Hero() {
           display: flex;
           flex-wrap: wrap;
           gap: var(--space-4);
+        }
+        .hero-visual {
+          position: relative;
+          width: 100%;
+          min-height: 320px;
+          border-radius: var(--radius-lg);
+          background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+          border: 1px solid var(--border);
+          box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+        }
+        .hero-visual::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: radial-gradient(circle at 70% 30%, rgba(212, 76, 67, 0.12) 0%, transparent 50%);
+          animation: hero-pulse 8s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @keyframes hero-pulse {
+          0%, 100% { opacity: 0.6; transform: scale(1); }
+          50% { opacity: 1; transform: scale(1.02); }
         }
       `}</style>
     </section>

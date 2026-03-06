@@ -1,12 +1,12 @@
 const quotes = [
-  { text: 'They helped us launch our brand and site on time. Professional and strategic.', author: 'Client', company: 'Local Business' },
-  { text: 'Our website now generates consistent leads. The process was clear from day one.', author: 'Client', company: 'Local Business' },
-  { text: 'Full-stack support: brand, site, and ongoing marketing. One team, real results.', author: 'Client', company: 'Local Business' },
+  { text: 'Clear communication, strong design, and a smooth handoff. Everything felt organized from day one.', author: 'Client', company: 'Local Business' },
+  { text: 'The brand and website came together quickly, and the details were handled with care.', author: 'Client', company: 'Local Business' },
+  { text: 'The final site looks professional, loads fast, and matches the brand perfectly.', author: 'Client', company: 'Local Business' },
 ];
 
 export default function Testimonials() {
   return (
-    <section className="testimonials section section-light">
+    <section className="testimonials section section-elevated">
       <div className="wrap">
         <h2 className="section-title">What Clients Say</h2>
         <div className="testimonials-grid">
@@ -32,27 +32,32 @@ export default function Testimonials() {
           .testimonials-grid { grid-template-columns: 1fr; }
         }
         .testimonial-card {
-          background: #fafafa;
-          border: 1px solid #e5e5e5;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
           padding: var(--space-8);
           margin: 0;
+          transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+        }
+        .testimonial-card:hover {
+          border-color: var(--border-light);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
         .testimonial-text {
           font-size: 1rem;
-          color: #262626;
+          color: var(--text-secondary);
           line-height: 1.7;
           margin-bottom: var(--space-6);
         }
         .testimonial-author {
           font-weight: 600;
-          color: #0a0a0a;
+          color: var(--text);
           font-style: normal;
         }
         .testimonial-company {
           display: block;
           font-size: 0.875rem;
-          color: #737373;
+          color: var(--text-muted);
           margin-top: var(--space-1);
         }
       `}</style>

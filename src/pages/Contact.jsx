@@ -9,6 +9,14 @@ export default function Contact() {
     }
   }, []);
 
+  useEffect(() => {
+    if (document.querySelector('script[src*="calendly.com"]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -20,51 +28,78 @@ export default function Contact() {
 
   return (
     <>
-      <section className="page-hero section section-dark" id="book">
+      <section className="contact-hero section" id="book">
+        <div className="contact-hero-bg" aria-hidden="true" />
         <div className="wrap">
           <h1 className="section-title">Contact</h1>
           <p className="section-subtitle">
-            Book a strategy call or send a message. We'll respond within one business day.
+            Book a consultation or send a message. I&apos;ll respond within one business day.
           </p>
         </div>
       </section>
-      <section className="section section-light">
+      <section className="contact-main section">
+        <div className="contact-main-bg" aria-hidden="true" />
         <div className="wrap contact-wrap">
           <div className="contact-calendly">
-            <div className="calendly-placeholder">
-              <p>Calendly embed placeholder</p>
-              <p className="calendly-hint">Replace this block with your Calendly embed or link.</p>
-              <a href="#" className="btn btn-primary" style={{ marginTop: 'var(--space-4)' }}>
-                Open scheduling link
-              </a>
+            <div className="calendly-panel">
+              <div
+                className="calendly-inline-widget"
+                data-url="https://calendly.com/contactvisualize/15min-onboarding-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+                style={{ minWidth: '320px', height: '700px' }}
+              />
             </div>
           </div>
           <div className="contact-form-wrap">
-            <h2 className="contact-form-title">Or send a message</h2>
-            <form onSubmit={handleSubmit} className="contact-form">
-              <label>
-                <span>Name</span>
-                <input type="text" name="name" value={form.name} onChange={handleChange} required />
-              </label>
-              <label>
-                <span>Email</span>
-                <input type="email" name="email" value={form.email} onChange={handleChange} required />
-              </label>
-              <label>
-                <span>Company (optional)</span>
-                <input type="text" name="company" value={form.company} onChange={handleChange} />
-              </label>
-              <label>
-                <span>Message</span>
-                <textarea name="message" value={form.message} onChange={handleChange} rows={4} required />
-              </label>
-              <button type="submit" className="btn btn-primary">Send message</button>
-            </form>
+            <div className="contact-form-panel">
+              <h2 className="contact-form-title">Or send a message</h2>
+              <form onSubmit={handleSubmit} className="contact-form">
+                <label>
+                  <span>Name</span>
+                  <input type="text" name="name" value={form.name} onChange={handleChange} required />
+                </label>
+                <label>
+                  <span>Email</span>
+                  <input type="email" name="email" value={form.email} onChange={handleChange} required />
+                </label>
+                <label>
+                  <span>Company (optional)</span>
+                  <input type="text" name="company" value={form.company} onChange={handleChange} />
+                </label>
+                <label>
+                  <span>Message</span>
+                  <textarea name="message" value={form.message} onChange={handleChange} rows={4} required />
+                </label>
+                <button type="submit" className="btn btn-primary">Send message</button>
+              </form>
+            </div>
           </div>
         </div>
       </section>
       <style>{`
-        .page-hero { padding-bottom: var(--space-12); }
+        .contact-hero {
+          position: relative;
+          background: var(--bg);
+          padding-bottom: var(--space-12);
+        }
+        .contact-hero-bg {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(212, 76, 67, 0.08) 0%, transparent 50%);
+          pointer-events: none;
+        }
+        .contact-hero .wrap { position: relative; z-index: 1; }
+        .contact-main {
+          position: relative;
+          background: var(--bg-elevated);
+          border-top: 1px solid var(--border);
+        }
+        .contact-main-bg {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(212, 76, 67, 0.04) 0%, transparent 50%);
+          pointer-events: none;
+        }
+        .contact-main .wrap { position: relative; z-index: 1; }
         .contact-wrap {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -74,22 +109,25 @@ export default function Contact() {
         @media (max-width: 900px) {
           .contact-wrap { grid-template-columns: 1fr; }
         }
-        .calendly-placeholder {
-          background: #f5f5f5;
-          border: 1px dashed #d4d4d4;
+        .calendly-panel {
+          background: var(--bg-card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
-          padding: var(--space-12);
-          text-align: center;
-          color: #737373;
+          overflow: hidden;
         }
-        .calendly-hint {
-          font-size: 0.875rem;
-          margin-top: var(--space-2);
+        .calendly-panel .calendly-inline-widget {
+          border-radius: var(--radius-lg);
+        }
+        .contact-form-panel {
+          background: var(--bg-card);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+          padding: var(--space-10);
         }
         .contact-form-title {
           font-size: 1.25rem;
           font-weight: 700;
-          color: #0a0a0a;
+          color: var(--text);
           margin-bottom: var(--space-6);
         }
         .contact-form {
@@ -105,16 +143,21 @@ export default function Contact() {
         .contact-form span {
           font-size: 0.875rem;
           font-weight: 500;
-          color: #262626;
+          color: var(--text-secondary);
         }
         .contact-form input,
         .contact-form textarea {
           padding: var(--space-3) var(--space-4);
           font-size: 1rem;
           font-family: inherit;
-          border: 1px solid #e5e5e5;
+          border: 1px solid var(--border);
           border-radius: var(--radius);
-          background: #fff;
+          background: var(--bg-elevated);
+          color: var(--text);
+        }
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+          color: var(--text-muted);
         }
         .contact-form input:focus,
         .contact-form textarea:focus {

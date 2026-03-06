@@ -1,33 +1,22 @@
 import { useState } from 'react';
+import { IconPenTool, IconBrowser, IconSticker, IconMapPin } from './Icons';
 
 const pillars = [
-  {
-    title: 'Brand Development',
-    items: ['Logo', 'Brand system', 'Print assets'],
-  },
-  {
-    title: 'Website & Funnels',
-    items: ['High-converting websites', 'Landing pages', 'Booking systems'],
-  },
-  {
-    title: 'Lead Generation',
-    items: ['Paid ads setup', 'Google optimization', 'Retargeting systems'],
-  },
-  {
-    title: 'Growth & Retainers',
-    items: ['Ongoing ad management', 'Campaign optimization', 'Strategy consulting'],
-  },
+  { title: 'Brand Identity', items: ['Logo design', 'Brand identity', 'Brand guidelines'], icon: IconPenTool },
+  { title: 'Website Development', items: ['Business websites', 'Landing pages', 'Contact forms'], icon: IconBrowser },
+  { title: 'Print & Physical', items: ['Stickers', 'Business cards', 'Print-ready files'], icon: IconSticker },
+  { title: 'Digital Setup', items: ['Google Business Profile', 'Basic analytics setup', 'Launch essentials'], icon: IconMapPin },
 ];
 
 export default function Services() {
   const [expanded, setExpanded] = useState(null);
 
   return (
-    <section className="services section section-light" id="services">
+    <section className="services section section-elevated" id="services">
       <div className="wrap">
-        <h2 className="section-title">Full-Stack Marketing</h2>
+        <h2 className="section-title">Studio Services</h2>
         <p className="section-subtitle">
-          From brand and website to lead generation and ongoing growth. One partner, end-to-end.
+          Brand identity, websites, print design, and essential digital setup—delivered directly, start to finish.
         </p>
         <div className="services-grid">
           {pillars.map((pillar, i) => (
@@ -41,6 +30,11 @@ export default function Services() {
               tabIndex={0}
               onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setExpanded(expanded === i ? null : i)}
             >
+              {pillar.icon && (
+                <div className="services-card-icon" aria-hidden="true">
+                  <pillar.icon size={22} />
+                </div>
+              )}
               <h3 className="services-card-title">{pillar.title}</h3>
               <ul className="services-card-list">
                 {pillar.items.map((item) => (
@@ -65,8 +59,8 @@ export default function Services() {
           .services-grid { grid-template-columns: 1fr; }
         }
         .services-card {
-          background: #fafafa;
-          border: 1px solid #e5e5e5;
+          background: var(--bg-card);
+          border: 1px solid var(--border);
           border-radius: var(--radius-lg);
           padding: var(--space-8);
           cursor: pointer;
@@ -74,19 +68,19 @@ export default function Services() {
         }
         .services-card:hover,
         .services-card.is-expanded {
-          border-color: #d4d4d4;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+          border-color: var(--brand);
+          box-shadow: 0 12px 40px rgba(0,0,0,0.25);
         }
         .services-card-title {
           font-size: 1.25rem;
           font-weight: 700;
-          color: #0a0a0a;
+          color: var(--text);
           margin-bottom: var(--space-4);
         }
         .services-card-list {
           list-style: none;
           font-size: 0.9375rem;
-          color: #525252;
+          color: var(--text-secondary);
           line-height: 1.8;
         }
         .services-card-list li {

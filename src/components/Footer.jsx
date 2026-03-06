@@ -9,7 +9,7 @@ export default function Footer() {
             <img src="/logo.svg" alt="Visualize" />
             <span>Visualize</span>
           </Link>
-          <p className="footer-tagline">Performance Marketing & Brand Development</p>
+          <p className="footer-tagline">Brand Development & Website Design</p>
         </div>
         <div className="footer-links">
           <nav>
