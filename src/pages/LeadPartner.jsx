@@ -253,18 +253,20 @@ export default function LeadPartner() {
           width: 100%;
           height: 300px;
           border-radius: var(--radius-lg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
           background:
             radial-gradient(circle at 30% 30%, rgba(212, 76, 67, 0.18) 0%, transparent 55%),
             radial-gradient(circle at 70% 60%, rgba(212, 76, 67, 0.10) 0%, transparent 55%),
-            linear-gradient(145deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
-          border: 1px solid var(--border);
+            linear-gradient(145deg, var(--glass-bg) 0%, var(--glass-bg-strong) 100%);
+          border: 1px solid var(--glass-border);
           box-shadow: 0 24px 64px rgba(0,0,0,0.4);
         }
 
         .lp-content {
           position: relative;
           background: var(--bg-elevated);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .lp-content-bg {
           position: absolute;
@@ -280,8 +282,10 @@ export default function LeadPartner() {
           gap: var(--space-8);
         }
         .lp-card, .lp-principle {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: var(--space-10);
           box-shadow: 0 12px 40px rgba(0,0,0,0.18);
@@ -330,7 +334,7 @@ export default function LeadPartner() {
         .lp-list--muted li::before { color: var(--border-light); }
 
         .lp-example {
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius);
           overflow: hidden;
           margin: var(--space-6) 0;
@@ -342,7 +346,7 @@ export default function LeadPartner() {
           padding: var(--space-4) var(--space-5);
           color: var(--text-secondary);
           background: rgba(255,255,255,0.01);
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid var(--glass-border);
         }
         .lp-example-total {
           border-bottom: none;
@@ -361,7 +365,7 @@ export default function LeadPartner() {
           grid-template-columns: auto 1fr;
           gap: var(--space-4);
           padding: var(--space-6);
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           background: rgba(0,0,0,0.15);
         }
@@ -395,7 +399,7 @@ export default function LeadPartner() {
         .lp-calendly {
           position: relative;
           background: var(--bg);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .lp-calendly-bg {
           position: absolute;
@@ -416,8 +420,10 @@ export default function LeadPartner() {
         }
         .lp-calendly-sub { color: var(--text-secondary); margin: 0 0 var(--space-8); }
         .lp-calendly-panel {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           overflow: hidden;
           box-shadow: 0 12px 40px rgba(0,0,0,0.25);

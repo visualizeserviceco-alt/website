@@ -18,19 +18,19 @@ export default function ShowcasePreview() {
         </p>
         <div className="showcase-grid">
           {websites.map((p) => (
-            <Link key={p.title} to="/showcase?filter=websites" className="showcase-card">
+            <Link key={p.id || p.title} to="/showcase?filter=websites" className="showcase-card">
               <img src={p.image} alt="" />
               <span className="showcase-card-title">{p.title}</span>
             </Link>
           ))}
           {branding.map((p) => (
-            <Link key={p.title} to="/showcase?filter=branding" className="showcase-card">
+            <Link key={p.id || p.title} to="/showcase?filter=branding" className="showcase-card">
               <img src={p.image} alt="" />
               <span className="showcase-card-title">{p.title}</span>
             </Link>
           ))}
           {print.map((p) => (
-            <Link key={p.title} to="/showcase?filter=print" className="showcase-card">
+            <Link key={p.id || p.title} to="/showcase?filter=print" className="showcase-card">
               <img src={p.image} alt="" />
               <span className="showcase-card-title">{p.title}</span>
             </Link>
@@ -67,7 +67,10 @@ export default function ShowcasePreview() {
           border-radius: var(--radius-lg);
           overflow: hidden;
           display: block;
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
         }
         .showcase-card img {
           width: 100%;

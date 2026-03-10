@@ -37,7 +37,7 @@ export default function Pricing() {
         .pricing-main {
           position: relative;
           background: var(--bg-elevated);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .pricing-main-bg {
           position: absolute;

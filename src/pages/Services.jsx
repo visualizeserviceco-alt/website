@@ -510,8 +510,10 @@ export default function ServicesPage() {
           width: 100%;
           min-height: 320px;
           border-radius: var(--radius-lg);
-          background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
-          border: 1px solid var(--border);
+          background: linear-gradient(145deg, var(--glass-bg) 0%, var(--glass-bg-strong) 100%);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           box-shadow: 0 24px 64px rgba(0,0,0,0.4);
         }
         .sv-hero-visual::before {
@@ -532,7 +534,7 @@ export default function ServicesPage() {
         .sv-pillars {
           padding: var(--space-20) 0;
           background: var(--bg-elevated);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .sv-pillars-heading {
           font-size: clamp(1.5rem, 3vw, 2rem);
@@ -554,8 +556,10 @@ export default function ServicesPage() {
           align-items: flex-start;
           text-align: left;
           padding: var(--space-10);
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           cursor: pointer;
           transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease), transform var(--duration) var(--ease);
@@ -620,7 +624,7 @@ export default function ServicesPage() {
           color: var(--brand);
           margin-bottom: var(--space-6);
           padding-bottom: var(--space-2);
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid var(--glass-border);
         }
         .svc-grid {
           display: grid;
@@ -628,8 +632,10 @@ export default function ServicesPage() {
           gap: var(--space-6);
         }
         .svc-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: var(--space-8);
           cursor: pointer;
@@ -685,7 +691,7 @@ export default function ServicesPage() {
         .svc-card-payment { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: var(--space-3); }
         .svc-card-note { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: var(--space-3); }
         .svc-card-table {
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius);
           overflow: hidden;
           margin-bottom: var(--space-4);
@@ -693,7 +699,7 @@ export default function ServicesPage() {
         .svc-card-table-row {
           display: flex; justify-content: space-between;
           padding: var(--space-3) var(--space-4);
-          border-bottom: 1px solid var(--border);
+          border-bottom: 1px solid var(--glass-border);
           font-size: 0.9375rem;
           color: var(--text-secondary);
         }
@@ -724,7 +730,7 @@ export default function ServicesPage() {
           position: relative;
           padding: var(--space-24) 0;
           background: linear-gradient(180deg, #0f0f10 0%, var(--bg-elevated) 100%);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .sv-addons-bg {
           position: absolute;
@@ -754,8 +760,10 @@ export default function ServicesPage() {
         @media (max-width: 600px) { .addon-grid { grid-template-columns: 1fr; } }
         .addon-card {
           position: relative;
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-left: 3px solid var(--brand);
           border-radius: var(--radius-lg);
           padding: var(--space-8);
@@ -846,7 +854,7 @@ export default function ServicesPage() {
         .sv-packages {
           padding: var(--space-24) 0;
           background: var(--bg-elevated);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .sv-packages .sv-heading,
         .sv-packages .sv-heading-sub { color: var(--text-secondary); }
@@ -855,7 +863,7 @@ export default function ServicesPage() {
         .sv-process {
           padding: var(--space-24) 0;
           background: var(--bg);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .sv-process .sv-heading { margin-bottom: var(--space-12); }
         .sv-process-timeline {
@@ -927,7 +935,7 @@ export default function ServicesPage() {
           position: relative;
           padding: var(--space-24) 0;
           background: linear-gradient(180deg, var(--bg-elevated) 0%, #080808 100%);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .sv-cta-bg {
           position: absolute;

@@ -49,8 +49,10 @@ export default function Trust() {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius);
           font-size: 0.75rem;
           font-weight: 600;

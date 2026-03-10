@@ -49,9 +49,10 @@ export default function Navbar() {
           position: sticky;
           top: 0;
           z-index: 100;
-          background: rgba(10, 10, 10, 0.9);
-          backdrop-filter: blur(12px);
-          border-bottom: 1px solid var(--border);
+          background: rgba(10, 10, 10, 0.55);
+          backdrop-filter: blur(var(--glass-blur-strong));
+          -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+          border-bottom: 1px solid var(--glass-border);
         }
         .navbar-inner {
           display: flex;
@@ -115,8 +116,10 @@ export default function Navbar() {
             width: 100%;
             max-width: 320px;
             height: 100vh;
-            background: var(--bg-elevated);
-            border-left: 1px solid var(--border);
+            background: rgba(17, 17, 17, 0.85);
+            backdrop-filter: blur(var(--glass-blur-strong));
+            -webkit-backdrop-filter: blur(var(--glass-blur-strong));
+            border-left: 1px solid var(--glass-border);
             padding: var(--space-24) var(--space-6);
             transform: translateX(100%);
             transition: transform var(--duration) var(--ease);

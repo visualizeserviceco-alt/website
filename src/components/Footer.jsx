@@ -25,8 +25,10 @@ export default function Footer() {
       </div>
       <style>{`
         .footer {
-          background: var(--bg-elevated);
-          border-top: 1px solid var(--border);
+          background: rgba(17, 17, 17, 0.6);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border-top: 1px solid var(--glass-border);
           padding: var(--space-16) 0 var(--space-8);
         }
         .footer-inner {
@@ -67,7 +69,7 @@ export default function Footer() {
           font-size: 0.8125rem;
           color: var(--text-muted);
           padding-top: var(--space-6);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
       `}</style>
     </footer>

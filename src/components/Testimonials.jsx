@@ -32,8 +32,10 @@ export default function Testimonials() {
           .testimonials-grid { grid-template-columns: 1fr; }
         }
         .testimonial-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: var(--space-8);
           margin: 0;

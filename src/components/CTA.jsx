@@ -10,7 +10,7 @@ export default function CTA() {
         .cta {
           position: relative;
           background: linear-gradient(180deg, var(--bg-elevated) 0%, #080808 100%);
-          border-top: 1px solid var(--border);
+          border-top: 1px solid var(--glass-border);
         }
         .cta-bg {
           position: absolute;

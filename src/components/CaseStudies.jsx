@@ -34,8 +34,10 @@ export default function CaseStudies() {
           .case-grid { grid-template-columns: 1fr; }
         }
         .case-card {
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           overflow: hidden;
           transition: border-color var(--duration) var(--ease);

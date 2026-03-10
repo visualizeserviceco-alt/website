@@ -82,9 +82,11 @@ export default function Hero() {
           width: 100%;
           min-height: 320px;
           border-radius: var(--radius-lg);
-          background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
-          border: 1px solid var(--border);
-          box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
+          box-shadow: 0 24px 64px rgba(0,0,0,0.35);
         }
         .hero-visual::before {
           content: '';

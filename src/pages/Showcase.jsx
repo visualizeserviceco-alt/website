@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { showcaseCategories, showcaseProjects } from '../data/showcase';
 
 export default function Showcase() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const filterParam = searchParams.get('filter');
   const [filter, setFilter] = useState(
     showcaseCategories.includes(filterParam) ? filterParam : 'all'
@@ -12,6 +12,11 @@ export default function Showcase() {
   useEffect(() => {
     if (showcaseCategories.includes(filterParam)) setFilter(filterParam);
   }, [filterParam]);
+
+  const setFilterAndUrl = (value) => {
+    setFilter(value);
+    setSearchParams(value === 'all' ? {} : { filter: value });
+  };
 
   const filtered = useMemo(() => {
     if (filter === 'all') return showcaseProjects;
@@ -26,7 +31,7 @@ export default function Showcase() {
           <div className="showcase-hero-content">
             <h1 className="section-title">Showcase</h1>
             <p className="section-subtitle">
-              Websites, branding, and print work. Drop new images into public/showcase and add entries in src/data/showcase.js.
+              Websites and branding I’ve designed and built for clients.
             </p>
           </div>
           <div className="showcase-hero-visual" aria-hidden="true">
@@ -37,12 +42,54 @@ export default function Showcase() {
       <section className="showcase-main section">
         <div className="showcase-main-bg" aria-hidden="true" />
         <div className="wrap">
-          <div className="showcase-coming">
-            <h2 className="showcase-coming-title">Coming Soon</h2>
-            <p className="showcase-coming-sub">
-              I’m organizing and uploading completed projects. Check back soon for the full showcase.
-            </p>
+          <div className="showcase-filters">
+            <a
+              href="/showcase"
+              className={`showcase-filter-pill ${filter === 'all' ? 'is-active' : ''}`}
+              onClick={(e) => { e.preventDefault(); setFilterAndUrl('all'); }}
+            >
+              All
+            </a>
+            {showcaseCategories.map((cat) => (
+              <a
+                key={cat}
+                href={`/showcase?filter=${cat}`}
+                className={`showcase-filter-pill ${filter === cat ? 'is-active' : ''}`}
+                onClick={(e) => { e.preventDefault(); setFilterAndUrl(cat); }}
+              >
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </a>
+            ))}
           </div>
+          {filtered.length > 0 ? (
+            <div className="showcase-grid">
+              {filtered.map((p) => (
+                <a
+                  key={p.id}
+                  href={p.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="showcase-card"
+                >
+                  <img src={p.image} alt="" />
+                  <div className="showcase-card-overlay">
+                    <span className="showcase-card-title">{p.title}</span>
+                    {p.description && (
+                      <span className="showcase-card-desc">{p.description}</span>
+                    )}
+                    <span className="showcase-card-link">View site →</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="showcase-coming">
+              <h2 className="showcase-coming-title">Nothing in this category yet</h2>
+              <p className="showcase-coming-sub">
+                More projects will appear here as they’re added.
+              </p>
+            </div>
+          )}
         </div>
       </section>
       <style>{`
@@ -96,11 +143,102 @@ export default function Showcase() {
           pointer-events: none;
         }
         .showcase-main .wrap { position: relative; z-index: 1; }
+        .showcase-filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--space-2);
+          margin-bottom: var(--space-10);
+        }
+        .showcase-filter-pill {
+          display: inline-block;
+          padding: var(--space-2) var(--space-4);
+          border-radius: 999px;
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: var(--text-secondary);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
+          transition: color var(--duration) var(--ease), border-color var(--duration) var(--ease), background var(--duration) var(--ease);
+        }
+        .showcase-filter-pill:hover {
+          color: var(--text);
+          border-color: rgba(255, 255, 255, 0.12);
+        }
+        .showcase-filter-pill.is-active {
+          color: var(--text);
+          background: var(--glass-bg-brand);
+          border-color: var(--glass-border-brand);
+        }
+        .showcase-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: var(--space-8);
+        }
+        .showcase-card {
+          position: relative;
+          aspect-ratio: 4/3;
+          border-radius: var(--radius-lg);
+          overflow: hidden;
+          display: block;
+          background: var(--glass-bg);
+          border: 1px solid var(--glass-border);
+          transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
+        }
+        .showcase-card:hover {
+          border-color: rgba(255, 255, 255, 0.12);
+          box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+        .showcase-card img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s var(--ease);
+        }
+        .showcase-card:hover img {
+          transform: scale(1.04);
+        }
+        .showcase-card-overlay {
+          position: absolute;
+          inset: 0;
+          padding: var(--space-6);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          background: linear-gradient(transparent 30%, rgba(0,0,0,0.85));
+          color: #fff;
+        }
+        .showcase-card-title {
+          font-weight: 700;
+          font-size: 1.125rem;
+          margin-bottom: var(--space-1);
+        }
+        .showcase-card-desc {
+          font-size: 0.875rem;
+          color: var(--text-secondary);
+          margin-bottom: var(--space-2);
+          line-height: 1.4;
+        }
+        .showcase-card-link {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: var(--brand-light);
+          opacity: 0;
+          transform: translateY(4px);
+          transition: opacity var(--duration) var(--ease), transform var(--duration) var(--ease);
+        }
+        .showcase-card:hover .showcase-card-link {
+          opacity: 1;
+          transform: translateY(0);
+        }
         .showcase-coming {
           max-width: 720px;
           margin: 0 auto;
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           padding: var(--space-12);
           text-align: center;

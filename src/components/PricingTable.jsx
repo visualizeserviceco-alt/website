@@ -108,11 +108,13 @@ export default function PricingTable() {
       <style>{`
         .pt-wrapper {
           margin-top: var(--space-10);
-          background: var(--bg-card);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
           border-radius: var(--radius-lg);
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
           padding: var(--space-8);
-          box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+          box-shadow: 0 18px 50px rgba(0,0,0,0.3);
         }
         .pt-header {
           display: grid;
@@ -126,10 +128,12 @@ export default function PricingTable() {
           }
         }
         .pt-contact {
-          background: rgba(0,0,0,0.5);
+          background: var(--glass-bg-strong);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
           border-radius: var(--radius-lg);
           padding: var(--space-6);
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
         }
         .pt-contact-title {
           font-size: 1.05rem;
@@ -163,13 +167,15 @@ export default function PricingTable() {
           position: relative;
           border-radius: var(--radius-lg);
           padding: var(--space-6) var(--space-5) var(--space-5);
-          border: 1px solid var(--border);
-          background: radial-gradient(circle at top, rgba(212,76,67,0.12), rgba(0,0,0,0.6));
+          border: 1px solid var(--glass-border);
+          background: linear-gradient(180deg, var(--glass-bg-brand) 0%, var(--glass-bg-strong) 100%);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
         }
         .pt-plan--popular {
-          background: radial-gradient(circle at top, rgba(212,76,67,0.22), rgba(0,0,0,0.8));
-          border-color: var(--brand);
-          box-shadow: 0 18px 60px rgba(0,0,0,0.65);
+          background: linear-gradient(180deg, rgba(212,76,67,0.28) 0%, var(--glass-bg-strong) 100%);
+          border-color: var(--glass-border-brand);
+          box-shadow: 0 18px 60px rgba(0,0,0,0.4);
         }
         .pt-plan-badge {
           position: absolute;
@@ -181,7 +187,8 @@ export default function PricingTable() {
           text-transform: uppercase;
           padding: 2px 8px;
           border-radius: 999px;
-          background: rgba(0,0,0,0.6);
+          background: var(--glass-bg-strong);
+          border: 1px solid var(--glass-border);
           color: var(--brand-light);
         }
         .pt-plan-name {
@@ -209,7 +216,7 @@ export default function PricingTable() {
           display: none;
           margin-top: var(--space-6);
           border-radius: var(--radius-lg);
-          border: 1px solid var(--border);
+          border: 1px solid var(--glass-border);
           overflow: hidden;
         }
         .pt-table-row {
@@ -225,8 +232,8 @@ export default function PricingTable() {
         }
         .pt-feature-col {
           padding: var(--space-4);
-          border-right: 1px solid var(--border);
-          border-top: 1px solid var(--border);
+          border-right: 1px solid var(--glass-border);
+          border-top: 1px solid var(--glass-border);
           font-size: 0.9rem;
           color: var(--text-secondary);
         }
@@ -235,8 +242,8 @@ export default function PricingTable() {
           align-items: center;
           justify-content: center;
           padding: var(--space-4);
-          border-right: 1px solid var(--border);
-          border-top: 1px solid var(--border);
+          border-right: 1px solid var(--glass-border);
+          border-top: 1px solid var(--glass-border);
         }
         .pt-table-row--head .pt-feature-col,
         .pt-table-row--head .pt-plan-col {
@@ -258,8 +265,10 @@ export default function PricingTable() {
         }
         .pt-mobile-card {
           border-radius: var(--radius-lg);
-          border: 1px solid var(--border);
-          background: rgba(0,0,0,0.5);
+          border: 1px solid var(--glass-border);
+          background: var(--glass-bg-strong);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
           padding: var(--space-6);
           margin-bottom: var(--space-4);
         }

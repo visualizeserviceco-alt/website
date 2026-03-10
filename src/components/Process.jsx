@@ -41,8 +41,10 @@ export default function Process() {
         .process-step {
           position: relative;
           padding: var(--space-8);
-          background: var(--bg-card);
-          border: 1px solid var(--border);
+          background: var(--glass-bg);
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          border: 1px solid var(--glass-border);
           border-radius: var(--radius-lg);
           margin: 0 var(--space-2);
           transition: border-color var(--duration) var(--ease), box-shadow var(--duration) var(--ease);
