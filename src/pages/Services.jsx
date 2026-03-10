@@ -327,7 +327,7 @@ export default function ServicesPage() {
               I design the visuals and build the digital foundation your business needs to launch properly.
             </p>
             <div className="sv-hero-cta">
-              <a href="/contact#book" className="btn btn-primary">Start Your Project</a>
+              <a href="/book" className="btn btn-primary">Start Your Project</a>
               <a href="#packages" className="btn btn-secondary">View Packages</a>
             </div>
           </div>
@@ -444,8 +444,8 @@ export default function ServicesPage() {
         <div className="wrap sv-cta-wrap">
           <h2 className="sv-cta-title">Ready to Build Your Business Foundation?</h2>
           <div className="sv-cta-btns">
-            <a href="/contact#book" className="btn btn-primary">Start Your Project</a>
-            <a href="/contact#book" className="btn btn-secondary">Book Consultation</a>
+            <a href="/book" className="btn btn-primary">Start Your Project</a>
+            <a href="/book" className="btn btn-secondary">Book Consultation</a>
           </div>
         </div>
       </section>

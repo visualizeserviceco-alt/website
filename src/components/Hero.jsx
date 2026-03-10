@@ -11,7 +11,7 @@ export default function Hero() {
             I design the visuals and build the digital foundation your business needs to show up professionally.
           </p>
           <div className="hero-cta">
-            <a href="/contact#book" className="btn btn-primary">Book a Consultation</a>
+            <a href="/book" className="btn btn-primary">Book a Consultation</a>
             <Link to="/showcase" className="btn btn-secondary">View My Work</Link>
           </div>
         </div>

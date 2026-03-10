@@ -4,7 +4,7 @@ export default function CTA() {
       <div className="cta-bg" aria-hidden="true" />
       <div className="wrap cta-inner">
         <h2 className="cta-title">Ready to Build a Brand and Website You’re Proud Of?</h2>
-        <a href="/contact#book" className="btn btn-primary cta-btn">Book a Consultation</a>
+        <a href="/book" className="btn btn-primary cta-btn">Book a Consultation</a>
       </div>
       <style>{`
         .cta {

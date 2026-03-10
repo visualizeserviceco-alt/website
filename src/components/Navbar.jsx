@@ -8,7 +8,7 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/services', label: 'Services' },
     { to: '/showcase', label: 'Work' },
-    { to: '/contact', label: 'Contact' },
+    { to: '/book', label: 'Contact' },
   ];
 
   return (
@@ -37,7 +37,7 @@ export default function Navbar() {
               </li>
             ))}
             <li>
-              <a href="/contact#book" className="btn btn-primary" onClick={() => setOpen(false)}>
+              <a href="/book" className="btn btn-primary" onClick={() => setOpen(false)}>
                 Book a Consultation
               </a>
             </li>

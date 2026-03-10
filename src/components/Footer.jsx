@@ -15,7 +15,7 @@ export default function Footer() {
           <nav>
             <Link to="/services">Services</Link>
             <Link to="/showcase">Work</Link>
-            <Link to="/contact">Contact</Link>
+            <Link to="/book">Contact</Link>
           </nav>
           <a href="https://www.instagram.com/visualizetm/" target="_blank" rel="noopener noreferrer" className="footer-social">
             Instagram

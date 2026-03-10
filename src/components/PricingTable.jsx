@@ -17,7 +17,7 @@ export default function PricingTable() {
             <p className="pt-contact-text">
               Share a bit about your business and I&apos;ll recommend the right package for your situation.
             </p>
-            <a href="/contact#book" className="btn btn-secondary pt-contact-btn">
+            <a href="/book" className="btn btn-secondary pt-contact-btn">
               Contact
             </a>
           </div>
@@ -31,7 +31,7 @@ export default function PricingTable() {
                 <h3 className="pt-plan-name">{pkg.name}</h3>
                 <p className="pt-plan-price">{pkg.price}</p>
                 <p className="pt-plan-desc">{pkg.description}</p>
-                <a href="/contact#book" className="btn btn-primary pt-plan-btn">
+                <a href="/book" className="btn btn-primary pt-plan-btn">
                   Choose Plan
                 </a>
               </div>
@@ -97,7 +97,7 @@ export default function PricingTable() {
                   );
                 })}
               </ul>
-              <a href="/contact#book" className="btn btn-primary pt-plan-btn">
+              <a href="/book" className="btn btn-primary pt-plan-btn">
                 Choose Plan
               </a>
             </div>
