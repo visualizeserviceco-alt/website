@@ -16,7 +16,7 @@ export default function Services() {
       <div className="wrap">
         <h2 className="section-title">Studio Services</h2>
         <p className="section-subtitle">
-          Brand identity, websites, print design, and essential digital setup—delivered directly, start to finish.
+          Brand identity, websites, print design, and essential digital setup, delivered directly, start to finish.
         </p>
         <div className="services-grid">
           {pillars.map((pillar, i) => (
@@ -90,7 +90,7 @@ export default function Services() {
           position: relative;
         }
         .services-card-list li::before {
-          content: '—';
+          content: '-';
           position: absolute;
           left: 0;
           color: var(--brand);

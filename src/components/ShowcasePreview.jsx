@@ -14,7 +14,7 @@ export default function ShowcasePreview() {
       <div className="wrap">
         <h2 className="section-title">My Work</h2>
         <p className="section-subtitle">
-          Websites, brand identities, and print—designed with detail, clarity, and consistency.
+          Websites, brand identities, and print, designed with detail, clarity, and consistency.
         </p>
         <div className="showcase-grid">
           {websites.map((p) => (

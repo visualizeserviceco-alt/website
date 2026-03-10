@@ -325,7 +325,7 @@ export default function LeadPartner() {
         }
         .lp-list li { position: relative; padding-left: var(--space-4); }
         .lp-list li::before {
-          content: '—';
+          content: '-';
           position: absolute;
           left: 0;
           color: var(--brand);
