@@ -4,62 +4,126 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
+// Deterministic star field — stable across renders
+const STARS = (() => {
+  let s = 0xdeadbeef;
+  const next = () => { s = (Math.imul(s, 1664525) + 1013904223) >>> 0; return s / 0x100000000; };
+  return Array.from({ length: 130 }, () => ({
+    cx:    (next() * 100).toFixed(2) + '%',
+    cy:    (next() * 100).toFixed(2) + '%',
+    r:     next() > 0.85 ? 2 : next() > 0.55 ? 1.5 : 1,
+    o:     (0.15 + next() * 0.7).toFixed(2),
+    delay: (next() * 6).toFixed(2),
+    dur:   (2.5 + next() * 3.5).toFixed(2),
+  }));
+})();
+
 function Maintenance({ onUnlock }) {
-  const [password, setPassword] = useState('');
+  const [pw, setPw]       = useState('');
+  const [error, setError] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (onUnlock) onUnlock(password.trim());
+    const ok = onUnlock(pw.trim());
+    if (!ok) {
+      setError(true);
+      setTimeout(() => setError(false), 600);
+    }
   };
 
   return (
-    <div className="maintenance-screen">
-      <div className="maintenance-glow" aria-hidden="true" />
-      <div className="wrap maintenance-inner">
-        <div className="maintenance-badge">Temporary Maintenance</div>
-        <h1 className="maintenance-title">I&apos;m updating the studio.</h1>
-        <p className="maintenance-sub">
-          The site is briefly offline while I update projects and improve the experience.
-          In the meantime, follow along on Instagram for updates, new work, and openings.
+    <div className="uc-screen">
+      {/* Animated star field */}
+      <svg className="uc-stars-svg" aria-hidden="true">
+        {STARS.map((s, i) => (
+          <circle
+            key={i}
+            cx={s.cx}
+            cy={s.cy}
+            r={s.r}
+            fill="white"
+            className="uc-star"
+            style={{ '--o': s.o, animationDelay: `${s.delay}s`, animationDuration: `${s.dur}s` }}
+          />
+        ))}
+      </svg>
+
+      <div className="uc-wrap">
+        <p className="uc-brand-name">VISUALIZE STUDIO</p>
+
+        {/* Rocket + orbit ring */}
+        <div className="uc-rocket-area" aria-hidden="true">
+          <svg className="uc-orbit-ring" viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="150" cy="60" rx="138" ry="48"
+              fill="none" stroke="rgba(201,161,42,0.22)"
+              strokeWidth="1.5" strokeDasharray="7 5" />
+          </svg>
+          <svg className="uc-rocket-svg" viewBox="0 0 80 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M40 8 C28 8 18 30 18 72 L62 72 C62 30 52 8 40 8 Z" fill="#c9a12a" />
+            <path d="M40 8 C34 8 28 18 28 32 L52 32 C52 18 46 8 40 8 Z" fill="#d4b845" />
+            <path d="M52 32 L52 72 C47 70 40 70 40 70 L40 8 C46 8 52 18 52 32 Z" fill="rgba(0,0,0,0.18)" />
+            <circle cx="40" cy="52" r="9"   fill="#152855" stroke="#3a6cb5" strokeWidth="2.5" />
+            <circle cx="40" cy="52" r="5.5" fill="#1e3d7a" />
+            <circle cx="37" cy="49" r="2"   fill="#4a7dd5" opacity="0.65" />
+            <path d="M18 72 L4  90 L18 86 Z" fill="#a07820" />
+            <path d="M62 72 L76 90 L62 86 Z" fill="#a07820" />
+            <ellipse cx="40" cy="76" rx="13" ry="5" fill="#8a6010" />
+            <path d="M29 78 C32 96 37 108 40 122 C43 108 48 96 51 78 Z" fill="#e05010" opacity="0.95" />
+            <path d="M32 78 C35 92 38 102 40 114 C42 102 45  92 48 78 Z" fill="#f08020" />
+            <path d="M35 78 C37 88 39  96 40 106 C41  96 43  88 45 78 Z" fill="#ffcc00" />
+            <path d="M37 78 C38 84 39.5 90 40  98 C40.5 90 42 84 43 78 Z" fill="#fffacc" opacity="0.8" />
+          </svg>
+        </div>
+
+        {/* Badge */}
+        <div className="uc-badge">
+          <span className="uc-dot" aria-hidden="true" />
+          UNDER CONSTRUCTION
+        </div>
+
+        {/* Headline */}
+        <h1 className="uc-headline">
+          WE&apos;RE<br />
+          <span className="uc-gold">LAUNCHING</span><br />
+          SOMETHING NEW
+        </h1>
+
+        {/* Subtitle */}
+        <p className="uc-sub">
+          <strong>Visualize Studio</strong> is working on the website.
+          <br />We&apos;ll be back up and running shortly.
         </p>
-        <a
-          href="https://instagram.com/yourhandle"
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-primary maintenance-cta"
-        >
-          <span className="maintenance-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="3" width="18" height="18" rx="5" />
-              <circle cx="12" cy="12" r="4.2" />
-              <circle cx="17.5" cy="6.5" r="1.2" />
-            </svg>
-          </span>
-          Follow on Instagram
-        </a>
-        <form className="maintenance-form" onSubmit={handleSubmit}>
-          <label className="maintenance-label">
-            Enter access password to continue:
-            <input
-              type="password"
-              className="maintenance-input"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
-          </label>
-          <button type="submit" className="btn btn-secondary maintenance-enter">
-            Enter site
-          </button>
+
+        <hr className="uc-divider" />
+
+        <p className="uc-contact">
+          Questions? Call us at{' '}
+          <a href="tel:+12159082000" className="uc-phone">(215) 908-2000</a>
+        </p>
+
+        {/* Password gate */}
+        <form className={`uc-form${error ? ' uc-form--error' : ''}`} onSubmit={handleSubmit}>
+          <input
+            type="password"
+            className="uc-pw-input"
+            value={pw}
+            onChange={(e) => { setPw(e.target.value); setError(false); }}
+            placeholder="Enter password to access site"
+            autoComplete="current-password"
+          />
+          <button type="submit" className="uc-pw-btn">Enter</button>
+          {error && <span className="uc-pw-error">Incorrect password</span>}
         </form>
+
+        <p className="uc-footer-credit">BUILT BY VISUALIZE STUDIO</p>
       </div>
     </div>
   );
 }
 
-const maintenanceMode = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
-
-const maintenancePassword = import.meta.env.VITE_MAINTENANCE_PASSWORD || '';
+// Site is shut down — show maintenance page unconditionally
+const maintenanceMode     = true;
+const maintenancePassword = 'preview2025';
 
 function Root() {
   const [unlocked, setUnlocked] = useState(false);
@@ -68,9 +132,11 @@ function Root() {
     return (
       <Maintenance
         onUnlock={(entered) => {
-          if (!maintenancePassword || entered === maintenancePassword) {
+          if (entered === maintenancePassword) {
             setUnlocked(true);
+            return true;
           }
+          return false;
         }}
       />
     );
