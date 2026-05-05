@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const TOTAL_STEPS = 7;
 
@@ -34,16 +34,16 @@ const SHAPE_OPTIONS = [
   { id: 'circle',    label: 'Circle',    preview: <circle cx="24" cy="24" r="18" /> },
   { id: 'square',    label: 'Square',    preview: <rect x="7" y="7" width="34" height="34" rx="3" /> },
   { id: 'rectangle', label: 'Rectangle', preview: <rect x="4" y="12" width="40" height="24" rx="3" /> },
-  { id: 'die-cut',   label: 'Die-Cut',   preview: <path d="M24 6 C34 6 42 12 42 20 C42 30 34 42 24 42 C14 42 6 30 6 20 C6 12 14 6 24 6 Z" /> },
+  { id: 'die-cut',   label: 'Die-Cut',   preview: <path d="M24 6 C34 6 42 12 42 20 C42 30 34 42 24 42 C14 42 6 30 6 20 C6 12 14 6 24 6 Z" />, popular: true },
 ];
 
 const SIZE_OPTIONS = [
-  { id: '2x2',   label: '2" × 2"',  note: 'Small / logo mark' },
-  { id: '3x3',   label: '3" × 3"',  note: 'Standard' },
-  { id: '4x4',   label: '4" × 4"',  note: 'Medium' },
-  { id: '5x5',   label: '5" × 5"',  note: 'Large' },
-  { id: '6x8',   label: '6" × 8"',  note: 'XL / banner' },
-  { id: 'custom', label: 'Custom',   note: 'Specify in notes' },
+  { id: '2x2',    label: '2" × 2"',  note: 'Small / logo mark' },
+  { id: '3x3',    label: '3" × 3"',  note: 'Standard' },
+  { id: '4x4',    label: '4" × 4"',  note: 'Medium' },
+  { id: '5x5',    label: '5" × 5"',  note: 'Large' },
+  { id: '6x8',    label: '6" × 8"',  note: 'XL / banner' },
+  { id: 'custom', label: 'Custom',    note: 'Specify in notes' },
 ];
 
 const QTY_OPTIONS = [
@@ -56,10 +56,10 @@ const QTY_OPTIONS = [
 ];
 
 const FINISH_OPTIONS = [
-  { id: 'matte',       label: 'Matte',        desc: 'Clean, flat, non-reflective' },
-  { id: 'gloss',       label: 'Glossy',       desc: 'Vibrant, shiny surface' },
-  { id: 'holographic', label: 'Holographic',  desc: 'Rainbow shimmer effect' },
-  { id: 'transparent', label: 'Transparent',  desc: 'Clear background' },
+  { id: 'matte',       label: 'Matte',       desc: 'Clean, flat, non-reflective' },
+  { id: 'gloss',       label: 'Glossy',      desc: 'Vibrant, shiny surface', popular: true },
+  { id: 'holographic', label: 'Holographic', desc: 'Rainbow shimmer effect' },
+  { id: 'transparent', label: 'Transparent', desc: 'Clear background' },
 ];
 
 const DESIGN_OPTIONS = [
@@ -126,27 +126,28 @@ function StepWrapper({ title, subtitle, children, step, total }) {
   );
 }
 
-function SelectTile({ selected, onClick, children }) {
+function PopularTag() {
+  return <span className="pr-popular-tag">Popular</span>;
+}
+
+function SelectTile({ selected, onClick, children, popular }) {
   return (
     <button
       type="button"
-      className={`pr-tile ${selected ? 'pr-tile--active' : ''}`}
+      className={`pr-tile ${selected ? 'pr-tile--active' : ''} ${popular ? 'pr-tile--popular' : ''}`}
       onClick={onClick}
     >
+      {popular && <PopularTag />}
       {children}
     </button>
   );
 }
 
 export default function Prints() {
-  const [searchParams] = useSearchParams();
-  const paymentStatus  = searchParams.get('payment');
-
   const [step, setStep]           = useState(0);
   const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [checkingOut, setCheckingOut] = useState(false);
   const [errors, setErrors]       = useState({});
 
   const buildSummary = (o) =>
@@ -178,8 +179,9 @@ export default function Prints() {
     setSubmitting(true);
 
     const orderData = {
-      id:       Date.now(),
-      date:     new Date().toISOString(),
+      id:     Date.now(),
+      date:   new Date().toISOString(),
+      status: 'pending',
       ...order,
     };
     try {
@@ -190,86 +192,7 @@ export default function Prints() {
     setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 600);
   };
 
-  const handleStripeCheckout = async () => {
-    setCheckingOut(true);
-    try {
-      const res = await fetch('/api/create-checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          orderSummary:  buildSummary(order),
-          customerEmail: order.email,
-          customerName:  order.name,
-        }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        alert(data.error || 'Something went wrong. Please try again.');
-        setCheckingOut(false);
-      }
-    } catch {
-      alert('Connection error. Please try again.');
-      setCheckingOut(false);
-    }
-  };
-
-  // ── Stripe returned: payment confirmed ──────────────────────────────
-  if (paymentStatus === 'success') {
-    let lastOrder = null;
-    try { lastOrder = JSON.parse(localStorage.getItem('vz_print_orders') || '[]')[0]; } catch (_) {}
-    return (
-      <div className="pr-page">
-        <div className="pr-success">
-          <div className="pr-success-icon pr-success-icon--paid">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" fill="rgba(34,197,94,0.12)" stroke="#22c55e" strokeWidth="2.5" />
-              <path d="M20 32l8 8 16-16" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h1 className="pr-success-title">Deposit Paid!</h1>
-          <p className="pr-success-sub">
-            Your $25 deposit was received{lastOrder ? `, ${lastOrder.name}` : ''}. Your order slot is confirmed.
-            I&apos;ll reach out{lastOrder?.email ? ` to ${lastOrder.email}` : ''} with your full quote shortly.
-          </p>
-          <p className="pr-success-contact">
-            Questions? Call or text <a href="tel:+13024687077">(302) 468-7077</a>
-          </p>
-          <Link to="/" className="btn btn-primary pr-success-btn">Back to Home</Link>
-        </div>
-        <style>{prStyles}</style>
-      </div>
-    );
-  }
-
-  // ── Stripe returned: payment canceled ───────────────────────────────
-  if (paymentStatus === 'canceled') {
-    return (
-      <div className="pr-page">
-        <div className="pr-success">
-          <div className="pr-success-icon">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" stroke="var(--text-muted)" strokeWidth="2.5" />
-              <path d="M22 22l20 20M42 22L22 42" stroke="var(--text-muted)" strokeWidth="2.5" strokeLinecap="round" />
-            </svg>
-          </div>
-          <h1 className="pr-success-title" style={{ color: 'var(--text-secondary)' }}>Payment Canceled</h1>
-          <p className="pr-success-sub">
-            No problem — your quote request was still saved. I&apos;ll reach out with a quote.
-            You can pay the deposit any time.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/prints" className="btn btn-primary pr-success-btn">Start New Order</Link>
-            <Link to="/" className="btn btn-secondary pr-success-btn">Back to Home</Link>
-          </div>
-        </div>
-        <style>{prStyles}</style>
-      </div>
-    );
-  }
-
-  // ── Order form submitted — show confirmation + deposit option ────────
+  // ── Order submitted confirmation ─────────────────────────────────────
   if (submitted) {
     return (
       <div className="pr-page">
@@ -284,55 +207,15 @@ export default function Prints() {
           <p className="pr-success-sub">
             Thanks, <strong>{order.name}</strong>. I received your request for{' '}
             <strong>{buildSummary(order) || 'custom prints'}</strong>.
-            I&apos;ll reach out to <strong>{order.email}</strong> with a quote.
+            I&apos;ll review your order and reach out to <strong>{order.email}</strong> with a quote and payment details.
           </p>
-
-          <div className="pr-deposit-box">
-            <div className="pr-deposit-badge">Optional</div>
-            <h3 className="pr-deposit-title">Secure Your Order Slot</h3>
-            <p className="pr-deposit-desc">
-              Pay a $25 deposit now to lock in your spot. It&apos;s deducted from your final price — no extra charge.
-            </p>
-            <div className="pr-deposit-price">
-              <span className="pr-deposit-amount">$25</span>
-              <span className="pr-deposit-label">refundable deposit</span>
-            </div>
-            <button
-              className="btn btn-primary pr-deposit-btn"
-              onClick={handleStripeCheckout}
-              disabled={checkingOut}
-            >
-              {checkingOut ? (
-                <>
-                  <svg className="pr-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" strokeDasharray="30 10" />
-                  </svg>
-                  Redirecting to checkout…
-                </>
-              ) : (
-                <>
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" width="18" height="18">
-                    <rect x="2" y="5" width="16" height="12" rx="2" stroke="currentColor" strokeWidth="1.8" />
-                    <path d="M2 9h16" stroke="currentColor" strokeWidth="1.8" />
-                    <rect x="5" y="12" width="4" height="2" rx="0.5" fill="currentColor" />
-                  </svg>
-                  Pay $25 Deposit — Secure Checkout
-                </>
-              )}
-            </button>
-            <p className="pr-deposit-secure">
-              <svg viewBox="0 0 16 16" fill="none" width="13" height="13" aria-hidden="true">
-                <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
-                <path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              Secured by Stripe · Card data never touches this site
-            </p>
-          </div>
-
+          <p className="pr-success-note">
+            I personally review every order before sending a quote — usually within 1 business day.
+          </p>
           <p className="pr-success-contact">
             Questions? Call or text <a href="tel:+13024687077">(302) 468-7077</a>
           </p>
-          <Link to="/" className="btn btn-secondary pr-success-skip">Skip for now — Go Home</Link>
+          <Link to="/" className="btn btn-primary pr-success-btn">Back to Home</Link>
         </div>
         <style>{prStyles}</style>
       </div>
@@ -373,7 +256,7 @@ export default function Prints() {
             <StepWrapper step={1} total={TOTAL_STEPS} title="Choose a shape">
               <div className="pr-shape-grid">
                 {SHAPE_OPTIONS.map(opt => (
-                  <SelectTile key={opt.id} selected={order.shape === opt.id} onClick={() => select('shape', opt.id)}>
+                  <SelectTile key={opt.id} selected={order.shape === opt.id} popular={opt.popular} onClick={() => select('shape', opt.id)}>
                     <svg className="pr-shape-svg" viewBox="0 0 48 48" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       {opt.preview}
                     </svg>
@@ -414,7 +297,7 @@ export default function Prints() {
             <StepWrapper step={4} total={TOTAL_STEPS} title="Choose a finish">
               <div className="pr-finish-grid">
                 {FINISH_OPTIONS.map(opt => (
-                  <SelectTile key={opt.id} selected={order.finish === opt.id} onClick={() => select('finish', opt.id)}>
+                  <SelectTile key={opt.id} selected={order.finish === opt.id} popular={opt.popular} onClick={() => select('finish', opt.id)}>
                     <div className={`pr-finish-swatch pr-finish-swatch--${opt.id}`} aria-hidden="true" />
                     <strong className="pr-tile-label">{opt.label}</strong>
                     <span className="pr-tile-desc">{opt.desc}</span>
@@ -625,13 +508,14 @@ const prStyles = `
     .pr-finish-grid { grid-template-columns: 1fr 1fr; }
   }
 
+  /* Tile */
   .pr-tile {
     display: flex; flex-direction: column; align-items: flex-start;
     text-align: left; padding: var(--space-5);
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-    cursor: pointer; width: 100%;
+    cursor: pointer; width: 100%; position: relative;
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s, background 0.2s;
   }
   .pr-tile:hover {
@@ -643,6 +527,15 @@ const prStyles = `
     border-color: var(--brand);
     background: rgba(212,76,67,0.1);
     box-shadow: 0 0 0 1px rgba(212,76,67,0.3), 0 8px 32px rgba(0,0,0,0.2);
+  }
+  .pr-tile--popular {
+    border-color: rgba(212,76,67,0.35);
+  }
+  .pr-popular-tag {
+    position: absolute; top: -9px; right: 10px;
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; background: var(--brand);
+    color: #fff; padding: 2px 8px; border-radius: 999px;
   }
   .pr-type-icon { width: 48px; height: 48px; color: var(--brand); margin-bottom: var(--space-3); }
   .pr-type-icon svg { width: 100%; height: 100%; }
@@ -712,9 +605,9 @@ const prStyles = `
   .pr-aside-phone { font-size: 1rem; font-weight: 700; color: var(--brand); display: block; }
   .pr-aside-phone:hover { text-decoration: underline; }
 
-  /* Success / confirmation screens */
+  /* Success screen */
   .pr-success {
-    max-width: 540px; margin: var(--space-16) auto;
+    max-width: 520px; margin: var(--space-16) auto;
     padding: 0 var(--space-6); text-align: center;
     display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
   }
@@ -722,46 +615,13 @@ const prStyles = `
   .pr-success-icon svg { width: 100%; height: 100%; }
   .pr-success-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
   .pr-success-sub { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; }
+  .pr-success-note {
+    font-size: 0.875rem; color: var(--text-muted);
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);
+    line-height: 1.6;
+  }
   .pr-success-contact { font-size: 0.875rem; color: var(--text-muted); }
   .pr-success-contact a { color: var(--brand); font-weight: 600; }
   .pr-success-btn { padding: var(--space-3) var(--space-8); }
-  .pr-success-skip { padding: var(--space-3) var(--space-6); font-size: 0.875rem; }
-
-  /* Deposit box */
-  .pr-deposit-box {
-    width: 100%;
-    background: var(--glass-bg-strong);
-    border: 1px solid var(--glass-border-brand);
-    border-radius: var(--radius-lg);
-    padding: var(--space-6);
-    text-align: center;
-    position: relative;
-  }
-  .pr-deposit-badge {
-    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    background: var(--brand); color: #fff; padding: 3px 10px; border-radius: 999px;
-  }
-  .pr-deposit-title {
-    font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: var(--space-2);
-  }
-  .pr-deposit-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--space-4); }
-  .pr-deposit-price {
-    display: flex; align-items: baseline; justify-content: center; gap: var(--space-2);
-    margin-bottom: var(--space-4);
-  }
-  .pr-deposit-amount { font-size: 2.5rem; font-weight: 900; color: var(--brand); letter-spacing: -0.03em; }
-  .pr-deposit-label { font-size: 0.8rem; color: var(--text-muted); }
-  .pr-deposit-btn {
-    width: 100%; padding: var(--space-4); font-size: 0.9375rem;
-    display: flex; align-items: center; justify-content: center; gap: var(--space-2);
-    margin-bottom: var(--space-3);
-  }
-  .pr-deposit-btn:disabled { opacity: 0.65; cursor: default; }
-  .pr-deposit-secure {
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-    font-size: 0.75rem; color: var(--text-muted);
-  }
-  @keyframes prSpin { to { transform: rotate(360deg); } }
-  .pr-spin { animation: prSpin 0.8s linear infinite; }
 `;

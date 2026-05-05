@@ -13,7 +13,7 @@ export default function Process() {
         <p className="section-subtitle">
           A clear process from kickoff to launch.
         </p>
-        <div className="process-timeline">
+        <div className="process-timeline stagger">
           {steps.map((step, i) => (
             <div key={step.num} className="process-step">
               <span className="process-num">{step.num}</span>

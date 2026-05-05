@@ -9,7 +9,7 @@ export default function Testimonials() {
     <section className="testimonials section section-elevated">
       <div className="wrap">
         <h2 className="section-title">What Clients Say</h2>
-        <div className="testimonials-grid">
+        <div className="testimonials-grid stagger">
           {quotes.map((q, i) => (
             <blockquote key={i} className="testimonial-card">
               <p className="testimonial-text">"{q.text}"</p>

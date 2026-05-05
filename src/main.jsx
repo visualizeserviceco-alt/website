@@ -121,8 +121,8 @@ function Maintenance({ onUnlock }) {
   );
 }
 
-const maintenanceMode     = false;
-const maintenancePassword = 'preview2025';
+const maintenanceMode     = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
+const maintenancePassword = import.meta.env.VITE_MAINTENANCE_PASSWORD || 'preview2025';
 
 function Root() {
   const [unlocked, setUnlocked] = useState(false);

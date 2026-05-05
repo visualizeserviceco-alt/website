@@ -16,7 +16,7 @@ export default function ShowcasePreview() {
         <p className="section-subtitle">
           Websites, brand identities, and print, designed with detail, clarity, and consistency.
         </p>
-        <div className="showcase-grid">
+        <div className="showcase-grid stagger">
           {websites.map((p) => (
             <Link key={p.id || p.title} to="/showcase?filter=websites" className="showcase-card">
               <img src={p.image} alt="" />

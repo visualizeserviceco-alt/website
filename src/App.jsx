@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -10,8 +11,81 @@ import Pricing from './pages/Pricing';
 import Prints from './pages/Prints';
 import PrintsAdmin from './pages/PrintsAdmin';
 
+function LoadingScreen({ done }) {
+  return (
+    <div className={`app-loader ${done ? 'app-loader--done' : ''}`} aria-hidden="true">
+      <div className="app-loader-inner">
+        <img src="/logo.svg" alt="" className="app-loader-logo" />
+        <div className="app-loader-bar">
+          <div className="app-loader-fill" />
+        </div>
+      </div>
+      <style>{`
+        .app-loader {
+          position: fixed; inset: 0; z-index: 9999;
+          background: #07070a;
+          display: flex; align-items: center; justify-content: center;
+          transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        .app-loader--done {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+        .app-loader-inner {
+          display: flex; flex-direction: column; align-items: center; gap: 28px;
+        }
+        .app-loader-logo {
+          height: 48px; width: auto;
+          animation: loaderPulse 1.4s ease-in-out infinite;
+        }
+        @keyframes loaderPulse {
+          0%, 100% { opacity: 0.5; transform: scale(0.95); }
+          50%       { opacity: 1;   transform: scale(1.02); filter: drop-shadow(0 0 18px rgba(212,76,67,0.5)); }
+        }
+        .app-loader-bar {
+          width: 120px; height: 2px;
+          background: rgba(255,255,255,0.08);
+          border-radius: 999px; overflow: hidden;
+        }
+        .app-loader-fill {
+          height: 100%; width: 0%;
+          background: linear-gradient(90deg, var(--brand), var(--brand-light));
+          border-radius: 999px;
+          animation: loaderBar 1.2s var(--ease) forwards;
+        }
+        @keyframes loaderBar {
+          0%   { width: 0%; }
+          60%  { width: 80%; }
+          100% { width: 100%; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function App() {
-  const location = useLocation();
+  const location              = useLocation();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 1300);
+    return () => clearTimeout(t);
+  }, []);
+
+  // Global scroll-reveal
+  useEffect(() => {
+    const selector = '.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger';
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } }),
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    const attach = () => document.querySelectorAll(selector).forEach(el => obs.observe(el));
+    attach();
+    // Re-observe after route change gives new elements time to mount
+    const tid = setTimeout(attach, 100);
+    return () => { obs.disconnect(); clearTimeout(tid); };
+  }, [location.pathname]);
 
   // Admin route renders outside the normal layout (no navbar/footer)
   if (location.pathname === '/admin') {
@@ -25,18 +99,19 @@ export default function App() {
 
   return (
     <>
+      <LoadingScreen done={!loading} />
       <Navbar />
       <main className="page-shell page-fade" key={location.pathname}>
         <Routes location={location}>
-          <Route path="/" element={<Home />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/showcase" element={<Showcase />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/book" element={<Contact />} />
+          <Route path="/"            element={<Home />} />
+          <Route path="/services"    element={<Services />} />
+          <Route path="/showcase"    element={<Showcase />} />
+          <Route path="/contact"     element={<Contact />} />
+          <Route path="/book"        element={<Contact />} />
           <Route path="/lead-partner" element={<LeadPartner />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/prints" element={<Prints />} />
-          <Route path="/admin" element={<PrintsAdmin />} />
+          <Route path="/pricing"     element={<Pricing />} />
+          <Route path="/prints"      element={<Prints />} />
+          <Route path="/admin"       element={<PrintsAdmin />} />
         </Routes>
       </main>
       <Footer />
