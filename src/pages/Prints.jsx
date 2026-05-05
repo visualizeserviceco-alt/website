@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const TOTAL_STEPS = 7;
 
@@ -144,6 +144,7 @@ function SelectTile({ selected, onClick, children, popular }) {
 }
 
 export default function Prints() {
+  const navigate = useNavigate();
   const [step, setStep]           = useState(0);
   const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
@@ -212,10 +213,30 @@ export default function Prints() {
           <p className="pr-success-note">
             I personally review every order before sending a quote — usually within 1 business day.
           </p>
+
+          <div className="pr-portal-prompt">
+            <div className="pr-portal-prompt-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
+                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div>
+              <p className="pr-portal-title">Track your order status</p>
+              <p className="pr-portal-desc">Create a free client account to see live updates on your order, chat status changes, and book follow-up meetings.</p>
+            </div>
+            <button
+              className="btn btn-primary pr-portal-btn"
+              onClick={() => navigate('/portal')}
+            >
+              Create Account →
+            </button>
+          </div>
+
           <p className="pr-success-contact">
             Questions? Call or text <a href="tel:+13024687077">(302) 468-7077</a>
           </p>
-          <Link to="/" className="btn btn-primary pr-success-btn">Back to Home</Link>
+          <Link to="/" className="btn btn-secondary pr-success-btn">Back to Home</Link>
         </div>
         <style>{prStyles}</style>
       </div>
@@ -624,4 +645,24 @@ const prStyles = `
   .pr-success-contact { font-size: 0.875rem; color: var(--text-muted); }
   .pr-success-contact a { color: var(--brand); font-weight: 600; }
   .pr-success-btn { padding: var(--space-3) var(--space-8); }
+
+  /* Portal prompt box */
+  .pr-portal-prompt {
+    width: 100%;
+    display: flex; align-items: center; gap: var(--space-4);
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border-brand);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+    text-align: left; flex-wrap: wrap;
+  }
+  .pr-portal-prompt-icon {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(212,76,67,0.12);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--brand);
+  }
+  .pr-portal-title { font-size: 0.9375rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+  .pr-portal-desc { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; flex: 1; }
+  .pr-portal-btn { flex-shrink: 0; font-size: 0.875rem; padding: 8px 16px; white-space: nowrap; }
 `;

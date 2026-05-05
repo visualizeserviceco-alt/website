@@ -50,7 +50,7 @@ export default function Contact() {
             <div className="calendly-panel">
               <div
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/contactvisualize/15min-onboarding-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
+                data-url="https://calendly.com/contactvisualize/studio-meeting?hide_gdpr_banner=1"
                 style={{ minWidth: '320px', height: '700px' }}
               />
             </div>

@@ -10,6 +10,7 @@ import LeadPartner from './pages/LeadPartner';
 import Pricing from './pages/Pricing';
 import Prints from './pages/Prints';
 import PrintsAdmin from './pages/PrintsAdmin';
+import ClientPortal from './pages/ClientPortal';
 
 function LoadingScreen({ done }) {
   return (
@@ -87,15 +88,10 @@ export default function App() {
     return () => { obs.disconnect(); clearTimeout(tid); };
   }, [location.pathname]);
 
-  // Admin route renders outside the normal layout (no navbar/footer)
-  if (location.pathname === '/admin') {
-    return <PrintsAdmin />;
-  }
-
-  // Prints configurator also outside normal layout
-  if (location.pathname === '/prints') {
-    return <Prints />;
-  }
+  // Routes outside the normal navbar/footer layout
+  if (location.pathname === '/admin')  return <PrintsAdmin />;
+  if (location.pathname === '/prints') return <Prints />;
+  if (location.pathname === '/portal') return <ClientPortal />;
 
   return (
     <>
@@ -112,6 +108,7 @@ export default function App() {
           <Route path="/pricing"     element={<Pricing />} />
           <Route path="/prints"      element={<Prints />} />
           <Route path="/admin"       element={<PrintsAdmin />} />
+          <Route path="/portal"      element={<ClientPortal />} />
         </Routes>
       </main>
       <Footer />
