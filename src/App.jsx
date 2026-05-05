@@ -7,9 +7,21 @@ import Showcase from './pages/Showcase';
 import Contact from './pages/Contact';
 import LeadPartner from './pages/LeadPartner';
 import Pricing from './pages/Pricing';
+import Prints from './pages/Prints';
+import PrintsAdmin from './pages/PrintsAdmin';
 
 export default function App() {
   const location = useLocation();
+
+  // Admin route renders outside the normal layout (no navbar/footer)
+  if (location.pathname === '/admin') {
+    return <PrintsAdmin />;
+  }
+
+  // Prints configurator also outside normal layout
+  if (location.pathname === '/prints') {
+    return <Prints />;
+  }
 
   return (
     <>
@@ -23,6 +35,8 @@ export default function App() {
           <Route path="/book" element={<Contact />} />
           <Route path="/lead-partner" element={<LeadPartner />} />
           <Route path="/pricing" element={<Pricing />} />
+          <Route path="/prints" element={<Prints />} />
+          <Route path="/admin" element={<PrintsAdmin />} />
         </Routes>
       </main>
       <Footer />

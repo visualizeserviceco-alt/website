@@ -97,8 +97,8 @@ function Maintenance({ onUnlock }) {
         <hr className="uc-divider" />
 
         <p className="uc-contact">
-          Questions? Call us at{' '}
-          <a href="tel:+12159082000" className="uc-phone">(215) 908-2000</a>
+          Questions? Call or text{' '}
+          <a href="tel:+13024687077" className="uc-phone">(302) 468-7077</a>
         </p>
 
         {/* Password gate */}

@@ -40,15 +40,11 @@ const catalogCategories = [
     services: [
       {
         name: 'Logo Design',
-        price: '$75',
-        payment: '50% upfront, 50% on completion',
         description: 'Custom primary logo built for professional credibility and brand recognition.',
         deliverables: ['Primary logo', 'Secondary variation', 'Favicon', 'Black/white versions', 'PNG + SVG files'],
       },
       {
         name: 'Full Brand Identity',
-        price: '$150',
-        payment: '50% upfront, 50% on completion',
         description: 'Complete brand system including all designs for print: business cards, stickers, and other physical assets, plus digital consistency.',
         deliverables: ['Logo suite', 'Color palette', 'Typography system', 'Brand style guide PDF', 'All print designs (business cards, stickers, etc.)', 'Social profile graphics'],
       },
@@ -60,16 +56,12 @@ const catalogCategories = [
     services: [
       {
         name: 'Business Website (5 Pages)',
-        price: '$650',
-        payment: '50% upfront, 50% on completion',
-        note: 'Hosting & maintenance: $50–$100+/month depending on tools.',
+        note: 'Hosting & maintenance costs vary by tools used.',
         description: 'Professional business website designed to clearly present your services and make it easy for customers to contact you.',
         deliverables: ['5 custom pages', 'Mobile responsive design', 'Contact form', 'Basic SEO setup', 'Analytics integration'],
       },
       {
         name: 'Landing Page',
-        price: '$300',
-        payment: '50% upfront, 50% on completion',
         description: 'Single-page website focused on presenting one service or offer clearly and professionally.',
         deliverables: ['Custom landing page design', 'Lead/contact form', 'Mobile responsive layout', 'Basic SEO setup'],
       },
@@ -81,21 +73,15 @@ const catalogCategories = [
     services: [
       {
         name: 'Sticker Production',
-        price: null,
-        payment: 'Paid upfront before production begins.',
         description: 'Custom branded stickers produced in-house for physical brand presence and handout materials.',
       },
       {
         name: 'Business Cards',
-        price: 'Design + Print (varies)',
-        payment: '50% upfront for design, balance before print submission.',
         description: 'Custom business card design and coordination with a professional print service.',
         includes: ['Custom design', 'Print-ready files', 'Print service coordination', 'Paper/finish options'],
       },
       {
         name: 'Other Print Materials',
-        price: null,
-        payment: null,
         description: 'If you have something you want printed, I can design it and source the right production partner.',
         includes: ['Posters & flyers', 'Signage & banners', 'Apparel graphics', 'Merch and promotional items'],
       },
@@ -107,9 +93,6 @@ const catalogCategories = [
     services: [
       {
         name: 'Google Business Profile',
-        price: '$100 standalone',
-        priceNote: 'Included in packages',
-        payment: null,
         description: 'Setup or optimization of your Google Business listing for accurate presence online.',
         includes: ['Profile setup or updates', 'Service descriptions', 'Business info formatting', 'Photo upload guidance'],
       },
@@ -135,15 +118,12 @@ const websiteAddOns = [
   {
     id: 'contact-form',
     title: 'Custom Contact Form Upgrade',
-    price: '$75',
     description: 'Advanced contact form with conditional logic, file uploads, and structured inquiry routing.',
     includes: ['Multi-step form', 'Conditional fields', 'File upload capability', 'Email routing customization'],
-    payment: 'Added to project invoice (50% upfront with project deposit)',
   },
   {
     id: 'database',
     title: 'Database Integration',
-    price: '$200',
     description: 'Custom database functionality for storing and managing client data securely.',
     includes: ['Backend database setup', 'Secure form-to-database connection', 'Basic admin viewing access'],
     useCases: ['Client submissions', 'Applications', 'Directory systems'],
@@ -151,56 +131,48 @@ const websiteAddOns = [
   {
     id: 'client-portal',
     title: 'Client Portal / Login System',
-    price: '$350',
     description: 'Private login area for clients or members.',
     includes: ['User authentication', 'Protected pages', 'Basic account dashboard'],
   },
   {
     id: 'booking',
     title: 'Booking System Integration',
-    price: '$125',
     description: 'Integrated appointment booking system connected to your calendar.',
     includes: ['Calendar sync', 'Booking confirmations', 'Time slot customization'],
   },
   {
     id: 'ecommerce',
     title: 'E-Commerce Functionality',
-    price: '$300',
     description: 'Online store functionality for selling products directly from your website.',
     includes: ['Product pages', 'Cart system', 'Secure checkout integration', 'Basic payment setup'],
   },
   {
     id: 'cms',
     title: 'CMS / Editable Content Setup',
-    price: '$150',
     description: 'Backend content management system allowing you to edit text and images without coding.',
     includes: ['Editable sections', 'Simple admin interface', 'Basic training guidance'],
   },
   {
     id: 'seo',
     title: 'Advanced SEO Structure',
-    price: '$150',
     description: 'Enhanced on-site SEO structuring beyond basic setup.',
     includes: ['Schema markup', 'Structured metadata', 'Sitemap optimization', 'Technical improvements'],
   },
   {
     id: 'performance',
     title: 'Performance Optimization',
-    price: '$100',
     description: 'Advanced speed and performance optimization.',
     includes: ['Image compression', 'Code optimization', 'Performance testing', 'Load speed improvements'],
   },
   {
     id: 'email-capture',
     title: 'Email Capture Integration',
-    price: '$100',
     description: 'Newsletter signup or lead capture integration.',
     includes: ['Email platform integration', 'Custom signup forms', 'Auto-response setup'],
   },
   {
     id: 'maintenance',
     title: 'Ongoing Website Maintenance',
-    price: '$75/month',
     description: 'Optional monthly maintenance for updates and minor edits.',
     includes: ['Small content updates', 'Plugin/tool updates', 'Basic troubleshooting'],
   },
@@ -229,16 +201,10 @@ function ServiceCardCollapsible({ service, categoryTitle, categoryId, isExpanded
       )}
       <div className="svc-card-head">
         <h3 className="svc-card-name">{service.name}</h3>
-        {service.price && (
-          <div className="svc-card-price-block">
-            <span className="svc-card-price">{service.price}</span>
-            {service.priceNote && <span className="svc-card-price-note">{service.priceNote}</span>}
-          </div>
-        )}
+        <span className="svc-card-quote-badge">By Quote</span>
       </div>
       <p className="svc-card-desc">{service.description}</p>
       <div className="svc-card-expand">
-        {service.payment && <p className="svc-card-payment">{service.payment}</p>}
         {service.note && <p className="svc-card-note">{service.note}</p>}
         {hasPricingTable && (
           <div className="svc-card-table">
@@ -277,7 +243,7 @@ function AddOnCard({ addon, isExpanded, onToggle }) {
     >
       <div className="addon-card-header">
         <h3 className="addon-card-title">{addon.title}</h3>
-        <span className="addon-card-price">{addon.price}</span>
+        <span className="addon-card-quote-tag">By Quote</span>
       </div>
       <p className="addon-card-desc">{addon.description}</p>
       <div className="addon-card-expand">
@@ -293,9 +259,6 @@ function AddOnCard({ addon, isExpanded, onToggle }) {
             <span className="addon-card-usecases-label">Use cases:</span>
             <span className="addon-card-usecases-list">{addon.useCases.join(' • ')}</span>
           </div>
-        )}
-        {addon.payment && (
-          <p className="addon-card-payment">{addon.payment}</p>
         )}
       </div>
       <span className="addon-card-toggle" aria-hidden="true">
@@ -328,7 +291,7 @@ export default function ServicesPage() {
             </p>
             <div className="sv-hero-cta">
               <a href="/book" className="btn btn-primary">Start Your Project</a>
-              <a href="#packages" className="btn btn-secondary">View Packages</a>
+              <a href="/book" className="btn btn-secondary">Get an Estimate</a>
             </div>
           </div>
           <div className="sv-hero-right">
@@ -363,7 +326,7 @@ export default function ServicesPage() {
       <section className="sv-breakdown" id="catalog">
         <div className="wrap">
           <h2 className="sv-heading">Service Breakdown</h2>
-          <p className="sv-heading-sub">Clear pricing by category. Expand any card for deliverables and payment details.</p>
+          <p className="sv-heading-sub">Everything I offer. Expand any card for full deliverables and details. All projects are estimated by quote — book a meeting to get yours.</p>
           {catalogCategories.map((cat) => (
             <div key={cat.id} className="svc-category" id={cat.id}>
               <h3 className="svc-category-title">{cat.title}</h3>
@@ -390,7 +353,7 @@ export default function ServicesPage() {
         <div className="wrap">
           <h2 className="sv-addons-heading">Advanced Website Add-Ons</h2>
           <p className="sv-addons-sub">
-            Optional upgrades for Business Website, Landing Page, or Website Packages. Pricing added to project invoice.
+            Optional upgrades available for any website project. Each add-on is included in your project estimate.
           </p>
           <div className="addon-grid">
             {websiteAddOns.map((addon) => (
@@ -408,8 +371,8 @@ export default function ServicesPage() {
       {/* Package comparison – Premium panels */}
       <section className="sv-packages" id="packages">
         <div className="wrap">
-          <h2 className="sv-heading">Packages</h2>
-          <p className="sv-heading-sub">Bundled services for a full launch or upgrade.</p>
+          <h2 className="sv-heading">Service Bundles</h2>
+          <p className="sv-heading-sub">Bundled services for a full launch or upgrade. All priced by quote — book a meeting to get your estimate.</p>
           <PricingTable />
         </div>
       </section>
@@ -673,9 +636,12 @@ export default function ServicesPage() {
           margin-bottom: var(--space-2);
           line-height: 1.25;
         }
-        .svc-card-price-block { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2); }
-        .svc-card-price { font-size: 1.25rem; font-weight: 800; color: var(--brand); }
-        .svc-card-price-note { font-size: 0.8125rem; color: var(--text-muted); }
+        .svc-card-quote-badge {
+          font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+          text-transform: uppercase; color: var(--brand);
+          border: 1px solid rgba(212,76,67,0.3); border-radius: 999px;
+          padding: 2px 8px;
+        }
         .svc-card-desc {
           font-size: 0.9375rem;
           color: var(--text-secondary);
@@ -688,7 +654,6 @@ export default function ServicesPage() {
           transition: max-height var(--duration) var(--ease);
         }
         .svc-card.is-expanded .svc-card-expand { max-height: 500px; }
-        .svc-card-payment { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: var(--space-3); }
         .svc-card-note { font-size: 0.8125rem; color: var(--text-muted); margin-bottom: var(--space-3); }
         .svc-card-table {
           border: 1px solid var(--glass-border);
@@ -797,11 +762,11 @@ export default function ServicesPage() {
           margin: 0;
           flex: 1;
         }
-        .addon-card-price {
-          font-size: 1.25rem;
-          font-weight: 800;
-          color: var(--brand);
-          flex-shrink: 0;
+        .addon-card-quote-tag {
+          font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+          text-transform: uppercase; color: var(--brand);
+          border: 1px solid rgba(212,76,67,0.3); border-radius: 999px;
+          padding: 2px 8px; flex-shrink: 0;
         }
         .addon-card-desc {
           font-size: 0.9375rem;
@@ -835,12 +800,6 @@ export default function ServicesPage() {
           margin-bottom: var(--space-3);
         }
         .addon-card-usecases-label { font-weight: 600; color: var(--text-secondary); margin-right: var(--space-1); }
-        .addon-card-payment {
-          font-size: 0.8125rem;
-          color: var(--text-muted);
-          margin: 0 0 var(--space-4);
-          line-height: 1.5;
-        }
         .addon-card-toggle {
           font-size: 0.8125rem;
           font-weight: 600;

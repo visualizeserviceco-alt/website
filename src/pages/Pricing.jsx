@@ -6,9 +6,9 @@ export default function Pricing() {
       <section className="pricing-hero section">
         <div className="pricing-hero-bg" aria-hidden="true" />
         <div className="wrap">
-          <h1 className="section-title">Simple, transparent packages</h1>
+          <h1 className="section-title">Service Packages</h1>
           <p className="section-subtitle">
-            Clear, upfront pricing for branding and website projects. No retainers, no surprise fees.
+            Bundled services for a full launch or upgrade. All projects are estimated by quote — book a meeting to get yours.
           </p>
         </div>
       </section>

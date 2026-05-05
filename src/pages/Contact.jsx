@@ -22,10 +22,10 @@ export default function Contact() {
         <div className="wrap contact-hero-wrap">
           <h1 className="contact-title">Book a Meeting to Discuss Your Business</h1>
           <p className="contact-lead">
-            Schedule a call so we can talk through your business, your goals, and exactly what you need. No pitch, no pressure. Just a clear conversation about how I can help.
+            Schedule a call so I can learn about your business, your goals, and exactly what you need. No pitch, no pressure. Just a clear conversation about how I can help.
           </p>
           <div className="contact-detail-block">
-            <h2 className="contact-h2">What we&apos;ll cover</h2>
+            <h2 className="contact-h2">What I&apos;ll cover</h2>
             <ul className="contact-list">
               <li><strong>Your business</strong> – what you do, who you serve, and where you are now.</li>
               <li><strong>Your goals</strong> – what you want to achieve with branding, your website, or both.</li>
@@ -36,7 +36,7 @@ export default function Contact() {
           <div className="contact-detail-block">
             <h2 className="contact-h2">What happens next</h2>
             <p className="contact-p">
-              After you pick a time below, you&apos;ll get a confirmation and a calendar invite. On the call we&apos;ll go through the details above and, if it&apos;s a fit, I&apos;ll outline a clear plan and quote. You can ask anything; there&apos;s no obligation to move forward.
+              After you pick a time below, you&apos;ll get a confirmation and a calendar invite. On the call I&apos;ll go through the details above and, if it&apos;s a fit, I&apos;ll outline a clear plan and quote. You can ask anything; there&apos;s no obligation to move forward.
             </p>
           </div>
           <p className="contact-cta-copy">Choose a time that works for you. I look forward to talking.</p>

@@ -29,10 +29,10 @@ export default function PricingTable() {
               >
                 {pkg.popular && <div className="pt-plan-badge">Most Selected</div>}
                 <h3 className="pt-plan-name">{pkg.name}</h3>
-                <p className="pt-plan-price">{pkg.price}</p>
+                <p className="pt-plan-quote">By Quote</p>
                 <p className="pt-plan-desc">{pkg.description}</p>
                 <a href="/book" className="btn btn-primary pt-plan-btn">
-                  Choose Plan
+                  Book a Meeting
                 </a>
               </div>
             ))}
@@ -83,7 +83,7 @@ export default function PricingTable() {
             <div key={pkg.id} className="pt-mobile-card">
               <div className="pt-mobile-head">
                 <h3 className="pt-plan-name">{pkg.name}</h3>
-                <p className="pt-plan-price">{pkg.price}</p>
+                <p className="pt-plan-quote">By Quote</p>
                 <p className="pt-plan-desc">{pkg.description}</p>
               </div>
               <ul className="pt-mobile-list">
@@ -98,7 +98,7 @@ export default function PricingTable() {
                 })}
               </ul>
               <a href="/book" className="btn btn-primary pt-plan-btn">
-                Choose Plan
+                Book a Meeting
               </a>
             </div>
           ))}
@@ -196,9 +196,11 @@ export default function PricingTable() {
           font-weight: 700;
           margin-bottom: var(--space-2);
         }
-        .pt-plan-price {
-          font-size: 1.5rem;
-          font-weight: 800;
+        .pt-plan-quote {
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
           color: var(--brand);
           margin-bottom: var(--space-2);
         }
