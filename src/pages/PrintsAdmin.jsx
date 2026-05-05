@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const ADMIN_PASSWORD = 'vsadmin2025';
+const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
 function formatDate(iso) {
   try {
