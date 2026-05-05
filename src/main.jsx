@@ -121,8 +121,7 @@ function Maintenance({ onUnlock }) {
   );
 }
 
-// Site is shut down — show maintenance page unconditionally
-const maintenanceMode     = true;
+const maintenanceMode     = false;
 const maintenancePassword = 'preview2025';
 
 function Root() {
