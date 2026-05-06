@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
   IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
-  IconChartBar, IconArrowRight,
+  IconChartBar, IconArrowRight, IconUsers, IconUser,
 } from '@tabler/icons-react';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -119,6 +119,7 @@ export default function PrintsAdmin() {
   const [tab, setTab]           = useState('orders'); // 'overview' | 'orders'
   const [search, setSearch]     = useState('');
   const [analytics, setAnalytics] = useState({ pageViews: 0, uniqueVisits: 0, topPages: [], dailyViews: [] });
+  const [clients, setClients]     = useState([]);
 
   const loadOrders = useCallback(() => {
     try { setOrders(JSON.parse(localStorage.getItem('vz_print_orders') || '[]')); }
@@ -160,11 +161,17 @@ export default function PrintsAdmin() {
     } catch { /* no analytics yet */ }
   }, []);
 
+  const loadClients = useCallback(() => {
+    try { setClients(JSON.parse(localStorage.getItem('vz_clients') || '[]')); }
+    catch { setClients([]); }
+  }, []);
+
   useEffect(() => {
     if (!auth) return;
     loadOrders();
     loadAnalytics();
-  }, [auth, loadOrders, loadAnalytics]);
+    loadClients();
+  }, [auth, loadOrders, loadAnalytics, loadClients]);
 
   // Track this visit
   useEffect(() => {
@@ -228,6 +235,7 @@ export default function PrintsAdmin() {
           {[
             { id: 'overview', label: 'Overview', icon: <IconLayoutDashboard size={16} stroke={1.6} /> },
             { id: 'orders',   label: 'Orders',   icon: <IconListDetails size={16} stroke={1.6} />, badge: statusCounts.pending || null },
+            { id: 'clients',  label: 'Clients',  icon: <IconUsers size={16} stroke={1.6} />, badge: clients.length || null },
           ].map(item => (
             <button
               key={item.id}
@@ -258,7 +266,7 @@ export default function PrintsAdmin() {
                 <h1 className="adm-title">Overview</h1>
                 <p className="adm-subtitle">Visualize Studio Dashboard</p>
               </div>
-              <button className="adm-refresh" onClick={() => { loadOrders(); loadAnalytics(); }} title="Refresh">
+              <button className="adm-refresh" onClick={() => { loadOrders(); loadAnalytics(); loadClients(); }} title="Refresh">
                 <IconRefresh size={15} stroke={1.8} />
                 Refresh
               </button>
@@ -563,6 +571,73 @@ export default function PrintsAdmin() {
             )}
           </div>
         )}
+        {/* ── Clients tab ──────────────────────── */}
+        {tab === 'clients' && (
+          <div className="adm-content">
+            <div className="adm-topbar">
+              <div>
+                <h1 className="adm-title">Clients</h1>
+                <p className="adm-subtitle">{clients.length} registered portal account{clients.length !== 1 ? 's' : ''}</p>
+              </div>
+              <button className="adm-refresh" onClick={loadClients} title="Refresh">
+                <IconRefresh size={15} stroke={1.8} />
+                Refresh
+              </button>
+            </div>
+
+            {clients.length === 0 ? (
+              <div className="adm-empty">
+                <IconUsers size={48} stroke={1.2} color="var(--text-muted)" />
+                <p>No client accounts yet. They&apos;ll appear here once someone signs up through the portal.</p>
+              </div>
+            ) : (
+              <div className="adm-panel adm-panel--full">
+                <div className="adm-clients-table">
+                  <div className="adm-clients-head">
+                    <span>Name</span>
+                    <span>Email</span>
+                    <span>Joined</span>
+                    <span>Orders</span>
+                    <span>Actions</span>
+                  </div>
+                  {clients.map(c => {
+                    const clientOrders = orders.filter(o => o.email?.toLowerCase() === c.email?.toLowerCase());
+                    return (
+                      <div key={c.id} className="adm-clients-row">
+                        <div className="adm-client-name-cell">
+                          <div className="adm-client-avatar">
+                            {(c.name || '?').charAt(0).toUpperCase()}
+                          </div>
+                          <span className="adm-client-name">{c.name}</span>
+                        </div>
+                        <a href={`mailto:${c.email}`} className="adm-client-email">{c.email}</a>
+                        <span className="adm-client-joined">{formatDate(c.createdAt)}</span>
+                        <span className="adm-client-orders">
+                          {clientOrders.length > 0 ? (
+                            <button
+                              type="button"
+                              className="adm-client-orders-btn"
+                              onClick={() => setTab('orders')}
+                            >
+                              {clientOrders.length} order{clientOrders.length !== 1 ? 's' : ''}
+                            </button>
+                          ) : (
+                            <span className="adm-client-no-orders">None</span>
+                          )}
+                        </span>
+                        <div className="adm-client-actions">
+                          <a href={`mailto:${c.email}`} className="adm-client-action-btn" title="Send email">
+                            <IconMail size={14} stroke={1.6} />
+                          </a>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </main>
 
       <style>{admStyles}</style>
@@ -660,7 +735,7 @@ const admStyles = `
 
   /* ── Main ────────────────────────────────── */
   .adm-main { flex: 1; overflow-y: auto; }
-  .adm-content { max-width: 1040px; padding: var(--space-8); }
+  .adm-content { width: 100%; padding: var(--space-8); }
   .adm-topbar {
     display: flex; align-items: flex-start; justify-content: space-between;
     margin-bottom: var(--space-8); gap: var(--space-4);
@@ -916,6 +991,65 @@ const admStyles = `
     border-radius: var(--radius-lg); padding: var(--space-16);
     text-align: center; color: var(--text-secondary);
     display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+  }
+
+  /* ── Clients table ───────────────────────── */
+  .adm-clients-table { width: 100%; }
+  .adm-clients-head {
+    display: grid;
+    grid-template-columns: 200px 1fr 180px 100px 60px;
+    padding: var(--space-3) var(--space-4);
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text-muted);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .adm-clients-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 180px 100px 60px;
+    align-items: center;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--glass-border);
+    transition: background 0.15s;
+  }
+  .adm-clients-row:last-child { border-bottom: none; }
+  .adm-clients-row:hover { background: rgba(255,255,255,0.025); }
+
+  .adm-client-name-cell { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
+  .adm-client-avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(212,76,67,0.15); border: 1px solid rgba(212,76,67,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8125rem; font-weight: 700; color: var(--brand);
+  }
+  .adm-client-name { font-size: 0.9rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .adm-client-email { font-size: 0.875rem; color: var(--brand); transition: opacity 0.2s; }
+  .adm-client-email:hover { opacity: 0.75; text-decoration: underline; }
+  .adm-client-joined { font-size: 0.8125rem; color: var(--text-muted); }
+  .adm-client-orders { display: flex; align-items: center; }
+  .adm-client-orders-btn {
+    background: rgba(212,76,67,0.1); border: 1px solid rgba(212,76,67,0.25);
+    color: var(--brand); font-size: 0.78rem; font-weight: 700;
+    padding: 3px 9px; border-radius: 999px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .adm-client-orders-btn:hover { background: rgba(212,76,67,0.2); }
+  .adm-client-no-orders { font-size: 0.8125rem; color: var(--text-muted); }
+  .adm-client-actions { display: flex; gap: var(--space-2); }
+  .adm-client-action-btn {
+    width: 30px; height: 30px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    color: var(--text-muted); transition: color 0.2s, background 0.2s;
+  }
+  .adm-client-action-btn:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+
+  @media (max-width: 900px) {
+    .adm-clients-head { grid-template-columns: 160px 1fr 100px; }
+    .adm-clients-head span:nth-child(3),
+    .adm-clients-head span:nth-child(5) { display: none; }
+    .adm-clients-row { grid-template-columns: 160px 1fr 100px; }
+    .adm-clients-row > *:nth-child(3),
+    .adm-clients-row > *:nth-child(5) { display: none; }
   }
 
   /* Mobile sidebar collapse */
