@@ -129,7 +129,7 @@ function Maintenance({ onUnlock }) {
   );
 }
 
-const maintenanceMode     = true;
+const maintenanceMode     = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 const maintenancePassword = import.meta.env.VITE_MAINTENANCE_PASSWORD || 'preview2025';
 
 function Root() {
