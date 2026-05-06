@@ -101,6 +101,7 @@ function OrderSummary({ order }) {
     { label: 'Quantity', value: order.quantity ? `${order.quantity} units` : null },
     { label: 'Finish',   value: FINISH_OPTIONS.find(o => o.id === order.finish)?.label },
     { label: 'Design',   value: DESIGN_OPTIONS.find(o => o.id === order.design)?.label },
+    { label: 'Social',   value: order.social || null },
   ].filter(r => r.value);
 
   return (
@@ -147,7 +148,7 @@ function SelectTile({ selected, onClick, children, popular }) {
 export default function Prints() {
   const navigate = useNavigate();
   const [step, setStep]           = useState(0);
-  const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', notes: '' });
+  const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors]       = useState({});
@@ -168,7 +169,7 @@ export default function Prints() {
 
   const validate = () => {
     const e = {};
-    if (!order.name.trim())  e.name  = 'Name is required';
+    if (!order.name.trim())  e.name  = 'First name is required';
     if (!order.email.trim()) e.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(order.email)) e.email = 'Enter a valid email';
     return e;
@@ -348,12 +349,13 @@ export default function Prints() {
               <form className="pr-form" onSubmit={handleSubmit} noValidate>
                 <div className="pr-form-row">
                   <div className="pr-field">
-                    <label className="pr-label">Name <span>*</span></label>
+                    <label className="pr-label">First Name <span>*</span></label>
                     <input
                       className={`pr-input ${errors.name ? 'pr-input--error' : ''}`}
                       value={order.name}
                       onChange={e => { setOrder(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: '' })); }}
-                      placeholder="Your full name"
+                      placeholder="Your first name"
+                      autoComplete="given-name"
                     />
                     {errors.name && <span className="pr-error">{errors.name}</span>}
                   </div>
@@ -365,19 +367,32 @@ export default function Prints() {
                       value={order.email}
                       onChange={e => { setOrder(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: '' })); }}
                       placeholder="you@example.com"
+                      autoComplete="email"
                     />
                     {errors.email && <span className="pr-error">{errors.email}</span>}
                   </div>
                 </div>
-                <div className="pr-field">
-                  <label className="pr-label">Phone <span className="pr-label-opt">(optional)</span></label>
-                  <input
-                    type="tel"
-                    className="pr-input"
-                    value={order.phone}
-                    onChange={e => setOrder(p => ({ ...p, phone: e.target.value }))}
-                    placeholder="(555) 000-0000"
-                  />
+                <div className="pr-form-row">
+                  <div className="pr-field">
+                    <label className="pr-label">Phone <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      type="tel"
+                      className="pr-input"
+                      value={order.phone}
+                      onChange={e => setOrder(p => ({ ...p, phone: e.target.value }))}
+                      placeholder="(555) 000-0000"
+                      autoComplete="tel"
+                    />
+                  </div>
+                  <div className="pr-field">
+                    <label className="pr-label">Social Media <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      className="pr-input"
+                      value={order.social}
+                      onChange={e => setOrder(p => ({ ...p, social: e.target.value }))}
+                      placeholder="@handle or profile link"
+                    />
+                  </div>
                 </div>
                 <div className="pr-field">
                   <label className="pr-label">Notes / details <span className="pr-label-opt">(optional)</span></label>

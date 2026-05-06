@@ -516,6 +516,12 @@ export default function PrintsAdmin() {
                               <a href={`tel:${detail.phone}`} className="adm-contact-val">{detail.phone}</a>
                             </div>
                           )}
+                          {detail.social && (
+                            <div className="adm-contact-row">
+                              <span className="adm-contact-key">Social</span>
+                              <span className="adm-contact-val">{detail.social}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
