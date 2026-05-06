@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { packages, features, featureMatrix } from '../data/pricing';
-import { IconCheckCircle, IconX } from './Icons';
-
-const Check = () => (
-  <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M16.667 5L7.5 14.167 3.333 10" />
-  </svg>
-);
+import { IconCheck, IconX, IconChevronDown, IconArrowRight } from '@tabler/icons-react';
 
 export default function PricingTable() {
   const [activeMobile, setActiveMobile] = useState(null);
@@ -30,6 +24,7 @@ export default function PricingTable() {
             </p>
             <a href="/book" className="btn btn-secondary pt-contact-btn">
               Get a Recommendation
+              <IconArrowRight size={14} stroke={2} />
             </a>
           </div>
 
@@ -47,6 +42,7 @@ export default function PricingTable() {
                 <p className="pt-plan-desc">{pkg.description}</p>
                 <a href="/book" className="btn btn-primary pt-plan-btn">
                   Book a Meeting
+                  <IconArrowRight size={13} stroke={2} />
                 </a>
               </div>
             ))}
@@ -70,7 +66,7 @@ export default function PricingTable() {
                 const included = featureMatrix[feature.id]?.[pkg.id] === 'included';
                 return (
                   <div key={pkg.id} className={`pt-plan-cell ${included ? 'pt-cell--yes' : 'pt-cell--no'} ${pkg.popular ? 'pt-col--popular' : ''}`}>
-                    {included ? <IconCheckCircle size={17} /> : <IconX size={15} />}
+                    {included ? <IconCheck size={17} stroke={2.2} /> : <IconX size={15} stroke={2} />}
                   </div>
                 );
               })}
@@ -96,12 +92,10 @@ export default function PricingTable() {
                     <span className="pt-mob-name">{pkg.name}</span>
                     <span className="pt-mob-quote">By Quote</span>
                   </div>
-                  <svg
+                  <IconChevronDown
+                    size={18} stroke={1.8}
                     className={`pt-mob-chevron ${isOpen ? 'is-open' : ''}`}
-                    viewBox="0 0 20 20" fill="none" width="18" height="18"
-                  >
-                    <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                  />
                 </button>
 
                 {isOpen && (
@@ -110,12 +104,13 @@ export default function PricingTable() {
                     <ul className="pt-mob-list">
                       {includedFeatures.map(f => (
                         <li key={f.id}>
-                          <Check /> {f.label}
+                          <IconCheck size={16} stroke={2.2} /> {f.label}
                         </li>
                       ))}
                     </ul>
                     <a href="/book" className="btn btn-primary pt-mob-btn">
                       Book a Meeting
+                      <IconArrowRight size={14} stroke={2} />
                     </a>
                   </div>
                 )}

@@ -1,4 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import {
+  IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
+  IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
+  IconChartBar, IconArrowRight,
+} from '@tabler/icons-react';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
 
@@ -221,19 +226,8 @@ export default function PrintsAdmin() {
         </div>
         <nav className="adm-sidebar-nav">
           {[
-            { id: 'overview', label: 'Overview', icon: (
-              <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
-                <rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-                <rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-                <rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-                <rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
-              </svg>
-            )},
-            { id: 'orders', label: 'Orders', icon: (
-              <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
-                <path d="M4 6h12M4 10h8M4 14h6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              </svg>
-            ), badge: statusCounts.pending || null },
+            { id: 'overview', label: 'Overview', icon: <IconLayoutDashboard size={16} stroke={1.6} /> },
+            { id: 'orders',   label: 'Orders',   icon: <IconListDetails size={16} stroke={1.6} />, badge: statusCounts.pending || null },
           ].map(item => (
             <button
               key={item.id}
@@ -248,9 +242,7 @@ export default function PrintsAdmin() {
           ))}
         </nav>
         <button className="adm-logout" onClick={() => setAuth(false)}>
-          <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
-            <path d="M13 3h4v14h-4M9 14l4-4-4-4M13 10H5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+          <IconLogout size={14} stroke={1.6} />
           Log out
         </button>
       </aside>
@@ -267,9 +259,7 @@ export default function PrintsAdmin() {
                 <p className="adm-subtitle">Visualize Studio Dashboard</p>
               </div>
               <button className="adm-refresh" onClick={() => { loadOrders(); loadAnalytics(); }} title="Refresh">
-                <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
-                  <path d="M17 10A7 7 0 116.07 4.5M17 10V5h-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <IconRefresh size={15} stroke={1.8} />
                 Refresh
               </button>
             </div>
@@ -281,26 +271,26 @@ export default function PrintsAdmin() {
                 value={orders.length}
                 sub={newToday > 0 ? `+${newToday} today` : 'No new today'}
                 accent="var(--brand)"
-                icon={<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M4 6h12M4 10h8M4 14h6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>}
+                icon={<IconListDetails size={18} stroke={1.6} />}
               />
               <StatCard
                 label="Pending Review"
                 value={statusCounts.pending || 0}
                 accent="#f59e0b"
-                icon={<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><circle cx="10" cy="10" r="7" stroke="currentColor" strokeWidth="1.6" /><path d="M10 6v4l2.5 2.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>}
+                icon={<IconClock size={18} stroke={1.6} />}
               />
               <StatCard
                 label="Completed"
                 value={statusCounts.completed || 0}
                 accent="#22c55e"
-                icon={<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M4 10l4 4 8-8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>}
+                icon={<IconCheck size={18} stroke={1.8} />}
               />
               <StatCard
                 label="Page Views"
                 value={analytics.pageViews}
                 sub={`${analytics.uniqueVisits} sessions`}
                 accent="#60a5fa"
-                icon={<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M2 10s3-6 8-6 8 6 8 6-3 6-8 6-8-6-8-6z" stroke="currentColor" strokeWidth="1.6" /><circle cx="10" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.6" /></svg>}
+                icon={<IconEye size={18} stroke={1.6} />}
               />
             </div>
 
@@ -365,7 +355,9 @@ export default function PrintsAdmin() {
               <div className="adm-panel adm-panel--full">
                 <div className="adm-panel-head">
                   <h3 className="adm-panel-title">Recent Orders</h3>
-                  <button className="adm-see-all" onClick={() => setTab('orders')}>See all →</button>
+                  <button className="adm-see-all" onClick={() => setTab('orders')}>
+                    See all <IconArrowRight size={12} stroke={2} />
+                  </button>
                 </div>
                 <div className="adm-recent-list">
                   {orders.slice(0, 5).map(o => (
@@ -470,9 +462,7 @@ export default function PrintsAdmin() {
                           <p className="adm-detail-date">{formatDate(detail.date)}</p>
                         </div>
                         <button className="adm-delete" onClick={() => deleteOrder(detail.id)}>
-                          <svg viewBox="0 0 16 16" fill="none" width="13" height="13">
-                            <path d="M2 4h12M5 4V3h6v1M6 7v5M10 7v5M3 4l1 9h8l1-9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-                          </svg>
+                          <IconTrash size={13} stroke={1.6} />
                           Delete
                         </button>
                       </div>
@@ -526,6 +516,12 @@ export default function PrintsAdmin() {
                               <a href={`tel:${detail.phone}`} className="adm-contact-val">{detail.phone}</a>
                             </div>
                           )}
+                          {detail.social && (
+                            <div className="adm-contact-row">
+                              <span className="adm-contact-key">Social</span>
+                              <span className="adm-contact-val">{detail.social}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -542,16 +538,12 @@ export default function PrintsAdmin() {
                           href={`mailto:${detail.email}?subject=Your Custom Print Quote — Visualize Studio&body=Hi ${detail.name},%0A%0AThanks for your order request. Here's your quote for ${detail.type} (${detail.size || ''}, ${detail.quantity || ''} units, ${detail.finish || ''} finish):%0A%0A[Insert quote details here]%0A%0ABest,%0AVisualize Studio`}
                           className="btn btn-primary adm-action-btn"
                         >
-                          <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
-                            <path d="M2 4h16v12H2V4zm0 0l8 7 8-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
+                          <IconMail size={15} stroke={1.6} />
                           Send Quote Email
                         </a>
                         {detail.phone && (
                           <a href={`sms:${detail.phone}`} className="btn btn-secondary adm-action-btn">
-                            <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
-                              <path d="M2 3h16v11H2V3zm4 14l4-3 4 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <IconPhone size={15} stroke={1.6} />
                             Text Client
                           </a>
                         )}

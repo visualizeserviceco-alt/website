@@ -1,5 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import {
+  IconMenu2,
+  IconX,
+  IconUser,
+  IconCalendar,
+  IconChevronRight,
+  IconHome,
+  IconBriefcase,
+  IconPhoto,
+  IconPhone,
+  IconLogin,
+} from '@tabler/icons-react';
 
 export default function Navbar() {
   const [open, setOpen]         = useState(false);
@@ -7,19 +19,18 @@ export default function Navbar() {
   const location                = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close menu on route change
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
   const links = [
-    { to: '/',         label: 'Home' },
-    { to: '/services', label: 'Services' },
-    { to: '/showcase', label: 'Work' },
-    { to: '/book',     label: 'Contact' },
+    { to: '/',         label: 'Home',     icon: IconHome },
+    { to: '/services', label: 'Services', icon: IconBriefcase },
+    { to: '/showcase', label: 'Work',     icon: IconPhoto },
+    { to: '/book',     label: 'Contact',  icon: IconPhone },
   ];
 
   const isActive = (to) =>
@@ -34,7 +45,7 @@ export default function Navbar() {
             <img src="/logo.svg" alt="Visualize Studio" />
           </Link>
 
-          {/* Desktop nav */}
+          {/* Desktop nav links */}
           <nav className="navbar-nav" aria-label="Main navigation">
             <ul>
               {links.map(({ to, label }) => (
@@ -50,10 +61,17 @@ export default function Navbar() {
             </ul>
           </nav>
 
-          {/* CTA */}
-          <a href="/book" className="btn btn-primary navbar-cta">
-            Book a Consultation
-          </a>
+          {/* Desktop action buttons */}
+          <div className="navbar-actions">
+            <Link to="/portal" className="btn-ghost navbar-portal-btn">
+              <IconUser size={15} stroke={1.8} />
+              Client Login
+            </Link>
+            <a href="/book" className="btn btn-primary navbar-cta">
+              <IconCalendar size={15} stroke={1.8} />
+              Book a Consultation
+            </a>
+          </div>
 
           {/* Mobile burger */}
           <button
@@ -63,14 +81,12 @@ export default function Navbar() {
             aria-label={open ? 'Close menu' : 'Open menu'}
             onClick={() => setOpen(o => !o)}
           >
-            <span />
-            <span />
-            <span />
+            {open ? <IconX size={20} stroke={2} /> : <IconMenu2 size={20} stroke={2} />}
           </button>
         </div>
       </header>
 
-      {/* Mobile drawer overlay */}
+      {/* Overlay */}
       <div
         className={`navbar-overlay ${open ? 'is-visible' : ''}`}
         onClick={() => setOpen(false)}
@@ -90,30 +106,56 @@ export default function Navbar() {
             onClick={() => setOpen(false)}
             aria-label="Close menu"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <IconX size={16} stroke={2} />
           </button>
         </div>
 
         <ul className="navbar-drawer-links">
-          {links.map(({ to, label }) => (
+          {links.map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <Link
                 to={to}
                 className={`navbar-drawer-link ${isActive(to) ? 'navbar-drawer-link--active' : ''}`}
                 onClick={() => setOpen(false)}
               >
-                {label}
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" width="16" height="16">
-                  <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+                <span className="navbar-drawer-link-left">
+                  <span className="navbar-drawer-link-icon">
+                    <Icon size={17} stroke={1.8} />
+                  </span>
+                  {label}
+                </span>
+                <IconChevronRight size={15} stroke={1.8} className="navbar-drawer-arrow" />
               </Link>
             </li>
           ))}
         </ul>
 
-        <a href="/book" className="btn btn-primary navbar-drawer-cta" onClick={() => setOpen(false)}>
+        <div className="navbar-drawer-divider" />
+
+        {/* Client portal link in drawer */}
+        <Link
+          to="/portal"
+          className="navbar-drawer-portal"
+          onClick={() => setOpen(false)}
+        >
+          <span className="navbar-drawer-portal-left">
+            <span className="navbar-drawer-link-icon navbar-drawer-link-icon--brand">
+              <IconLogin size={17} stroke={1.8} />
+            </span>
+            <span>
+              <span className="navbar-drawer-portal-label">Client Portal</span>
+              <span className="navbar-drawer-portal-sub">Track your orders</span>
+            </span>
+          </span>
+          <IconChevronRight size={15} stroke={1.8} className="navbar-drawer-arrow" />
+        </Link>
+
+        <a
+          href="/book"
+          className="btn btn-primary navbar-drawer-cta"
+          onClick={() => setOpen(false)}
+        >
+          <IconCalendar size={16} stroke={1.8} />
           Book a Consultation
         </a>
 
@@ -124,212 +166,186 @@ export default function Navbar() {
       </nav>
 
       <style>{`
-        /* ── Pill container ────────────────────────────── */
+        /* ── Pill ─────────────────────────────────── */
         .navbar {
-          position: sticky;
-          top: 0;
-          z-index: 200;
+          position: sticky; top: 0; z-index: 200;
           padding: 12px var(--space-6);
           transition: padding 0.3s var(--ease);
         }
         .navbar--scrolled { padding: 8px var(--space-6); }
+        @media (max-width: 768px) { .navbar { padding: 10px var(--space-4); } }
 
         .navbar-pill {
-          max-width: 900px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          gap: var(--space-6);
-          padding: 0 var(--space-5);
-          height: 52px;
-          background: rgba(14, 14, 14, 0.72);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.09);
+          max-width: 1040px; margin: 0 auto;
+          display: flex; align-items: center; gap: var(--space-4);
+          padding: 0 var(--space-5); height: 52px;
+          background: rgba(12,12,12,0.75);
+          backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+          border: 1px solid rgba(255,255,255,0.08);
           border-radius: 999px;
-          box-shadow: 0 4px 32px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.04) inset;
-          transition: background 0.3s var(--ease), box-shadow 0.3s var(--ease);
+          box-shadow: 0 4px 32px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.04) inset;
+          transition: background 0.3s, box-shadow 0.3s;
         }
         .navbar--scrolled .navbar-pill {
-          background: rgba(10, 10, 10, 0.88);
-          box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+          background: rgba(8,8,8,0.92);
+          box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.05) inset;
+        }
+        @media (max-width: 768px) {
+          .navbar-pill { padding: 0 var(--space-4); gap: var(--space-3); }
         }
 
         /* Logo */
-        .navbar-logo {
-          display: flex;
-          align-items: center;
-          flex-shrink: 0;
-        }
-        .navbar-logo img {
-          height: 26px;
-          width: auto;
-          display: block;
-        }
+        .navbar-logo { display: flex; align-items: center; flex-shrink: 0; }
+        .navbar-logo img { height: 26px; width: auto; display: block; }
 
         /* Desktop nav */
         .navbar-nav { flex: 1; }
-        .navbar-nav ul {
-          display: flex;
-          align-items: center;
-          gap: var(--space-1);
-          list-style: none;
-        }
+        .navbar-nav ul { display: flex; align-items: center; gap: 2px; list-style: none; }
         .navbar-link {
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: var(--text-muted);
-          padding: 6px 12px;
-          border-radius: 999px;
-          transition: color 0.2s, background 0.2s;
-          white-space: nowrap;
+          font-size: 0.875rem; font-weight: 500; color: var(--text-muted);
+          padding: 6px 11px; border-radius: 999px;
+          transition: color 0.2s, background 0.2s; white-space: nowrap;
         }
-        .navbar-link:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-        .navbar-link--active { color: var(--text); background: rgba(255,255,255,0.08); }
+        .navbar-link:hover { color: var(--text); background: rgba(255,255,255,0.07); }
+        .navbar-link--active { color: var(--text); background: rgba(255,255,255,0.09); }
 
-        /* CTA button */
+        /* Action group */
+        .navbar-actions { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+
+        /* Ghost client login button */
+        .btn-ghost {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-size: 0.8125rem; font-weight: 600;
+          color: var(--text-secondary);
+          padding: 7px 13px; border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.04);
+          transition: color 0.2s, background 0.2s, border-color 0.2s;
+          white-space: nowrap; text-decoration: none;
+        }
+        .btn-ghost:hover {
+          color: var(--text); background: rgba(255,255,255,0.08);
+          border-color: rgba(255,255,255,0.16);
+        }
+        .navbar-portal-btn { flex-shrink: 0; }
         .navbar-cta {
-          flex-shrink: 0;
-          font-size: 0.8125rem;
-          padding: 7px 16px;
-          white-space: nowrap;
+          flex-shrink: 0; font-size: 0.8125rem;
+          padding: 7px 14px; white-space: nowrap;
+          display: inline-flex; align-items: center; gap: 6px;
         }
 
         /* Burger */
         .navbar-burger {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          gap: 5px;
-          width: 36px;
-          height: 36px;
-          padding: 6px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          flex-shrink: 0;
+          display: none; align-items: center; justify-content: center;
+          width: 36px; height: 36px;
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.09);
+          border-radius: 50%; cursor: pointer; flex-shrink: 0;
+          color: var(--text-secondary);
+          transition: background 0.2s, color 0.2s;
         }
-        .navbar-burger span {
-          display: block;
-          height: 2px;
-          background: var(--text-secondary);
-          border-radius: 1px;
-          transition: transform 0.25s var(--ease), opacity 0.25s, width 0.25s;
-          transform-origin: center;
-        }
-        .navbar-burger span:nth-child(1) { width: 22px; }
-        .navbar-burger span:nth-child(2) { width: 16px; }
-        .navbar-burger span:nth-child(3) { width: 22px; }
-        .navbar-burger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); width: 22px; }
-        .navbar-burger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .navbar-burger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); width: 22px; }
+        .navbar-burger:hover { background: rgba(255,255,255,0.1); color: var(--text); }
 
-        /* ── Mobile overlay ────────────────────────────── */
+        /* ── Overlay ──────────────────────────────── */
         .navbar-overlay {
-          position: fixed; inset: 0;
-          background: rgba(0,0,0,0.55);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 210;
-          opacity: 0;
-          pointer-events: none;
+          position: fixed; inset: 0; z-index: 210;
+          background: rgba(0,0,0,0.6);
+          backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+          opacity: 0; pointer-events: none;
           transition: opacity 0.3s var(--ease);
         }
         .navbar-overlay.is-visible { opacity: 1; pointer-events: all; }
 
-        /* ── Mobile drawer ─────────────────────────────── */
+        /* ── Drawer ───────────────────────────────── */
         .navbar-drawer {
-          position: fixed;
-          top: 0; right: 0;
-          width: min(320px, 85vw);
-          height: 100dvh;
-          background: rgba(12, 12, 12, 0.97);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
+          position: fixed; top: 0; right: 0;
+          width: min(340px, 88vw); height: 100dvh;
+          background: rgba(10,10,10,0.98);
+          backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
           border-left: 1px solid rgba(255,255,255,0.07);
-          z-index: 220;
-          padding: var(--space-6);
-          display: flex;
-          flex-direction: column;
+          z-index: 220; padding: var(--space-5) var(--space-5);
+          display: flex; flex-direction: column; gap: 0;
           transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-          box-shadow: -20px 0 60px rgba(0,0,0,0.4);
+          transition: transform 0.36s cubic-bezier(0.32,0.72,0,1);
+          box-shadow: -24px 0 64px rgba(0,0,0,0.45);
         }
         .navbar-drawer.is-open { transform: translateX(0); }
 
         .navbar-drawer-header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: var(--space-10);
+          display: flex; align-items: center; justify-content: space-between;
+          padding-bottom: var(--space-6); margin-bottom: var(--space-2);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
         }
-        .navbar-drawer-logo { height: 28px; width: auto; }
+        .navbar-drawer-logo { height: 26px; width: auto; }
         .navbar-drawer-close {
-          width: 36px; height: 36px;
+          width: 32px; height: 32px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 50%;
-          cursor: pointer;
-          color: var(--text-secondary);
+          background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.09);
+          color: var(--text-secondary); cursor: pointer;
           transition: background 0.2s, color 0.2s;
         }
-        .navbar-drawer-close svg { width: 16px; height: 16px; }
-        .navbar-drawer-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+        .navbar-drawer-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
 
-        .navbar-drawer-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-1);
-          flex: 1;
-        }
+        .navbar-drawer-links { list-style: none; padding: var(--space-3) 0; flex: 0; }
+
         .navbar-drawer-link {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 1.0625rem;
-          font-weight: 500;
-          color: var(--text-secondary);
-          padding: var(--space-4) var(--space-3);
-          border-radius: var(--radius);
-          transition: color 0.2s, background 0.2s, padding-left 0.2s;
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 11px var(--space-3); border-radius: var(--radius);
+          color: var(--text-secondary); font-size: 1rem; font-weight: 500;
+          transition: color 0.2s, background 0.2s; text-decoration: none;
         }
-        .navbar-drawer-link:hover {
-          color: var(--text);
-          background: rgba(255,255,255,0.05);
-          padding-left: var(--space-4);
-        }
+        .navbar-drawer-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
         .navbar-drawer-link--active {
-          color: var(--text);
-          background: rgba(212,76,67,0.1);
+          color: var(--text); background: rgba(212,76,67,0.09);
           border-left: 2px solid var(--brand);
         }
-        .navbar-drawer-link svg { opacity: 0.4; transition: opacity 0.2s, transform 0.2s; }
-        .navbar-drawer-link:hover svg { opacity: 0.7; transform: translateX(3px); }
+        .navbar-drawer-link-left { display: flex; align-items: center; gap: 12px; }
+        .navbar-drawer-link-icon {
+          width: 32px; height: 32px; border-radius: var(--radius);
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08);
+          display: flex; align-items: center; justify-content: center;
+          color: var(--text-muted); flex-shrink: 0;
+        }
+        .navbar-drawer-link-icon--brand {
+          background: rgba(212,76,67,0.12); border-color: rgba(212,76,67,0.2);
+          color: var(--brand);
+        }
+        .navbar-drawer-arrow { color: var(--text-muted); opacity: 0.4; transition: transform 0.2s, opacity 0.2s; }
+        .navbar-drawer-link:hover .navbar-drawer-arrow { opacity: 0.7; transform: translateX(3px); }
+
+        .navbar-drawer-divider { height: 1px; background: rgba(255,255,255,0.06); margin: var(--space-2) 0 var(--space-3); }
+
+        /* Portal row */
+        .navbar-drawer-portal {
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 12px var(--space-3); border-radius: var(--radius);
+          background: rgba(212,76,67,0.06); border: 1px solid rgba(212,76,67,0.15);
+          text-decoration: none; margin-bottom: var(--space-5);
+          transition: background 0.2s, border-color 0.2s;
+        }
+        .navbar-drawer-portal:hover { background: rgba(212,76,67,0.1); border-color: rgba(212,76,67,0.25); }
+        .navbar-drawer-portal-left { display: flex; align-items: center; gap: 12px; }
+        .navbar-drawer-portal-label { display: block; font-size: 0.9375rem; font-weight: 700; color: var(--text); }
+        .navbar-drawer-portal-sub { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 1px; }
 
         .navbar-drawer-cta {
-          width: 100%;
-          padding: var(--space-4);
-          font-size: 0.9375rem;
-          margin-top: var(--space-6);
-          border-radius: var(--radius-lg);
+          display: flex; align-items: center; justify-content: center; gap: 8px;
+          width: 100%; padding: var(--space-4); font-size: 0.9375rem;
+          border-radius: var(--radius-lg); margin-bottom: var(--space-4);
         }
         .navbar-drawer-contact {
-          text-align: center;
-          font-size: 0.8rem;
-          color: var(--text-muted);
-          margin-top: var(--space-4);
+          text-align: center; font-size: 0.8125rem; color: var(--text-muted);
+          margin-top: auto; padding-top: var(--space-4);
         }
         .navbar-drawer-contact a { color: var(--brand); font-weight: 600; }
 
-        /* ── Mobile breakpoint ─────────────────────────── */
-        @media (max-width: 768px) {
-          .navbar { padding: 10px var(--space-4); }
-          .navbar-nav { display: none; }
+        /* ── Responsive ───────────────────────────── */
+        @media (max-width: 900px) {
           .navbar-cta { display: none; }
+        }
+        @media (max-width: 768px) {
+          .navbar-nav { display: none; }
+          .navbar-actions { display: none; }
           .navbar-burger { display: flex; }
-          .navbar-pill { gap: var(--space-3); padding: 0 var(--space-4); }
         }
       `}</style>
     </>

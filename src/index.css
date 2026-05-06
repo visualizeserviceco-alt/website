@@ -277,44 +277,6 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--glass-border);
 }
 
-/* ── Scroll-reveal animations ───────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-28px);
-  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
-}
-.reveal-left.is-visible { opacity: 1; transform: translateX(0); }
-.reveal-right {
-  opacity: 0;
-  transform: translateX(28px);
-  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
-}
-.reveal-right.is-visible { opacity: 1; transform: translateX(0); }
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.94);
-  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
-}
-.reveal-scale.is-visible { opacity: 1; transform: scale(1); }
-
-/* Staggered children */
-.stagger > * { opacity: 0; transform: translateY(20px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); }
-.stagger.is-visible > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.05s; }
-.stagger.is-visible > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.13s; }
-.stagger.is-visible > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.21s; }
-.stagger.is-visible > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.29s; }
-.stagger.is-visible > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.37s; }
-.stagger.is-visible > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.45s; }
-
 /* ── Under Construction Page ────────────────────────────────────────── */
 @keyframes ucTwinkle {
   0%, 100% { opacity: var(--o, 0.5); }
@@ -332,8 +294,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes ucDotPulse {
-  0%, 100% { box-shadow: 0 0 0 0   rgba(212,76,67,0.8); }
-  50%       { box-shadow: 0 0 0 6px rgba(212,76,67,0);   }
+  0%, 100% { box-shadow: 0 0 0 0   rgba(201,161,42,0.8); }
+  50%       { box-shadow: 0 0 0 6px rgba(201,161,42,0);   }
 }
 
 @keyframes ucShake {
@@ -388,6 +350,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 2rem;
 }
 
+/* Rocket */
 .uc-rocket-area {
   position: relative;
   width: 230px;
@@ -414,9 +377,10 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   z-index: 1;
   animation: ucFloat 3.6s ease-in-out infinite;
-  filter: drop-shadow(0 6px 22px rgba(212,76,67,0.35));
+  filter: drop-shadow(0 6px 22px rgba(201,161,42,0.35));
 }
 
+/* Badge */
 .uc-badge {
   display: inline-flex;
   align-items: center;
@@ -437,11 +401,12 @@ h1, h2, h3, h4, h5, h6 {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #d44c43;
+  background: #c9a12a;
   flex-shrink: 0;
   animation: ucDotPulse 1.8s ease-in-out infinite;
 }
 
+/* Headline */
 .uc-headline {
   font-size: clamp(2.6rem, 11vw, 4rem);
   font-weight: 900;
@@ -452,8 +417,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #f0f0f0;
 }
 
-.uc-gold { color: #d44c43; }
+.uc-gold {
+  color: #c9a12a;
+}
 
+/* Subtitle */
 .uc-sub {
   font-size: 0.97rem;
   color: rgba(240,240,240,0.58);
@@ -468,6 +436,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
 }
 
+/* Divider */
 .uc-divider {
   width: 160px;
   border: none;
@@ -475,6 +444,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 auto 1.3rem;
 }
 
+/* Contact */
 .uc-contact {
   font-size: 0.88rem;
   color: rgba(240,240,240,0.48);
@@ -482,13 +452,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .uc-phone {
-  color: #d44c43;
+  color: #c9a12a;
   text-decoration: none;
   font-weight: 500;
 }
 
 .uc-phone:hover { text-decoration: underline; }
 
+/* Password form */
 .uc-form {
   display: flex;
   flex-direction: column;
@@ -518,14 +489,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .uc-pw-input::placeholder { color: rgba(240,240,240,0.28); }
-.uc-pw-input:focus        { border-color: rgba(212,76,67,0.5); }
+.uc-pw-input:focus        { border-color: rgba(201,161,42,0.5); }
 
 .uc-pw-btn {
   padding: 0.65rem;
   border-radius: 8px;
   border: none;
-  background: #d44c43;
-  color: #fff;
+  background: #c9a12a;
+  color: #07070a;
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -535,7 +506,7 @@ h1, h2, h3, h4, h5, h6 {
   transition: background 0.2s;
 }
 
-.uc-pw-btn:hover { background: #e66b63; }
+.uc-pw-btn:hover { background: #d4b845; }
 
 .uc-pw-error {
   font-size: 0.78rem;
@@ -543,6 +514,7 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
+/* Footer */
 .uc-footer-credit {
   font-size: 0.62rem;
   letter-spacing: 0.22em;

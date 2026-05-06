@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { IconArrowLeft, IconCheck, IconSend, IconUser, IconArrowRight } from '@tabler/icons-react';
 
 const TOTAL_STEPS = 7;
 
@@ -77,7 +78,7 @@ function ProgressBar({ step }) {
         <div key={label} className={`pr-progress-step ${i < step ? 'done' : i === step ? 'active' : ''}`}>
           <div className="pr-progress-dot">
             {i < step ? (
-              <svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              <IconCheck size={14} stroke={2.2} />
             ) : (
               <span>{i + 1}</span>
             )}
@@ -100,6 +101,7 @@ function OrderSummary({ order }) {
     { label: 'Quantity', value: order.quantity ? `${order.quantity} units` : null },
     { label: 'Finish',   value: FINISH_OPTIONS.find(o => o.id === order.finish)?.label },
     { label: 'Design',   value: DESIGN_OPTIONS.find(o => o.id === order.design)?.label },
+    { label: 'Social',   value: order.social || null },
   ].filter(r => r.value);
 
   return (
@@ -146,7 +148,7 @@ function SelectTile({ selected, onClick, children, popular }) {
 export default function Prints() {
   const navigate = useNavigate();
   const [step, setStep]           = useState(0);
-  const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', notes: '' });
+  const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors]       = useState({});
@@ -167,7 +169,7 @@ export default function Prints() {
 
   const validate = () => {
     const e = {};
-    if (!order.name.trim())  e.name  = 'Name is required';
+    if (!order.name.trim())  e.name  = 'First name is required';
     if (!order.email.trim()) e.email = 'Email is required';
     else if (!/\S+@\S+\.\S+/.test(order.email)) e.email = 'Enter a valid email';
     return e;
@@ -216,10 +218,7 @@ export default function Prints() {
 
           <div className="pr-portal-prompt">
             <div className="pr-portal-prompt-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" width="22" height="22">
-                <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              </svg>
+              <IconUser size={22} stroke={1.8} />
             </div>
             <div>
               <p className="pr-portal-title">Track your order status</p>
@@ -229,7 +228,8 @@ export default function Prints() {
               className="btn btn-primary pr-portal-btn"
               onClick={() => navigate('/portal')}
             >
-              Create Account →
+              Create Account
+              <IconArrowRight size={14} stroke={2} />
             </button>
           </div>
 
@@ -249,7 +249,10 @@ export default function Prints() {
       <div className="pr-bg" aria-hidden="true" />
 
       <div className="pr-header">
-        <Link to="/" className="pr-back-home">← Back to site</Link>
+        <Link to="/" className="pr-back-home">
+          <IconArrowLeft size={14} stroke={2} />
+          Back to site
+        </Link>
         <h1 className="pr-page-title">Custom Print Order</h1>
         <p className="pr-page-sub">Configure your order and I&apos;ll send you a quote.</p>
       </div>
@@ -346,12 +349,13 @@ export default function Prints() {
               <form className="pr-form" onSubmit={handleSubmit} noValidate>
                 <div className="pr-form-row">
                   <div className="pr-field">
-                    <label className="pr-label">Name <span>*</span></label>
+                    <label className="pr-label">First Name <span>*</span></label>
                     <input
                       className={`pr-input ${errors.name ? 'pr-input--error' : ''}`}
                       value={order.name}
                       onChange={e => { setOrder(p => ({ ...p, name: e.target.value })); setErrors(p => ({ ...p, name: '' })); }}
-                      placeholder="Your full name"
+                      placeholder="Your first name"
+                      autoComplete="given-name"
                     />
                     {errors.name && <span className="pr-error">{errors.name}</span>}
                   </div>
@@ -363,19 +367,32 @@ export default function Prints() {
                       value={order.email}
                       onChange={e => { setOrder(p => ({ ...p, email: e.target.value })); setErrors(p => ({ ...p, email: '' })); }}
                       placeholder="you@example.com"
+                      autoComplete="email"
                     />
                     {errors.email && <span className="pr-error">{errors.email}</span>}
                   </div>
                 </div>
-                <div className="pr-field">
-                  <label className="pr-label">Phone <span className="pr-label-opt">(optional)</span></label>
-                  <input
-                    type="tel"
-                    className="pr-input"
-                    value={order.phone}
-                    onChange={e => setOrder(p => ({ ...p, phone: e.target.value }))}
-                    placeholder="(555) 000-0000"
-                  />
+                <div className="pr-form-row">
+                  <div className="pr-field">
+                    <label className="pr-label">Phone <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      type="tel"
+                      className="pr-input"
+                      value={order.phone}
+                      onChange={e => setOrder(p => ({ ...p, phone: e.target.value }))}
+                      placeholder="(555) 000-0000"
+                      autoComplete="tel"
+                    />
+                  </div>
+                  <div className="pr-field">
+                    <label className="pr-label">Social Media <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      className="pr-input"
+                      value={order.social}
+                      onChange={e => setOrder(p => ({ ...p, social: e.target.value }))}
+                      placeholder="@handle or profile link"
+                    />
+                  </div>
                 </div>
                 <div className="pr-field">
                   <label className="pr-label">Notes / details <span className="pr-label-opt">(optional)</span></label>
@@ -388,6 +405,7 @@ export default function Prints() {
                   />
                 </div>
                 <button type="submit" className="btn btn-primary pr-submit-btn" disabled={submitting}>
+                  <IconSend size={16} stroke={1.8} />
                   {submitting ? 'Submitting…' : 'Submit Quote Request'}
                 </button>
               </form>
@@ -396,7 +414,8 @@ export default function Prints() {
 
           {step > 0 && (
             <button type="button" className="pr-back-btn" onClick={() => setStep(s => s - 1)}>
-              ← Back
+              <IconArrowLeft size={14} stroke={2} />
+              Back
             </button>
           )}
         </div>
@@ -435,7 +454,7 @@ const prStyles = `
     padding: 0 var(--space-6);
   }
   .pr-back-home {
-    display: inline-block;
+    display: inline-flex; align-items: center; gap: 5px;
     font-size: 0.875rem;
     color: var(--text-muted);
     margin-bottom: var(--space-4);
@@ -575,6 +594,7 @@ const prStyles = `
 
   /* Back btn */
   .pr-back-btn {
+    display: inline-flex; align-items: center; gap: 5px;
     background: none; border: none; color: var(--text-muted);
     font-size: 0.875rem; cursor: pointer; padding: 0; transition: color 0.2s;
   }
@@ -598,7 +618,7 @@ const prStyles = `
   .pr-input--error { border-color: rgba(220,70,70,0.7); }
   .pr-textarea { resize: vertical; min-height: 100px; }
   .pr-error { font-size: 0.8rem; color: rgba(220,80,80,0.9); }
-  .pr-submit-btn { padding: var(--space-4) var(--space-8); font-size: 1rem; margin-top: var(--space-2); align-self: flex-start; }
+  .pr-submit-btn { display: inline-flex; align-items: center; gap: 7px; padding: var(--space-4) var(--space-8); font-size: 1rem; margin-top: var(--space-2); align-self: flex-start; }
   .pr-submit-btn:disabled { opacity: 0.6; cursor: default; }
 
   /* Aside */

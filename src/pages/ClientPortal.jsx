@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { IconInfoCircle, IconX, IconCalendar, IconLogout, IconArrowLeft, IconLogin, IconUserPlus, IconPackage, IconArrowRight } from '@tabler/icons-react';
 
 const CLIENTS_KEY = 'vz_clients';
 const ORDERS_KEY  = 'vz_print_orders';
@@ -64,9 +65,7 @@ function CalendlyModal({ onClose }) {
         <div className="cp-modal-header">
           <h3 className="cp-modal-title">Book a Meeting</h3>
           <button className="cp-modal-close" onClick={onClose} aria-label="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" width="18" height="18">
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <IconX size={18} stroke={2} />
           </button>
         </div>
         <div
@@ -196,10 +195,7 @@ function AuthScreen({ onAuth }) {
 
         {mode === 'signup' && (
           <div className="cp-auth-notice">
-            <svg viewBox="0 0 16 16" fill="none" width="14" height="14" style={{ flexShrink: 0, marginTop: 1 }}>
-              <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.4" />
-              <path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-            </svg>
+            <IconInfoCircle size={15} stroke={1.5} style={{ flexShrink: 0, marginTop: 1 }} />
             <span>Use a <strong>new password</strong> created just for this portal — not one you use anywhere else.</span>
           </div>
         )}
@@ -221,6 +217,7 @@ function AuthScreen({ onAuth }) {
           </div>
           {error && <p className="cp-auth-error">{error}</p>}
           <button type="submit" className="btn btn-primary cp-auth-btn">
+            {mode === 'login' ? <IconLogin size={16} stroke={1.8} /> : <IconUserPlus size={16} stroke={1.8} />}
             {mode === 'login' ? 'Log In' : 'Create Account'}
           </button>
         </form>
@@ -237,7 +234,10 @@ function AuthScreen({ onAuth }) {
           )}
         </p>
 
-        <Link to="/" className="cp-back-link">← Back to site</Link>
+        <Link to="/" className="cp-back-link">
+          <IconArrowLeft size={13} stroke={2} />
+          Back to site
+        </Link>
       </div>
     </div>
   );
@@ -275,15 +275,13 @@ function Dashboard({ user, onLogout }) {
             className="btn btn-primary cp-book-btn"
             onClick={() => setCalendly(true)}
           >
-            <svg viewBox="0 0 20 20" fill="none" width="15" height="15">
-              <rect x="2" y="3" width="16" height="15" rx="2" stroke="currentColor" strokeWidth="1.6" />
-              <path d="M6 1v4M14 1v4M2 8h16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-              <circle cx="7" cy="13" r="1.2" fill="currentColor" />
-              <circle cx="13" cy="13" r="1.2" fill="currentColor" />
-            </svg>
+            <IconCalendar size={15} stroke={1.8} />
             Book a Meeting
           </button>
-          <button className="cp-logout" onClick={onLogout}>Log out</button>
+          <button className="cp-logout" onClick={onLogout}>
+            <IconLogout size={14} stroke={1.8} />
+            Log out
+          </button>
         </div>
       </header>
 
@@ -302,8 +300,12 @@ function Dashboard({ user, onLogout }) {
               Once you submit a quote request through the prints page, your orders will appear here with live status updates.
             </p>
             <div className="cp-empty-actions">
-              <Link to="/prints" className="btn btn-primary">Configure a Print Order</Link>
+              <Link to="/prints" className="btn btn-primary">
+                <IconPackage size={16} stroke={1.8} />
+                Configure a Print Order
+              </Link>
               <button type="button" className="btn btn-secondary" onClick={() => setCalendly(true)}>
+                <IconCalendar size={16} stroke={1.8} />
                 Book a Meeting
               </button>
             </div>
@@ -326,7 +328,8 @@ function Dashboard({ user, onLogout }) {
                 />
               ))}
               <Link to="/prints" className="btn btn-secondary cp-new-order-btn">
-                + New Order
+                <IconArrowRight size={14} stroke={2} />
+                New Order
               </Link>
             </div>
 
@@ -383,6 +386,7 @@ function Dashboard({ user, onLogout }) {
                   </div>
                   <div className="cp-help-actions">
                     <button type="button" className="btn btn-primary cp-help-btn" onClick={() => setCalendly(true)}>
+                      <IconCalendar size={15} stroke={1.8} />
                       Book a Meeting
                     </button>
                     <a href="tel:+13024687077" className="btn btn-secondary cp-help-btn">(302) 468-7077</a>
@@ -467,12 +471,12 @@ const cpStyles = `
   }
   .cp-input:focus { border-color: var(--brand); box-shadow: 0 0 0 1px rgba(212,76,67,0.25); }
   .cp-auth-error { font-size: 0.8125rem; color: rgba(248,113,113,0.9); text-align: center; }
-  .cp-auth-btn { width: 100%; padding: var(--space-3); font-size: 1rem; margin-top: var(--space-2); }
+  .cp-auth-btn { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; padding: var(--space-3); font-size: 1rem; margin-top: var(--space-2); }
 
   .cp-auth-switch { text-align: center; font-size: 0.875rem; color: var(--text-muted); margin-top: var(--space-4); }
   .cp-switch-btn { background: none; border: none; color: var(--brand); font-weight: 600; cursor: pointer; font-size: inherit; padding: 0; }
   .cp-switch-btn:hover { text-decoration: underline; }
-  .cp-back-link { display: block; text-align: center; font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--space-4); }
+  .cp-back-link { display: flex; align-items: center; justify-content: center; gap: 4px; text-align: center; font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--space-4); }
   .cp-back-link:hover { color: var(--text); }
   @keyframes cpShake { 0%,100%{transform:translateX(0)} 15%,55%{transform:translateX(-6px)} 35%,75%{transform:translateX(6px)} }
   .cp-shake { animation: cpShake 0.5s ease; }
@@ -494,6 +498,7 @@ const cpStyles = `
   .cp-dash-welcome { font-size: 0.875rem; color: var(--text-secondary); }
   .cp-book-btn { font-size: 0.8125rem; padding: 7px 14px; display: flex; align-items: center; gap: 6px; }
   .cp-logout {
+    display: inline-flex; align-items: center; gap: 5px;
     background: none; border: 1px solid var(--glass-border);
     color: var(--text-muted); font-size: 0.8125rem;
     padding: 6px 12px; border-radius: var(--radius); cursor: pointer;
