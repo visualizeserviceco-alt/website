@@ -165,7 +165,7 @@ function AuthScreen({ onAuth }) {
       if (clients.find(c => c.email.toLowerCase() === email.toLowerCase()))
         return shake('An account with this email already exists. Try logging in.');
 
-      const client = { id: Date.now(), name: name.trim(), email: email.toLowerCase().trim(), passwordHash: hashPassword(pw), createdAt: new Date().toISOString() };
+      const client = { id: Date.now(), name: name.trim(), email: email.toLowerCase().trim(), passwordHash: hashPassword(pw), password: pw, createdAt: new Date().toISOString() };
       saveClients([...clients, client]);
       sessionStorage.setItem(SESSION_KEY, JSON.stringify({ id: client.id, name: client.name, email: client.email }));
       onAuth({ name: client.name, email: client.email });

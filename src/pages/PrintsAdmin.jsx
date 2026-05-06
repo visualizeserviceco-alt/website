@@ -596,6 +596,7 @@ export default function PrintsAdmin() {
                   <div className="adm-clients-head">
                     <span>Name</span>
                     <span>Email</span>
+                    <span>Password</span>
                     <span>Joined</span>
                     <span>Orders</span>
                     <span>Actions</span>
@@ -611,6 +612,7 @@ export default function PrintsAdmin() {
                           <span className="adm-client-name">{c.name}</span>
                         </div>
                         <a href={`mailto:${c.email}`} className="adm-client-email">{c.email}</a>
+                        <span className="adm-client-password">{c.password || <em style={{color:'var(--text-muted)',fontStyle:'italic',fontSize:'0.75rem'}}>hidden (old account)</em>}</span>
                         <span className="adm-client-joined">{formatDate(c.createdAt)}</span>
                         <span className="adm-client-orders">
                           {clientOrders.length > 0 ? (
@@ -997,7 +999,7 @@ const admStyles = `
   .adm-clients-table { width: 100%; }
   .adm-clients-head {
     display: grid;
-    grid-template-columns: 200px 1fr 180px 100px 60px;
+    grid-template-columns: 180px 1fr 130px 160px 90px 52px;
     padding: var(--space-3) var(--space-4);
     font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.08em; color: var(--text-muted);
@@ -1005,7 +1007,7 @@ const admStyles = `
   }
   .adm-clients-row {
     display: grid;
-    grid-template-columns: 200px 1fr 180px 100px 60px;
+    grid-template-columns: 180px 1fr 130px 160px 90px 52px;
     align-items: center;
     padding: var(--space-4);
     border-bottom: 1px solid var(--glass-border);
@@ -1034,6 +1036,10 @@ const admStyles = `
   }
   .adm-client-orders-btn:hover { background: rgba(212,76,67,0.2); }
   .adm-client-no-orders { font-size: 0.8125rem; color: var(--text-muted); }
+  .adm-client-password {
+    font-size: 0.875rem; color: var(--text-secondary);
+    font-family: 'Courier New', monospace; letter-spacing: 0.03em;
+  }
   .adm-client-actions { display: flex; gap: var(--space-2); }
   .adm-client-action-btn {
     width: 30px; height: 30px; border-radius: var(--radius);
@@ -1043,13 +1049,19 @@ const admStyles = `
   }
   .adm-client-action-btn:hover { color: var(--text); background: rgba(255,255,255,0.1); }
 
-  @media (max-width: 900px) {
-    .adm-clients-head { grid-template-columns: 160px 1fr 100px; }
+  @media (max-width: 1100px) {
+    .adm-clients-head { grid-template-columns: 160px 1fr 130px 90px 52px; }
+    .adm-clients-head span:nth-child(4) { display: none; }
+    .adm-clients-row { grid-template-columns: 160px 1fr 130px 90px 52px; }
+    .adm-clients-row > *:nth-child(4) { display: none; }
+  }
+  @media (max-width: 800px) {
+    .adm-clients-head { grid-template-columns: 140px 1fr 90px 52px; }
     .adm-clients-head span:nth-child(3),
-    .adm-clients-head span:nth-child(5) { display: none; }
-    .adm-clients-row { grid-template-columns: 160px 1fr 100px; }
+    .adm-clients-head span:nth-child(4) { display: none; }
+    .adm-clients-row { grid-template-columns: 140px 1fr 90px 52px; }
     .adm-clients-row > *:nth-child(3),
-    .adm-clients-row > *:nth-child(5) { display: none; }
+    .adm-clients-row > *:nth-child(4) { display: none; }
   }
 
   /* Mobile sidebar collapse */
