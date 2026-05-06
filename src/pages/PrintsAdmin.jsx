@@ -195,6 +195,12 @@ export default function PrintsAdmin() {
     if (detail?.id === id) setDetail(prev => ({ ...prev, status }));
   };
 
+  const deleteClient = (id) => {
+    const updated = clients.filter(c => c.id !== id);
+    setClients(updated);
+    localStorage.setItem('vz_clients', JSON.stringify(updated));
+  };
+
   const deleteOrder = (id) => {
     const updated = orders.filter(o => o.id !== id);
     setOrders(updated);
@@ -543,7 +549,9 @@ export default function PrintsAdmin() {
                       {/* Quick actions */}
                       <div className="adm-quick-actions">
                         <a
-                          href={`mailto:${detail.email}?subject=Your Custom Print Quote — Visualize Studio&body=Hi ${detail.name},%0A%0AThanks for your order request. Here's your quote for ${detail.type} (${detail.size || ''}, ${detail.quantity || ''} units, ${detail.finish || ''} finish):%0A%0A[Insert quote details here]%0A%0ABest,%0AVisualize Studio`}
+                          href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(detail.email)}&su=${encodeURIComponent('Your Custom Print Quote — Visualize Studio')}&body=${encodeURIComponent('Hi ' + detail.name + ',\n\nThanks for your order request. Here\'s your quote for ' + detail.type + ' (' + (detail.size || '') + ', ' + (detail.quantity || '') + ' units, ' + (detail.finish || '') + ' finish):\n\n[Insert quote details here]\n\nBest,\nVisualize Studio')}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="btn btn-primary adm-action-btn"
                         >
                           <IconMail size={15} stroke={1.6} />
@@ -628,9 +636,23 @@ export default function PrintsAdmin() {
                           )}
                         </span>
                         <div className="adm-client-actions">
-                          <a href={`mailto:${c.email}`} className="adm-client-action-btn" title="Send email">
+                          <a
+                            href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(c.email)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="adm-client-action-btn"
+                            title="Open in Gmail"
+                          >
                             <IconMail size={14} stroke={1.6} />
                           </a>
+                          <button
+                            type="button"
+                            className="adm-client-action-btn adm-client-delete-btn"
+                            title="Remove login"
+                            onClick={() => deleteClient(c.id)}
+                          >
+                            <IconTrash size={14} stroke={1.6} />
+                          </button>
                         </div>
                       </div>
                     );
@@ -999,7 +1021,7 @@ const admStyles = `
   .adm-clients-table { width: 100%; }
   .adm-clients-head {
     display: grid;
-    grid-template-columns: 180px 1fr 130px 160px 90px 52px;
+    grid-template-columns: 180px 1fr 130px 160px 90px 72px;
     padding: var(--space-3) var(--space-4);
     font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
     letter-spacing: 0.08em; color: var(--text-muted);
@@ -1007,7 +1029,7 @@ const admStyles = `
   }
   .adm-clients-row {
     display: grid;
-    grid-template-columns: 180px 1fr 130px 160px 90px 52px;
+    grid-template-columns: 180px 1fr 130px 160px 90px 72px;
     align-items: center;
     padding: var(--space-4);
     border-bottom: 1px solid var(--glass-border);
@@ -1048,6 +1070,7 @@ const admStyles = `
     color: var(--text-muted); transition: color 0.2s, background 0.2s;
   }
   .adm-client-action-btn:hover { color: var(--text); background: rgba(255,255,255,0.1); }
+  .adm-client-delete-btn:hover { color: #f87171 !important; border-color: rgba(220,80,80,0.4) !important; background: rgba(220,80,80,0.08) !important; }
 
   @media (max-width: 1100px) {
     .adm-clients-head { grid-template-columns: 160px 1fr 130px 90px 52px; }
