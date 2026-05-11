@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
   IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
-  IconChartBar, IconArrowRight, IconUsers, IconUser, IconReceipt,
+  IconChartBar, IconArrowRight, IconArrowLeft, IconUsers, IconUser, IconReceipt,
   IconPlus, IconCircleCheck, IconKey,
 } from '@tabler/icons-react';
 
@@ -134,6 +134,8 @@ export default function PrintsAdmin() {
   const [newClientOpen, setNewClientOpen] = useState(false);
   const [newClientForm, setNewClientForm] = useState({ username: '', name: '', email: '', password: '' });
   const [newClientError, setNewClientError] = useState('');
+  const [mobileOrderDetail, setMobileOrderDetail] = useState(false);
+  const [mobileInvDetail, setMobileInvDetail] = useState(false);
 
   const loadOrders = useCallback(() => {
     try { setOrders(JSON.parse(localStorage.getItem('vz_print_orders') || '[]')); }
@@ -329,6 +331,16 @@ export default function PrintsAdmin() {
 
   return (
     <div className="adm-page">
+      {/* ── Mobile topbar ───────────────────────── */}
+      <div className="adm-mobile-topbar">
+        <span className="adm-mobile-topbar-title">
+          {{ overview: 'Overview', orders: 'Orders', clients: 'Clients', invoices: 'Invoices' }[tab]}
+        </span>
+        <button className="adm-mobile-logout-btn" onClick={() => setAuth(false)} aria-label="Log out">
+          <IconLogout size={18} stroke={1.8} />
+        </button>
+      </div>
+
       {/* ── Sidebar ─────────────────────────────── */}
       <aside className="adm-sidebar">
         <div className="adm-sidebar-logo">
@@ -538,7 +550,7 @@ export default function PrintsAdmin() {
                 <p>No orders yet. They&apos;ll appear here once customers submit a quote request.</p>
               </div>
             ) : (
-              <div className="adm-layout">
+              <div className={`adm-layout ${mobileOrderDetail ? 'adm-detail-open' : ''}`}>
                 {/* Order list */}
                 <div className="adm-list">
                   {filtered.length === 0 ? (
@@ -548,7 +560,7 @@ export default function PrintsAdmin() {
                       key={o.id}
                       type="button"
                       className={`adm-row ${detail?.id === o.id ? 'adm-row--active' : ''}`}
-                      onClick={() => setDetail(o)}
+                      onClick={() => { setDetail(o); setMobileOrderDetail(true); }}
                     >
                       <div className="adm-row-top">
                         <strong className="adm-row-name">{o.name || 'Unknown'}</strong>
@@ -568,6 +580,9 @@ export default function PrintsAdmin() {
                 <div className="adm-detail">
                   {detail ? (
                     <>
+                      <button className="adm-mobile-back-btn" onClick={() => setMobileOrderDetail(false)}>
+                        <IconArrowLeft size={15} stroke={2} /> All Orders
+                      </button>
                       <div className="adm-detail-header">
                         <div>
                           <h2 className="adm-detail-name">{detail.name}</h2>
@@ -803,7 +818,7 @@ export default function PrintsAdmin() {
                 <p>No invoices yet. Create one with the button above.</p>
               </div>
             ) : invoices.length > 0 && (
-              <div className="adm-layout">
+              <div className={`adm-layout ${mobileInvDetail ? 'adm-detail-open' : ''}`}>
                 {/* Invoice list */}
                 <div className="adm-list">
                   {invoices.map(inv => {
@@ -814,7 +829,7 @@ export default function PrintsAdmin() {
                         key={inv.id}
                         type="button"
                         className={`adm-row ${selectedInvoice?.id === inv.id ? 'adm-row--active' : ''}`}
-                        onClick={() => setSelectedInvoice(inv)}
+                        onClick={() => { setSelectedInvoice(inv); setMobileInvDetail(true); }}
                       >
                         <div className="adm-row-top">
                           <strong className="adm-row-name">{inv.invoiceNumber}</strong>
@@ -837,6 +852,9 @@ export default function PrintsAdmin() {
                 <div className="adm-detail">
                   {selectedInvoice ? (
                     <>
+                      <button className="adm-mobile-back-btn" onClick={() => setMobileInvDetail(false)}>
+                        <IconArrowLeft size={15} stroke={2} /> All Invoices
+                      </button>
                       <div className="adm-detail-header">
                         <div>
                           <h2 className="adm-detail-name">{selectedInvoice.invoiceNumber}</h2>
@@ -1100,6 +1118,29 @@ export default function PrintsAdmin() {
           </div>
         )}
       </main>
+
+      {/* ── Mobile bottom nav ───────────────────── */}
+      <nav className="adm-bottom-nav">
+        {[
+          { id: 'overview',  label: 'Overview',  icon: <IconLayoutDashboard size={22} stroke={1.6} /> },
+          { id: 'orders',    label: 'Orders',    icon: <IconListDetails size={22} stroke={1.6} />, badge: statusCounts.pending || null },
+          { id: 'clients',   label: 'Clients',   icon: <IconUsers size={22} stroke={1.6} /> },
+          { id: 'invoices',  label: 'Invoices',  icon: <IconReceipt size={22} stroke={1.6} />, badge: invoices.filter(i => i.status === 'unpaid').length || null },
+        ].map(item => (
+          <button
+            key={item.id}
+            type="button"
+            className={`adm-bottom-nav-item ${tab === item.id ? 'active' : ''}`}
+            onClick={() => { setTab(item.id); setMobileOrderDetail(false); setMobileInvDetail(false); }}
+          >
+            <span className="adm-bottom-nav-icon">
+              {item.icon}
+              {item.badge ? <span className="adm-bottom-nav-badge">{item.badge}</span> : null}
+            </span>
+            <span className="adm-bottom-nav-label">{item.label}</span>
+          </button>
+        ))}
+      </nav>
 
       <style>{admStyles}</style>
     </div>
@@ -1589,13 +1630,204 @@ const admStyles = `
   }
   .adm-inv-mark-overdue:hover { background: rgba(239,68,68,0.18); }
 
-  /* Mobile sidebar collapse */
+  /* ── Mobile topbar + bottom nav (hidden on desktop) ── */
+  .adm-mobile-topbar { display: none; }
+  .adm-bottom-nav    { display: none; }
+  .adm-mobile-back-btn { display: none; }
+
   @media (max-width: 700px) {
-    .adm-sidebar { width: 60px; padding: var(--space-4) var(--space-2); }
-    .adm-sidebar-logo img { height: 22px; }
-    .adm-nav-item span:last-child { display: none; }
-    .adm-nav-badge { display: none; }
-    .adm-logout span { display: none; }
-    .adm-content { padding: var(--space-5) var(--space-4); }
+    /* Prevent horizontal overflow / zoom */
+    .adm-page {
+      flex-direction: column;
+      overflow-x: hidden;
+      min-width: 0;
+    }
+
+    /* Hide desktop sidebar */
+    .adm-sidebar { display: none; }
+
+    /* Show sticky mobile topbar */
+    .adm-mobile-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10,10,10,0.97);
+      border-bottom: 1px solid var(--glass-border);
+      padding: calc(10px + env(safe-area-inset-top)) var(--space-4) 10px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      flex-shrink: 0;
+    }
+    .adm-mobile-topbar-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .adm-mobile-logout-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Main fills width */
+    .adm-main {
+      width: 100%;
+      overflow-x: hidden;
+      padding-bottom: calc(62px + env(safe-area-inset-bottom));
+    }
+
+    .adm-content {
+      padding: var(--space-4);
+    }
+
+    .adm-topbar {
+      margin-bottom: var(--space-5);
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+    .adm-title { font-size: 1.2rem; }
+    .adm-subtitle { font-size: 0.8rem; }
+
+    /* Stats: 2 columns */
+    .adm-stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+    .adm-stat { padding: var(--space-4); }
+    .adm-stat-val { font-size: 1.6rem; }
+
+    /* Charts single column */
+    .adm-charts-row { grid-template-columns: 1fr; }
+
+    /* Filter row */
+    .adm-filters { flex-direction: column; align-items: stretch; gap: var(--space-3); }
+    .adm-filter-tabs {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .adm-filter-tabs::-webkit-scrollbar { display: none; }
+    .adm-search { width: 100%; min-width: 0; }
+
+    /* Drill-down layout */
+    .adm-layout { grid-template-columns: 1fr; }
+
+    .adm-layout:not(.adm-detail-open) .adm-detail { display: none; }
+    .adm-layout.adm-detail-open .adm-list { display: none; }
+    .adm-layout.adm-detail-open .adm-detail {
+      display: block;
+      position: static;
+      min-height: unset;
+    }
+
+    /* Mobile back button */
+    .adm-mobile-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      color: var(--brand);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      margin-bottom: var(--space-4);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Fixed bottom tab bar */
+    .adm-bottom-nav {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.97);
+      border-top: 1px solid var(--glass-border);
+      height: calc(60px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+    .adm-bottom-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      transition: color 0.2s;
+    }
+    .adm-bottom-nav-item.active { color: var(--brand); }
+    .adm-bottom-nav-icon { position: relative; display: flex; }
+    .adm-bottom-nav-badge {
+      position: absolute;
+      top: -4px; right: -7px;
+      background: var(--brand);
+      color: #fff;
+      font-size: 0.55rem; font-weight: 700;
+      min-width: 14px; height: 14px;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 3px;
+    }
+    .adm-bottom-nav-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Clients: table → cards */
+    .adm-clients-head { display: none; }
+    .adm-clients-row {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: var(--space-2);
+      padding: var(--space-4);
+      background: var(--glass-bg);
+      border-radius: var(--radius-lg) !important;
+      border: 1px solid var(--glass-border) !important;
+      margin-bottom: var(--space-3);
+    }
+    .adm-clients-row > * { display: flex !important; }
+    .adm-client-joined::before { content: 'Joined: '; color: var(--text-muted); font-size: 0.75rem; }
+    .adm-client-password::before { content: 'Password: '; color: var(--text-muted); font-size: 0.75rem; }
+    .adm-client-orders { flex-direction: row; align-items: center; }
+
+    /* Invoice + client create forms: single column */
+    .adm-inv-form-row { grid-template-columns: 1fr !important; }
+
+    /* Invoice hero smaller */
+    .adm-inv-hero-amount { font-size: 1.8rem; }
+
+    /* Detail grid single col */
+    .adm-detail-grid { grid-template-columns: 1fr; }
+
+    /* Actions wrap */
+    .adm-quick-actions { flex-direction: column; }
+    .adm-action-btn { width: 100%; justify-content: center; }
+
+    /* Invoice status row wraps */
+    .adm-inv-status-row { flex-wrap: wrap; gap: var(--space-2); }
   }
 `;
