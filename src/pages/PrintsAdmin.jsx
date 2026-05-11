@@ -3,10 +3,16 @@ import {
   IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
   IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
   IconChartBar, IconArrowRight, IconUsers, IconUser, IconReceipt,
-  IconPlus, IconCircleCheck,
+  IconPlus, IconCircleCheck, IconKey,
 } from '@tabler/icons-react';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+
+function hashPassword(pw) {
+  let h = 0;
+  for (let i = 0; i < pw.length; i++) h = (Math.imul(31, h) + pw.charCodeAt(i)) | 0;
+  return btoa(`vz:${h}:${pw.length}`);
+}
 
 const ORDER_STATUSES = [
   { id: 'pending',   label: 'Pending',   color: '#f59e0b' },
@@ -125,6 +131,9 @@ export default function PrintsAdmin() {
   const [invForm, setInvForm]     = useState({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '' });
   const [invFormOpen, setInvFormOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [newClientOpen, setNewClientOpen] = useState(false);
+  const [newClientForm, setNewClientForm] = useState({ username: '', name: '', email: '', password: '' });
+  const [newClientError, setNewClientError] = useState('');
 
   const loadOrders = useCallback(() => {
     try { setOrders(JSON.parse(localStorage.getItem('vz_print_orders') || '[]')); }
@@ -219,12 +228,38 @@ export default function PrintsAdmin() {
     if (detail?.id === id) setDetail(null);
   };
 
+  const createClientAccount = (e) => {
+    e.preventDefault();
+    setNewClientError('');
+    const uname = newClientForm.username.trim().toLowerCase();
+    if (!uname) return setNewClientError('Username is required.');
+    if (/\s/.test(uname)) return setNewClientError('Username cannot contain spaces.');
+    if (!newClientForm.password || newClientForm.password.length < 6) return setNewClientError('Password must be at least 6 characters.');
+    if (clients.find(c => (c.username || '').toLowerCase() === uname)) return setNewClientError('That username is already taken.');
+    const client = {
+      id: Date.now(),
+      username: uname,
+      name: newClientForm.name.trim() || uname,
+      email: newClientForm.email.toLowerCase().trim() || null,
+      password: newClientForm.password,
+      passwordHash: hashPassword(newClientForm.password),
+      createdAt: new Date().toISOString(),
+      createdByAdmin: true,
+    };
+    const updated = [...clients, client];
+    setClients(updated);
+    localStorage.setItem('vz_clients', JSON.stringify(updated));
+    setNewClientForm({ username: '', name: '', email: '', password: '' });
+    setNewClientOpen(false);
+  };
+
   const createInvoice = (e) => {
     e.preventDefault();
-    const client = clients.find(c => c.email === invForm.clientEmail);
+    const client = clients.find(c => c.email === invForm.clientEmail || c.username === invForm.clientEmail);
     const inv = {
       id: `inv_${Date.now()}`,
-      clientEmail: invForm.clientEmail,
+      clientId: client?.id || null,
+      clientEmail: client?.email || invForm.clientEmail,
       clientName: client?.name || invForm.clientEmail,
       invoiceNumber: invForm.invoiceNumber || `INV-${Date.now().toString().slice(-6)}`,
       description: invForm.description,
@@ -254,6 +289,13 @@ export default function PrintsAdmin() {
     setInvoices(updated);
     localStorage.setItem('vz_invoices', JSON.stringify(updated));
     if (selectedInvoice?.id === id) setSelectedInvoice(prev => ({ ...prev, status: 'overdue' }));
+  };
+
+  const markInvoiceUpfront = (id) => {
+    const updated = invoices.map(inv => inv.id === id ? { ...inv, status: 'upfront', upfrontAt: new Date().toISOString() } : inv);
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    if (selectedInvoice?.id === id) setSelectedInvoice(prev => ({ ...prev, status: 'upfront', upfrontAt: new Date().toISOString() }));
   };
 
   const deleteInvoice = (id) => {
@@ -672,7 +714,9 @@ export default function PrintsAdmin() {
                         >
                           <option value="">Select a client…</option>
                           {clients.map(c => (
-                            <option key={c.id} value={c.email}>{c.name} ({c.email})</option>
+                            <option key={c.id} value={c.username || c.email}>
+                              {c.name}{c.username ? ` (@${c.username})` : ''}{c.email ? ` — ${c.email}` : ''}
+                            </option>
                           ))}
                         </select>
                       ) : (
@@ -763,7 +807,8 @@ export default function PrintsAdmin() {
                 {/* Invoice list */}
                 <div className="adm-list">
                   {invoices.map(inv => {
-                    const statusColor = inv.status === 'paid' ? '#22c55e' : inv.status === 'overdue' ? '#ef4444' : '#f59e0b';
+                    const statusColor = { paid: '#22c55e', overdue: '#ef4444', upfront: '#60a5fa', unpaid: '#f59e0b' }[inv.status] || '#f59e0b';
+                    const statusLabel = { paid: 'Paid in Full', overdue: 'Overdue', upfront: 'Upfront Paid', unpaid: 'Unpaid' }[inv.status] || inv.status;
                     return (
                       <button
                         key={inv.id}
@@ -781,7 +826,7 @@ export default function PrintsAdmin() {
                         </div>
                         <span className="adm-status-badge" style={{ '--sc': statusColor }}>
                           <span className="adm-status-dot" />
-                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                          {statusLabel}
                         </span>
                       </button>
                     );
@@ -815,18 +860,26 @@ export default function PrintsAdmin() {
                       {/* Status + actions */}
                       <div className="adm-inv-status-row">
                         {(() => {
-                          const statusColor = selectedInvoice.status === 'paid' ? '#22c55e' : selectedInvoice.status === 'overdue' ? '#ef4444' : '#f59e0b';
+                          const statusColors = { paid: '#22c55e', overdue: '#ef4444', upfront: '#60a5fa', unpaid: '#f59e0b' };
+                          const statusLabels = { paid: 'Paid in Full', overdue: 'Overdue', upfront: 'Upfront Payment Paid', unpaid: 'Unpaid' };
+                          const c = statusColors[selectedInvoice.status] || '#f59e0b';
                           return (
-                            <span className="adm-status-badge" style={{ '--sc': statusColor }}>
+                            <span className="adm-status-badge" style={{ '--sc': c }}>
                               <span className="adm-status-dot" />
-                              {selectedInvoice.status.charAt(0).toUpperCase() + selectedInvoice.status.slice(1)}
+                              {statusLabels[selectedInvoice.status] || selectedInvoice.status}
                             </span>
                           );
                         })()}
                         {selectedInvoice.status !== 'paid' && (
                           <button className="adm-inv-mark-paid" onClick={() => markInvoicePaid(selectedInvoice.id)}>
                             <IconCircleCheck size={14} stroke={1.8} />
-                            Mark Paid
+                            Mark Paid in Full
+                          </button>
+                        )}
+                        {(selectedInvoice.status === 'unpaid' || selectedInvoice.status === 'overdue') && (
+                          <button className="adm-inv-mark-upfront" onClick={() => markInvoiceUpfront(selectedInvoice.id)}>
+                            <IconCircleCheck size={14} stroke={1.8} />
+                            Upfront Paid
                           </button>
                         )}
                         {selectedInvoice.status === 'unpaid' && (
@@ -900,48 +953,117 @@ export default function PrintsAdmin() {
                 <h1 className="adm-title">Clients</h1>
                 <p className="adm-subtitle">{clients.length} registered portal account{clients.length !== 1 ? 's' : ''}</p>
               </div>
-              <button className="adm-refresh" onClick={loadClients} title="Refresh">
-                <IconRefresh size={15} stroke={1.8} />
-                Refresh
-              </button>
+              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
+                <button className="adm-refresh" onClick={loadClients} title="Refresh">
+                  <IconRefresh size={15} stroke={1.8} />
+                  Refresh
+                </button>
+                <button className="btn btn-primary adm-action-btn" onClick={() => { setNewClientOpen(v => !v); setNewClientError(''); }}>
+                  <IconKey size={15} stroke={1.8} />
+                  Create Account
+                </button>
+              </div>
             </div>
 
-            {clients.length === 0 ? (
+            {/* Create client account form */}
+            {newClientOpen && (
+              <div className="adm-panel adm-panel--full adm-inv-form-wrap">
+                <h3 className="adm-panel-title" style={{ marginBottom: 'var(--space-5)' }}>Create Client Account</h3>
+                <form onSubmit={createClientAccount} className="adm-inv-form">
+                  <div className="adm-inv-form-row" style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr' }}>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Username <span style={{ color: 'var(--brand)' }}>*</span></label>
+                      <input
+                        className="adm-inv-input"
+                        type="text"
+                        placeholder="no spaces"
+                        value={newClientForm.username}
+                        onChange={e => { setNewClientForm(f => ({ ...f, username: e.target.value })); setNewClientError(''); }}
+                        autoCapitalize="none"
+                        required
+                      />
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Display Name</label>
+                      <input
+                        className="adm-inv-input"
+                        type="text"
+                        placeholder="Client's name (optional)"
+                        value={newClientForm.name}
+                        onChange={e => setNewClientForm(f => ({ ...f, name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Email (optional)</label>
+                      <input
+                        className="adm-inv-input"
+                        type="email"
+                        placeholder="for order matching"
+                        value={newClientForm.email}
+                        onChange={e => setNewClientForm(f => ({ ...f, email: e.target.value }))}
+                      />
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Password <span style={{ color: 'var(--brand)' }}>*</span></label>
+                      <input
+                        className="adm-inv-input"
+                        type="text"
+                        placeholder="6+ characters"
+                        value={newClientForm.password}
+                        onChange={e => setNewClientForm(f => ({ ...f, password: e.target.value }))}
+                        required
+                      />
+                    </div>
+                  </div>
+                  {newClientError && <p style={{ color: '#f87171', fontSize: '0.8125rem', marginTop: 'var(--space-2)' }}>{newClientError}</p>}
+                  <div className="adm-inv-form-actions">
+                    <button type="submit" className="btn btn-primary adm-action-btn">
+                      <IconKey size={14} stroke={1.8} />
+                      Create Account
+                    </button>
+                    <button type="button" className="btn btn-secondary adm-action-btn" onClick={() => setNewClientOpen(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {clients.length === 0 && !newClientOpen ? (
               <div className="adm-empty">
                 <IconUsers size={48} stroke={1.2} color="var(--text-muted)" />
-                <p>No client accounts yet. They&apos;ll appear here once someone signs up through the portal.</p>
+                <p>No client accounts yet. Create one above or they&apos;ll appear here when someone signs up through the portal.</p>
               </div>
-            ) : (
+            ) : clients.length > 0 && (
               <div className="adm-panel adm-panel--full">
                 <div className="adm-clients-table">
                   <div className="adm-clients-head">
                     <span>Name</span>
-                    <span>Email</span>
+                    <span>Username</span>
                     <span>Password</span>
                     <span>Joined</span>
                     <span>Orders</span>
                     <span>Actions</span>
                   </div>
                   {clients.map(c => {
-                    const clientOrders = orders.filter(o => o.email?.toLowerCase() === c.email?.toLowerCase());
+                    const clientOrders = orders.filter(o => c.email && o.email?.toLowerCase() === c.email?.toLowerCase());
                     return (
                       <div key={c.id} className="adm-clients-row">
                         <div className="adm-client-name-cell">
                           <div className="adm-client-avatar">
-                            {(c.name || '?').charAt(0).toUpperCase()}
+                            {(c.name || c.username || '?').charAt(0).toUpperCase()}
                           </div>
-                          <span className="adm-client-name">{c.name}</span>
+                          <span className="adm-client-name">{c.name || c.username}</span>
                         </div>
-                        <a href={`mailto:${c.email}`} className="adm-client-email">{c.email}</a>
-                        <span className="adm-client-password">{c.password || <em style={{color:'var(--text-muted)',fontStyle:'italic',fontSize:'0.75rem'}}>hidden (old account)</em>}</span>
+                        <div className="adm-client-username-cell">
+                          <span className="adm-client-username">@{c.username || '—'}</span>
+                          {c.email && <span className="adm-client-email-sub">{c.email}</span>}
+                        </div>
+                        <span className="adm-client-password">{c.password || <em style={{color:'var(--text-muted)',fontStyle:'italic',fontSize:'0.75rem'}}>hidden</em>}</span>
                         <span className="adm-client-joined">{formatDate(c.createdAt)}</span>
                         <span className="adm-client-orders">
                           {clientOrders.length > 0 ? (
-                            <button
-                              type="button"
-                              className="adm-client-orders-btn"
-                              onClick={() => setTab('orders')}
-                            >
+                            <button type="button" className="adm-client-orders-btn" onClick={() => setTab('orders')}>
                               {clientOrders.length} order{clientOrders.length !== 1 ? 's' : ''}
                             </button>
                           ) : (
@@ -949,19 +1071,21 @@ export default function PrintsAdmin() {
                           )}
                         </span>
                         <div className="adm-client-actions">
-                          <a
-                            href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(c.email)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="adm-client-action-btn"
-                            title="Open in Gmail"
-                          >
-                            <IconMail size={14} stroke={1.6} />
-                          </a>
+                          {c.email && (
+                            <a
+                              href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(c.email)}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="adm-client-action-btn"
+                              title="Open in Gmail"
+                            >
+                              <IconMail size={14} stroke={1.6} />
+                            </a>
+                          )}
                           <button
                             type="button"
                             className="adm-client-action-btn adm-client-delete-btn"
-                            title="Remove login"
+                            title="Remove account"
                             onClick={() => deleteClient(c.id)}
                           >
                             <IconTrash size={14} stroke={1.6} />
@@ -1384,6 +1508,17 @@ const admStyles = `
   }
   .adm-client-action-btn:hover { color: var(--text); background: rgba(255,255,255,0.1); }
   .adm-client-delete-btn:hover { color: #f87171 !important; border-color: rgba(220,80,80,0.4) !important; background: rgba(220,80,80,0.08) !important; }
+  .adm-client-username-cell { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .adm-client-username { font-size: 0.875rem; font-weight: 600; color: var(--text); font-family: monospace; }
+  .adm-client-email-sub { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .adm-inv-mark-upfront {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.3);
+    color: #60a5fa; font-size: 0.8rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .adm-inv-mark-upfront:hover { background: rgba(96,165,250,0.2); }
 
   @media (max-width: 1100px) {
     .adm-clients-head { grid-template-columns: 160px 1fr 130px 90px 52px; }
