@@ -96,11 +96,7 @@ const DESIGN_OPTIONS = [
   { id: 'idea',  label: 'I have a concept/idea', desc: "I'll describe what I'm going for" },
 ];
 
-const IG_FINISH_OPTIONS = [
-  { id: 'gloss',       label: 'Glossy',      desc: 'Vibrant, shiny' },
-  { id: 'matte',       label: 'Matte',       desc: 'Flat, clean look' },
-  { id: 'transparent', label: 'Transparent', desc: 'Clear background' },
-];
+const IG_FINISH_OPTIONS = [];
 
 const STEP_LABELS = ['Type', 'Shape', 'Size', 'Quantity', 'Finish', 'Design', 'Your Info'];
 
@@ -285,8 +281,8 @@ export default function Prints() {
       email: igForm.email.trim(),
       phone: igForm.phone.trim(),
       handle: cleanHandle,
-      finish: igForm.finish,
-      carColor: igForm.carColor.trim(),
+      finish: 'gloss',
+      vinylColor: 'white',
       notes: igForm.notes.trim(),
       amount: 10,
     };
@@ -427,34 +423,10 @@ export default function Prints() {
                     <span className="pr-field-hint">Printed twice — once for each side of your car.</span>
                   </div>
 
-                  {/* Finish */}
-                  <div className="pr-field">
-                    <label className="pr-label">Finish</label>
-                    <div className="pr-ig-finish-row">
-                      {IG_FINISH_OPTIONS.map(f => (
-                        <button
-                          key={f.id}
-                          type="button"
-                          className={`pr-tile pr-ig-finish-tile ${igForm.finish === f.id ? 'pr-tile--active' : ''}`}
-                          onClick={() => setIgForm(p => ({ ...p, finish: f.id }))}
-                        >
-                          <strong className="pr-tile-label">{f.label}</strong>
-                          <span className="pr-tile-desc">{f.desc}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Car color */}
-                  <div className="pr-field">
-                    <label className="pr-label">Car Color <span className="pr-label-opt">(optional)</span></label>
-                    <input
-                      className="pr-input"
-                      value={igForm.carColor}
-                      onChange={e => setIgForm(f => ({ ...f, carColor: e.target.value }))}
-                      placeholder="e.g. Matte black, White, Silver"
-                    />
-                    <span className="pr-field-hint">Helps with color contrast recommendations.</span>
+                  {/* Color note */}
+                  <div className="pr-ig-color-note">
+                    <span className="pr-ig-color-swatch" />
+                    <p>Printed in <strong>white gloss</strong> by default. Need a different color? Mention it in the notes below.</p>
                   </div>
 
                   {/* Name + Email */}
@@ -965,6 +937,20 @@ const prStyles = `
   .pr-submit-btn:disabled { opacity: 0.6; cursor: default; }
   @media (max-width: 600px) {
     .pr-submit-btn { width: 100%; justify-content: center; padding: var(--space-4); }
+  }
+
+  /* IG color note */
+  .pr-ig-color-note {
+    display: flex; align-items: center; gap: var(--space-3);
+    background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+    border-radius: var(--radius); padding: var(--space-3) var(--space-4);
+    font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.5;
+  }
+  .pr-ig-color-swatch {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   }
 
   /* Instagram Handle input */
