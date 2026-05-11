@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
   IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
-  IconChartBar, IconArrowRight, IconUsers, IconUser,
+  IconChartBar, IconArrowRight, IconUsers, IconUser, IconReceipt,
+  IconPlus, IconCircleCheck,
 } from '@tabler/icons-react';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -120,6 +121,10 @@ export default function PrintsAdmin() {
   const [search, setSearch]     = useState('');
   const [analytics, setAnalytics] = useState({ pageViews: 0, uniqueVisits: 0, topPages: [], dailyViews: [] });
   const [clients, setClients]     = useState([]);
+  const [invoices, setInvoices]   = useState([]);
+  const [invForm, setInvForm]     = useState({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '' });
+  const [invFormOpen, setInvFormOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   const loadOrders = useCallback(() => {
     try { setOrders(JSON.parse(localStorage.getItem('vz_print_orders') || '[]')); }
@@ -166,12 +171,18 @@ export default function PrintsAdmin() {
     catch { setClients([]); }
   }, []);
 
+  const loadInvoices = useCallback(() => {
+    try { setInvoices(JSON.parse(localStorage.getItem('vz_invoices') || '[]')); }
+    catch { setInvoices([]); }
+  }, []);
+
   useEffect(() => {
     if (!auth) return;
     loadOrders();
     loadAnalytics();
     loadClients();
-  }, [auth, loadOrders, loadAnalytics, loadClients]);
+    loadInvoices();
+  }, [auth, loadOrders, loadAnalytics, loadClients, loadInvoices]);
 
   // Track this visit
   useEffect(() => {
@@ -208,6 +219,50 @@ export default function PrintsAdmin() {
     if (detail?.id === id) setDetail(null);
   };
 
+  const createInvoice = (e) => {
+    e.preventDefault();
+    const client = clients.find(c => c.email === invForm.clientEmail);
+    const inv = {
+      id: `inv_${Date.now()}`,
+      clientEmail: invForm.clientEmail,
+      clientName: client?.name || invForm.clientEmail,
+      invoiceNumber: invForm.invoiceNumber || `INV-${Date.now().toString().slice(-6)}`,
+      description: invForm.description,
+      amount: parseFloat(invForm.amount) || 0,
+      status: 'unpaid',
+      dueDate: invForm.dueDate,
+      notes: invForm.notes,
+      createdAt: new Date().toISOString(),
+    };
+    const updated = [inv, ...invoices];
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    setInvForm({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '' });
+    setInvFormOpen(false);
+    setSelectedInvoice(inv);
+  };
+
+  const markInvoicePaid = (id) => {
+    const updated = invoices.map(inv => inv.id === id ? { ...inv, status: 'paid', paidAt: new Date().toISOString() } : inv);
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    if (selectedInvoice?.id === id) setSelectedInvoice(prev => ({ ...prev, status: 'paid', paidAt: new Date().toISOString() }));
+  };
+
+  const markInvoiceOverdue = (id) => {
+    const updated = invoices.map(inv => inv.id === id ? { ...inv, status: 'overdue' } : inv);
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    if (selectedInvoice?.id === id) setSelectedInvoice(prev => ({ ...prev, status: 'overdue' }));
+  };
+
+  const deleteInvoice = (id) => {
+    const updated = invoices.filter(inv => inv.id !== id);
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    if (selectedInvoice?.id === id) setSelectedInvoice(null);
+  };
+
   if (!auth) return <LoginScreen onAuth={() => setAuth(true)} />;
 
   // Derived stats
@@ -239,9 +294,10 @@ export default function PrintsAdmin() {
         </div>
         <nav className="adm-sidebar-nav">
           {[
-            { id: 'overview', label: 'Overview', icon: <IconLayoutDashboard size={16} stroke={1.6} /> },
-            { id: 'orders',   label: 'Orders',   icon: <IconListDetails size={16} stroke={1.6} />, badge: statusCounts.pending || null },
-            { id: 'clients',  label: 'Clients',  icon: <IconUsers size={16} stroke={1.6} />, badge: clients.length || null },
+            { id: 'overview',  label: 'Overview',  icon: <IconLayoutDashboard size={16} stroke={1.6} /> },
+            { id: 'orders',    label: 'Orders',    icon: <IconListDetails size={16} stroke={1.6} />, badge: statusCounts.pending || null },
+            { id: 'clients',   label: 'Clients',   icon: <IconUsers size={16} stroke={1.6} />, badge: clients.length || null },
+            { id: 'invoices',  label: 'Invoices',  icon: <IconReceipt size={16} stroke={1.6} />, badge: invoices.filter(i => i.status === 'unpaid').length || null },
           ].map(item => (
             <button
               key={item.id}
@@ -579,6 +635,263 @@ export default function PrintsAdmin() {
             )}
           </div>
         )}
+        {/* ── Invoices tab ─────────────────────── */}
+        {tab === 'invoices' && (
+          <div className="adm-content">
+            <div className="adm-topbar">
+              <div>
+                <h1 className="adm-title">Invoices</h1>
+                <p className="adm-subtitle">{invoices.length} total · {invoices.filter(i => i.status === 'unpaid').length} unpaid</p>
+              </div>
+              <div style={{ display: 'flex', gap: 'var(--space-3)' }}>
+                <button className="adm-refresh" onClick={loadInvoices} title="Refresh">
+                  <IconRefresh size={15} stroke={1.8} />
+                  Refresh
+                </button>
+                <button className="btn btn-primary adm-action-btn" onClick={() => setInvFormOpen(v => !v)}>
+                  <IconPlus size={15} stroke={2} />
+                  New Invoice
+                </button>
+              </div>
+            </div>
+
+            {/* Create invoice form */}
+            {invFormOpen && (
+              <div className="adm-panel adm-panel--full adm-inv-form-wrap">
+                <h3 className="adm-panel-title" style={{ marginBottom: 'var(--space-5)' }}>Create Invoice</h3>
+                <form onSubmit={createInvoice} className="adm-inv-form">
+                  <div className="adm-inv-form-row">
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Client</label>
+                      {clients.length > 0 ? (
+                        <select
+                          className="adm-inv-input"
+                          value={invForm.clientEmail}
+                          onChange={e => setInvForm(f => ({ ...f, clientEmail: e.target.value }))}
+                          required
+                        >
+                          <option value="">Select a client…</option>
+                          {clients.map(c => (
+                            <option key={c.id} value={c.email}>{c.name} ({c.email})</option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          className="adm-inv-input"
+                          type="email"
+                          placeholder="client@email.com"
+                          value={invForm.clientEmail}
+                          onChange={e => setInvForm(f => ({ ...f, clientEmail: e.target.value }))}
+                          required
+                        />
+                      )}
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Invoice #</label>
+                      <input
+                        className="adm-inv-input"
+                        type="text"
+                        placeholder="INV-001"
+                        value={invForm.invoiceNumber}
+                        onChange={e => setInvForm(f => ({ ...f, invoiceNumber: e.target.value }))}
+                      />
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Amount ($)</label>
+                      <input
+                        className="adm-inv-input"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="0.00"
+                        value={invForm.amount}
+                        onChange={e => setInvForm(f => ({ ...f, amount: e.target.value }))}
+                        required
+                      />
+                    </div>
+                    <div className="adm-inv-field">
+                      <label className="adm-inv-label">Due Date</label>
+                      <input
+                        className="adm-inv-input"
+                        type="date"
+                        value={invForm.dueDate}
+                        onChange={e => setInvForm(f => ({ ...f, dueDate: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+                  <div className="adm-inv-field" style={{ marginTop: 'var(--space-3)' }}>
+                    <label className="adm-inv-label">Description</label>
+                    <input
+                      className="adm-inv-input"
+                      type="text"
+                      placeholder="e.g. Custom die-cut stickers — 250 units"
+                      value={invForm.description}
+                      onChange={e => setInvForm(f => ({ ...f, description: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="adm-inv-field" style={{ marginTop: 'var(--space-3)' }}>
+                    <label className="adm-inv-label">Notes (optional)</label>
+                    <textarea
+                      className="adm-inv-input adm-inv-textarea"
+                      placeholder="Payment instructions, bank details, etc."
+                      value={invForm.notes}
+                      onChange={e => setInvForm(f => ({ ...f, notes: e.target.value }))}
+                      rows={3}
+                    />
+                  </div>
+                  <div className="adm-inv-form-actions">
+                    <button type="submit" className="btn btn-primary adm-action-btn">
+                      <IconReceipt size={14} stroke={1.8} />
+                      Create Invoice
+                    </button>
+                    <button type="button" className="btn btn-secondary adm-action-btn" onClick={() => setInvFormOpen(false)}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {invoices.length === 0 && !invFormOpen ? (
+              <div className="adm-empty">
+                <IconReceipt size={48} stroke={1.2} color="var(--text-muted)" />
+                <p>No invoices yet. Create one with the button above.</p>
+              </div>
+            ) : invoices.length > 0 && (
+              <div className="adm-layout">
+                {/* Invoice list */}
+                <div className="adm-list">
+                  {invoices.map(inv => {
+                    const statusColor = inv.status === 'paid' ? '#22c55e' : inv.status === 'overdue' ? '#ef4444' : '#f59e0b';
+                    return (
+                      <button
+                        key={inv.id}
+                        type="button"
+                        className={`adm-row ${selectedInvoice?.id === inv.id ? 'adm-row--active' : ''}`}
+                        onClick={() => setSelectedInvoice(inv)}
+                      >
+                        <div className="adm-row-top">
+                          <strong className="adm-row-name">{inv.invoiceNumber}</strong>
+                          <span className="adm-row-date">{formatDateShort(inv.createdAt)}</span>
+                        </div>
+                        <div className="adm-row-mid">
+                          <span className="adm-chip">{inv.clientName}</span>
+                          <span className="adm-chip">${Number(inv.amount).toFixed(2)}</span>
+                        </div>
+                        <span className="adm-status-badge" style={{ '--sc': statusColor }}>
+                          <span className="adm-status-dot" />
+                          {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Invoice detail */}
+                <div className="adm-detail">
+                  {selectedInvoice ? (
+                    <>
+                      <div className="adm-detail-header">
+                        <div>
+                          <h2 className="adm-detail-name">{selectedInvoice.invoiceNumber}</h2>
+                          <p className="adm-detail-date">Created {formatDate(selectedInvoice.createdAt)}</p>
+                        </div>
+                        <button className="adm-delete" onClick={() => deleteInvoice(selectedInvoice.id)}>
+                          <IconTrash size={13} stroke={1.6} />
+                          Delete
+                        </button>
+                      </div>
+
+                      {/* Amount hero */}
+                      <div className="adm-inv-hero">
+                        <span className="adm-inv-hero-label">Amount Due</span>
+                        <span className="adm-inv-hero-amount">${Number(selectedInvoice.amount).toFixed(2)}</span>
+                        {selectedInvoice.dueDate && (
+                          <span className="adm-inv-hero-due">Due {new Date(selectedInvoice.dueDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                        )}
+                      </div>
+
+                      {/* Status + actions */}
+                      <div className="adm-inv-status-row">
+                        {(() => {
+                          const statusColor = selectedInvoice.status === 'paid' ? '#22c55e' : selectedInvoice.status === 'overdue' ? '#ef4444' : '#f59e0b';
+                          return (
+                            <span className="adm-status-badge" style={{ '--sc': statusColor }}>
+                              <span className="adm-status-dot" />
+                              {selectedInvoice.status.charAt(0).toUpperCase() + selectedInvoice.status.slice(1)}
+                            </span>
+                          );
+                        })()}
+                        {selectedInvoice.status !== 'paid' && (
+                          <button className="adm-inv-mark-paid" onClick={() => markInvoicePaid(selectedInvoice.id)}>
+                            <IconCircleCheck size={14} stroke={1.8} />
+                            Mark Paid
+                          </button>
+                        )}
+                        {selectedInvoice.status === 'unpaid' && (
+                          <button className="adm-inv-mark-overdue" onClick={() => markInvoiceOverdue(selectedInvoice.id)}>
+                            Mark Overdue
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Details */}
+                      <div className="adm-detail-grid" style={{ marginTop: 'var(--space-4)' }}>
+                        <div className="adm-detail-pair">
+                          <span className="adm-detail-key">Client</span>
+                          <span className="adm-detail-val">{selectedInvoice.clientName}</span>
+                        </div>
+                        <div className="adm-detail-pair">
+                          <span className="adm-detail-key">Email</span>
+                          <span className="adm-detail-val" style={{ fontSize: '0.8rem', textTransform: 'none' }}>{selectedInvoice.clientEmail}</span>
+                        </div>
+                      </div>
+
+                      <div className="adm-detail-contact" style={{ marginTop: 'var(--space-4)' }}>
+                        <p className="adm-detail-section">Description</p>
+                        <p className="adm-notes-text">{selectedInvoice.description}</p>
+                      </div>
+
+                      {selectedInvoice.notes && (
+                        <div className="adm-detail-notes">
+                          <p className="adm-detail-section">Notes</p>
+                          <p className="adm-notes-text">{selectedInvoice.notes}</p>
+                        </div>
+                      )}
+
+                      {selectedInvoice.paidAt && (
+                        <div className="adm-detail-notes">
+                          <p className="adm-detail-section">Paid On</p>
+                          <p className="adm-notes-text" style={{ color: '#22c55e' }}>{formatDate(selectedInvoice.paidAt)}</p>
+                        </div>
+                      )}
+
+                      {/* Send via Gmail */}
+                      <div className="adm-quick-actions">
+                        <a
+                          href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(selectedInvoice.clientEmail)}&su=${encodeURIComponent(`Invoice ${selectedInvoice.invoiceNumber} — Visualize Studio`)}&body=${encodeURIComponent(`Hi ${selectedInvoice.clientName},\n\nPlease find your invoice below:\n\nInvoice #: ${selectedInvoice.invoiceNumber}\nAmount: $${Number(selectedInvoice.amount).toFixed(2)}\n${selectedInvoice.dueDate ? `Due Date: ${selectedInvoice.dueDate}\n` : ''}Description: ${selectedInvoice.description}\n${selectedInvoice.notes ? `\nNotes:\n${selectedInvoice.notes}\n` : ''}\nThank you!\nVisualize Studio`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-primary adm-action-btn"
+                        >
+                          <IconMail size={15} stroke={1.6} />
+                          Send Invoice Email
+                        </a>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="adm-detail-empty">
+                      <IconReceipt size={40} stroke={1.3} color="var(--text-muted)" />
+                      <p>Select an invoice to view details</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* ── Clients tab ──────────────────────── */}
         {tab === 'clients' && (
           <div className="adm-content">
@@ -1086,6 +1399,60 @@ const admStyles = `
     .adm-clients-row > *:nth-child(3),
     .adm-clients-row > *:nth-child(4) { display: none; }
   }
+
+  /* ── Invoice tab ─────────────────────────── */
+  .adm-inv-form-wrap { margin-bottom: var(--space-5); }
+  .adm-inv-form { display: flex; flex-direction: column; }
+  .adm-inv-form-row {
+    display: grid; grid-template-columns: 1fr 140px 120px 160px;
+    gap: var(--space-3);
+  }
+  @media (max-width: 900px) { .adm-inv-form-row { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .adm-inv-form-row { grid-template-columns: 1fr; } }
+  .adm-inv-field { display: flex; flex-direction: column; gap: var(--space-1); }
+  .adm-inv-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+  .adm-inv-input {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius); border: 1px solid var(--border-light);
+    background: var(--glass-bg); color: var(--text);
+    font-size: 0.875rem; font-family: inherit; outline: none;
+    transition: border-color 0.2s; width: 100%;
+  }
+  .adm-inv-input:focus { border-color: var(--brand); }
+  .adm-inv-input option { background: #1a1a1a; }
+  .adm-inv-textarea { resize: vertical; min-height: 72px; }
+  .adm-inv-form-actions { display: flex; gap: var(--space-3); margin-top: var(--space-5); }
+
+  /* Invoice hero amount */
+  .adm-inv-hero {
+    background: linear-gradient(135deg, rgba(212,76,67,0.12), rgba(212,76,67,0.04));
+    border: 1px solid rgba(212,76,67,0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-4);
+    text-align: center;
+  }
+  .adm-inv-hero-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--space-2); }
+  .adm-inv-hero-amount { display: block; font-size: 2.4rem; font-weight: 900; color: var(--text); letter-spacing: -0.04em; }
+  .adm-inv-hero-due { display: block; font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--space-1); }
+
+  /* Invoice status row */
+  .adm-inv-status-row { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); flex-wrap: wrap; }
+  .adm-inv-mark-paid {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3);
+    color: #22c55e; font-size: 0.8rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .adm-inv-mark-paid:hover { background: rgba(34,197,94,0.2); }
+  .adm-inv-mark-overdue {
+    background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25);
+    color: #ef4444; font-size: 0.8rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 999px; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .adm-inv-mark-overdue:hover { background: rgba(239,68,68,0.18); }
 
   /* Mobile sidebar collapse */
   @media (max-width: 700px) {
