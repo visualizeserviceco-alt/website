@@ -5,6 +5,7 @@ import {
   IconLogin, IconUserPlus, IconPackage, IconArrowRight,
   IconLayoutDashboard, IconReceipt, IconPlus, IconCheck,
   IconClock, IconAlertCircle, IconChevronRight, IconLock,
+  IconRefresh, IconExternalLink,
 } from '@tabler/icons-react';
 
 const CLIENTS_KEY  = 'vz_clients';
@@ -227,6 +228,7 @@ function Sidebar({ tab, setTab, user, onLogout, onCalendly }) {
     { id: 'dashboard', label: 'Dashboard', icon: IconLayoutDashboard },
     { id: 'orders',    label: 'My Orders',  icon: IconPackage },
     { id: 'invoices',  label: 'Invoices',   icon: IconReceipt },
+    { id: 'meetings',  label: 'Meetings',   icon: IconCalendar },
   ];
   return (
     <aside className="cp-sidebar">
@@ -364,11 +366,11 @@ function DashboardView({ user, orders, invoices, onCalendly, setTab }) {
               </div>
               <IconChevronRight size={14} stroke={2} className="cp-quick-arrow" />
             </button>
-            <button type="button" className="cp-quick-btn" onClick={onCalendly}>
+            <button type="button" className="cp-quick-btn" onClick={() => setTab('meetings')}>
               <span className="cp-quick-icon" style={{ '--c': '#34d399' }}><IconCalendar size={18} stroke={1.8} /></span>
               <div>
-                <p className="cp-quick-label">Book a Meeting</p>
-                <p className="cp-quick-sub">Schedule time to talk</p>
+                <p className="cp-quick-label">My Meetings</p>
+                <p className="cp-quick-sub">View &amp; book meetings</p>
               </div>
               <IconChevronRight size={14} stroke={2} className="cp-quick-arrow" />
             </button>
@@ -646,6 +648,152 @@ function InvoicesView({ invoices, onCalendly }) {
   );
 }
 
+/* ── Meetings view ──────────────────────────────────────────────── */
+function MeetingsView({ user, onCalendly }) {
+  const [meetings, setMeetings] = useState(null);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
+
+  const fetchMeetings = useCallback(async () => {
+    if (!user.email) return;
+    setLoading(true); setError('');
+    try {
+      const res  = await fetch(`/api/calendly-meetings?email=${encodeURIComponent(user.email)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load');
+      setMeetings(data.meetings || []);
+    } catch (err) {
+      setError(err.message);
+      setMeetings([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [user.email]);
+
+  useEffect(() => { fetchMeetings(); }, [fetchMeetings]);
+
+  const fmtDate = iso => {
+    try { return new Date(iso).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }); }
+    catch { return ''; }
+  };
+  const fmtTime = (s, e) => {
+    try {
+      const fmt = d => new Date(d).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      return `${fmt(s)} – ${fmt(e)}`;
+    } catch { return ''; }
+  };
+
+  const isNotConfigured = error === 'Calendly not configured';
+
+  return (
+    <div className="cp-view">
+      <div className="cp-view-header cp-view-header--row">
+        <div>
+          <h1 className="cp-view-title">My Meetings</h1>
+          <p className="cp-view-sub">
+            {!user.email ? 'Email required' : meetings ? `${meetings.length} upcoming` : 'Loading…'}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {user.email && (
+            <button type="button" className="cp-icon-btn" onClick={fetchMeetings} disabled={loading} title="Refresh">
+              <IconRefresh size={16} stroke={1.8} />
+            </button>
+          )}
+          <button type="button" className="btn btn-primary"
+            style={{ fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}
+            onClick={onCalendly}>
+            <IconCalendar size={15} stroke={2} />Book Meeting
+          </button>
+        </div>
+      </div>
+
+      {!user.email ? (
+        <div className="cp-panel cp-panel-empty-lg">
+          <IconCalendar size={40} stroke={1.2} />
+          <h3>Email required</h3>
+          <p>To sync your Calendly meetings here, your account needs an email address on file. Contact Visualize Studio to link your email.</p>
+        </div>
+      ) : loading && !meetings ? (
+        <div className="cp-meetings-loading">
+          <div className="cp-meetings-spinner" />
+          <p>Loading your meetings…</p>
+        </div>
+      ) : error ? (
+        <div className="cp-panel cp-panel-empty-lg">
+          <IconCalendar size={40} stroke={1.2} style={{ color: isNotConfigured ? '#34d399' : '#f59e0b' }} />
+          <h3>{isNotConfigured ? 'No upcoming meetings' : 'Couldn\'t load meetings'}</h3>
+          <p>
+            {isNotConfigured
+              ? 'You don\'t have any scheduled meetings with Visualize Studio right now.'
+              : error}
+          </p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {!isNotConfigured && (
+              <button type="button" className="btn btn-secondary" onClick={fetchMeetings}
+                style={{ fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <IconRefresh size={14} stroke={1.8} />Retry
+              </button>
+            )}
+            <button type="button" className="btn btn-primary" onClick={onCalendly}
+              style={{ fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <IconCalendar size={14} stroke={1.8} />Book a Meeting
+            </button>
+          </div>
+        </div>
+      ) : meetings && meetings.length === 0 ? (
+        <div className="cp-panel cp-panel-empty-lg">
+          <IconCalendar size={40} stroke={1.2} />
+          <h3>No upcoming meetings</h3>
+          <p>You don&apos;t have any scheduled meetings with Visualize Studio right now.</p>
+          <button type="button" className="btn btn-primary" onClick={onCalendly}
+            style={{ fontSize: '0.875rem', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <IconCalendar size={15} stroke={1.8} />Book a Meeting
+          </button>
+        </div>
+      ) : meetings ? (
+        <div className="cp-meetings-list">
+          {meetings.map((m, i) => {
+            const d = new Date(m.start_time);
+            return (
+              <div key={m.uri || i} className="cp-meeting-card">
+                <div className="cp-meeting-date-col">
+                  <span className="cp-meeting-month">{d.toLocaleDateString('en-US', { month: 'short' })}</span>
+                  <span className="cp-meeting-day">{d.getDate()}</span>
+                </div>
+                <div className="cp-meeting-body">
+                  <p className="cp-meeting-name">{m.name}</p>
+                  <p className="cp-meeting-time">
+                    <IconClock size={12} stroke={1.8} />
+                    {fmtDate(m.start_time)} · {fmtTime(m.start_time, m.end_time)}
+                  </p>
+                  {m.location?.join_url && (
+                    <a href={m.location.join_url} target="_blank" rel="noopener noreferrer" className="cp-meeting-join">
+                      <IconExternalLink size={12} stroke={2} />Join Meeting
+                    </a>
+                  )}
+                </div>
+                <div className="cp-meeting-actions">
+                  {m.rescheduleUrl && (
+                    <a href={m.rescheduleUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary cp-help-btn">
+                      Reschedule
+                    </a>
+                  )}
+                  {m.cancelUrl && (
+                    <a href={m.cancelUrl} target="_blank" rel="noopener noreferrer" className="cp-meeting-cancel-btn">
+                      Cancel
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 /* ── Main portal ────────────────────────────────────────────────── */
 function Portal({ user, onLogout }) {
   const [tab, setTab]               = useState('dashboard');
@@ -672,6 +820,7 @@ function Portal({ user, onLogout }) {
     { id: 'dashboard', label: 'Home',     icon: IconLayoutDashboard },
     { id: 'orders',    label: 'Orders',   icon: IconPackage,  badge: pendingCount },
     { id: 'invoices',  label: 'Invoices', icon: IconReceipt,  badge: unpaidCount  },
+    { id: 'meetings',  label: 'Meetings', icon: IconCalendar },
   ];
 
   return (
@@ -695,6 +844,7 @@ function Portal({ user, onLogout }) {
         {tab === 'dashboard' && <DashboardView user={user} orders={orders} invoices={invoices} onCalendly={() => setCalendly(true)} setTab={setTab} />}
         {tab === 'orders'    && <OrdersView    orders={orders}   onCalendly={() => setCalendly(true)} />}
         {tab === 'invoices'  && <InvoicesView  invoices={invoices} onCalendly={() => setCalendly(true)} />}
+        {tab === 'meetings'  && <MeetingsView  user={user} onCalendly={() => setCalendly(true)} />}
       </main>
 
       {/* Mobile-only bottom tab bar */}
@@ -1222,5 +1372,69 @@ const cpStyles = `
     .cp-modal { border-radius: var(--radius-lg) var(--radius-lg) 0 0; position: fixed; bottom: 0; left: 0; right: 0; max-width: 100%; }
     .cp-modal-overlay { align-items: flex-end; padding: 0; }
     .calendly-inline-widget { height: 70dvh !important; }
+
+    /* Meeting cards: stack on mobile */
+    .cp-meeting-card { flex-wrap: wrap; }
+    .cp-meeting-actions { flex-direction: row; width: 100%; justify-content: flex-end; margin-top: var(--space-2); }
   }
+
+  /* ── Meetings ────────────────────────────── */
+  .cp-meetings-list { display: flex; flex-direction: column; gap: var(--space-3); }
+  .cp-meeting-card {
+    display: flex; align-items: flex-start; gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s;
+  }
+  .cp-meeting-card:hover { border-color: rgba(52,211,153,0.3); }
+  .cp-meeting-date-col {
+    flex-shrink: 0; width: 46px; text-align: center;
+    background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2);
+    border-radius: var(--radius); padding: var(--space-2) var(--space-3);
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .cp-meeting-month { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #34d399; }
+  .cp-meeting-day   { font-size: 1.5rem; font-weight: 900; color: var(--text); line-height: 1.1; }
+  .cp-meeting-body  { flex: 1; min-width: 0; }
+  .cp-meeting-name  { font-size: 0.9375rem; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+  .cp-meeting-time  { display: flex; align-items: center; gap: 5px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px; }
+  .cp-meeting-join  {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.78rem; font-weight: 600; color: #34d399;
+    text-decoration: none; transition: opacity 0.2s;
+  }
+  .cp-meeting-join:hover { opacity: 0.75; }
+  .cp-meeting-actions { display: flex; flex-direction: column; gap: var(--space-2); flex-shrink: 0; }
+  .cp-meeting-cancel-btn {
+    font-size: 0.78rem; font-weight: 600; color: #f87171;
+    text-decoration: none; text-align: center;
+    padding: 6px 12px; border-radius: var(--radius);
+    transition: background 0.2s;
+  }
+  .cp-meeting-cancel-btn:hover { background: rgba(248,113,113,0.1); }
+
+  /* ── Meetings loading ────────────────────── */
+  .cp-meetings-loading {
+    display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+    padding: var(--space-16) var(--space-8); color: var(--text-muted);
+  }
+  .cp-meetings-loading p { font-size: 0.9rem; }
+  .cp-meetings-spinner {
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.08);
+    border-top-color: #34d399;
+    animation: cp-spin 0.7s linear infinite;
+  }
+  @keyframes cp-spin { to { transform: rotate(360deg); } }
+
+  /* ── Icon button ─────────────────────────── */
+  .cp-icon-btn {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: var(--text-muted); cursor: pointer; transition: color 0.2s, border-color 0.2s;
+  }
+  .cp-icon-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+  .cp-icon-btn:disabled { opacity: 0.45; cursor: not-allowed; }
 `;
