@@ -4,7 +4,7 @@ import {
   IconInfoCircle, IconX, IconCalendar, IconLogout, IconArrowLeft,
   IconLogin, IconUserPlus, IconPackage, IconArrowRight,
   IconLayoutDashboard, IconReceipt, IconPlus, IconCheck,
-  IconClock, IconAlertCircle, IconChevronRight,
+  IconClock, IconAlertCircle, IconChevronRight, IconLock,
 } from '@tabler/icons-react';
 
 const CLIENTS_KEY  = 'vz_clients';
@@ -614,7 +614,19 @@ function InvoicesView({ invoices, onCalendly }) {
                   </div>
                 )}
 
-                {selectedInv.status !== 'paid' && (
+                {selectedInv.status !== 'paid' && selectedInv.stripeLink && (
+                  <a
+                    href={selectedInv.stripeLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="cp-inv-pay-btn"
+                  >
+                    <IconLock size={15} stroke={2} />
+                    Pay ${parseFloat(selectedInv.amount || 0).toFixed(2)} with Stripe
+                  </a>
+                )}
+
+                {selectedInv.status !== 'paid' && !selectedInv.stripeLink && (
                   <div className="cp-help-box">
                     <div>
                       <p className="cp-help-title">Ready to pay?</p>
@@ -1000,6 +1012,18 @@ const cpStyles = `
   .cp-help-sub { font-size: 0.8125rem; color: var(--text-muted); }
   .cp-help-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
   .cp-help-btn { font-size: 0.8125rem; padding: 8px 14px; display: inline-flex; align-items: center; gap: 5px; }
+  .cp-inv-pay-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: var(--space-4);
+    background: linear-gradient(135deg, rgba(212,76,67,0.5), rgba(168,58,50,0.45));
+    border: 1px solid var(--glass-border-brand);
+    border-radius: var(--radius-lg);
+    color: #fff; font-size: 1rem; font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 24px rgba(212,76,67,0.2);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .cp-inv-pay-btn:hover { background: linear-gradient(135deg, rgba(212,76,67,0.65), rgba(168,58,50,0.55)); transform: translateY(-1px); }
 
   /* ── Auth ────────────────────────────────── */
   .cp-auth-wrap {

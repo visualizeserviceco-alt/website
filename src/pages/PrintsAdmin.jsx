@@ -3,7 +3,7 @@ import {
   IconLayoutDashboard, IconListDetails, IconLogout, IconRefresh,
   IconTrash, IconMail, IconPhone, IconCheck, IconClock, IconEye,
   IconChartBar, IconArrowRight, IconArrowLeft, IconUsers, IconUser, IconReceipt,
-  IconPlus, IconCircleCheck, IconKey,
+  IconPlus, IconCircleCheck, IconKey, IconLink, IconCopy,
 } from '@tabler/icons-react';
 
 const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -128,7 +128,7 @@ export default function PrintsAdmin() {
   const [analytics, setAnalytics] = useState({ pageViews: 0, uniqueVisits: 0, topPages: [], dailyViews: [] });
   const [clients, setClients]     = useState([]);
   const [invoices, setInvoices]   = useState([]);
-  const [invForm, setInvForm]     = useState({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '' });
+  const [invForm, setInvForm]     = useState({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '', stripeLink: '' });
   const [invFormOpen, setInvFormOpen] = useState(false);
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [newClientOpen, setNewClientOpen] = useState(false);
@@ -136,6 +136,7 @@ export default function PrintsAdmin() {
   const [newClientError, setNewClientError] = useState('');
   const [mobileOrderDetail, setMobileOrderDetail] = useState(false);
   const [mobileInvDetail, setMobileInvDetail] = useState(false);
+  const [stripeLinkDraft, setStripeLinkDraft] = useState('');
 
   const loadOrders = useCallback(() => {
     try { setOrders(JSON.parse(localStorage.getItem('vz_print_orders') || '[]')); }
@@ -269,12 +270,13 @@ export default function PrintsAdmin() {
       status: 'unpaid',
       dueDate: invForm.dueDate,
       notes: invForm.notes,
+      stripeLink: invForm.stripeLink.trim() || null,
       createdAt: new Date().toISOString(),
     };
     const updated = [inv, ...invoices];
     setInvoices(updated);
     localStorage.setItem('vz_invoices', JSON.stringify(updated));
-    setInvForm({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '' });
+    setInvForm({ clientEmail: '', invoiceNumber: '', description: '', amount: '', dueDate: '', notes: '', stripeLink: '' });
     setInvFormOpen(false);
     setSelectedInvoice(inv);
   };
@@ -305,6 +307,14 @@ export default function PrintsAdmin() {
     setInvoices(updated);
     localStorage.setItem('vz_invoices', JSON.stringify(updated));
     if (selectedInvoice?.id === id) setSelectedInvoice(null);
+  };
+
+  const updateInvoiceStripeLink = (id, link) => {
+    const clean = link.trim() || null;
+    const updated = invoices.map(inv => inv.id === id ? { ...inv, stripeLink: clean } : inv);
+    setInvoices(updated);
+    localStorage.setItem('vz_invoices', JSON.stringify(updated));
+    if (selectedInvoice?.id === id) setSelectedInvoice(prev => ({ ...prev, stripeLink: clean }));
   };
 
   if (!auth) return <LoginScreen onAuth={() => setAuth(true)} />;
@@ -802,6 +812,20 @@ export default function PrintsAdmin() {
                       rows={3}
                     />
                   </div>
+                  <div className="adm-inv-field" style={{ marginTop: 'var(--space-3)' }}>
+                    <label className="adm-inv-label">Stripe Payment Link (optional)</label>
+                    <div className="adm-inv-link-wrap">
+                      <IconLink size={14} stroke={1.8} className="adm-inv-link-icon" />
+                      <input
+                        className="adm-inv-input adm-inv-link-input"
+                        type="url"
+                        placeholder="https://buy.stripe.com/…"
+                        value={invForm.stripeLink}
+                        onChange={e => setInvForm(f => ({ ...f, stripeLink: e.target.value }))}
+                      />
+                    </div>
+                    <span className="adm-inv-link-hint">Client will see a "Pay Now" button on their portal invoice.</span>
+                  </div>
                   <div className="adm-inv-form-actions">
                     <button type="submit" className="btn btn-primary adm-action-btn">
                       <IconReceipt size={14} stroke={1.8} />
@@ -832,7 +856,7 @@ export default function PrintsAdmin() {
                         key={inv.id}
                         type="button"
                         className={`adm-row ${selectedInvoice?.id === inv.id ? 'adm-row--active' : ''}`}
-                        onClick={() => { setSelectedInvoice(inv); setMobileInvDetail(true); }}
+                        onClick={() => { setSelectedInvoice(inv); setMobileInvDetail(true); setStripeLinkDraft(''); }}
                       >
                         <div className="adm-row-top">
                           <strong className="adm-row-name">{inv.invoiceNumber}</strong>
@@ -941,10 +965,66 @@ export default function PrintsAdmin() {
                         </div>
                       )}
 
+                      {/* Stripe Payment Link */}
+                      <div className="adm-inv-stripe-section">
+                        <p className="adm-detail-section">Stripe Payment Link</p>
+                        {selectedInvoice.stripeLink ? (
+                          <div className="adm-inv-stripe-linked">
+                            <div className="adm-inv-stripe-pill">
+                              <IconLink size={13} stroke={1.8} />
+                              <span className="adm-inv-stripe-url">{selectedInvoice.stripeLink}</span>
+                            </div>
+                            <div style={{ display: 'flex', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
+                              <button
+                                type="button"
+                                className="adm-inv-stripe-btn"
+                                onClick={() => { navigator.clipboard?.writeText(selectedInvoice.stripeLink); }}
+                              >
+                                <IconCopy size={12} stroke={1.8} /> Copy
+                              </button>
+                              <a href={selectedInvoice.stripeLink} target="_blank" rel="noopener noreferrer" className="adm-inv-stripe-btn">
+                                Open ↗
+                              </a>
+                              <button
+                                type="button"
+                                className="adm-inv-stripe-btn adm-inv-stripe-btn--danger"
+                                onClick={() => updateInvoiceStripeLink(selectedInvoice.id, '')}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="adm-inv-stripe-add">
+                            <div className="adm-inv-link-wrap">
+                              <IconLink size={14} stroke={1.8} className="adm-inv-link-icon" />
+                              <input
+                                className="adm-inv-input adm-inv-link-input"
+                                type="url"
+                                placeholder="https://buy.stripe.com/…"
+                                value={stripeLinkDraft}
+                                onChange={e => setStripeLinkDraft(e.target.value)}
+                                onKeyDown={e => { if (e.key === 'Enter') { updateInvoiceStripeLink(selectedInvoice.id, stripeLinkDraft); setStripeLinkDraft(''); } }}
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              className="btn btn-primary adm-action-btn"
+                              style={{ marginTop: 'var(--space-2)' }}
+                              onClick={() => { updateInvoiceStripeLink(selectedInvoice.id, stripeLinkDraft); setStripeLinkDraft(''); }}
+                              disabled={!stripeLinkDraft.trim()}
+                            >
+                              <IconLink size={14} stroke={1.8} /> Attach Link
+                            </button>
+                            <span className="adm-inv-link-hint">Client will see a "Pay Now" button on their portal.</span>
+                          </div>
+                        )}
+                      </div>
+
                       {/* Send via Gmail */}
                       <div className="adm-quick-actions">
                         <a
-                          href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(selectedInvoice.clientEmail)}&su=${encodeURIComponent(`Invoice ${selectedInvoice.invoiceNumber} — Visualize Studio`)}&body=${encodeURIComponent(`Hi ${selectedInvoice.clientName},\n\nPlease find your invoice below:\n\nInvoice #: ${selectedInvoice.invoiceNumber}\nAmount: $${Number(selectedInvoice.amount).toFixed(2)}\n${selectedInvoice.dueDate ? `Due Date: ${selectedInvoice.dueDate}\n` : ''}Description: ${selectedInvoice.description}\n${selectedInvoice.notes ? `\nNotes:\n${selectedInvoice.notes}\n` : ''}\nThank you!\nVisualize Studio`)}`}
+                          href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(selectedInvoice.clientEmail)}&su=${encodeURIComponent(`Invoice ${selectedInvoice.invoiceNumber} — Visualize Studio`)}&body=${encodeURIComponent(`Hi ${selectedInvoice.clientName},\n\nPlease find your invoice below:\n\nInvoice #: ${selectedInvoice.invoiceNumber}\nAmount: $${Number(selectedInvoice.amount).toFixed(2)}\n${selectedInvoice.dueDate ? `Due Date: ${selectedInvoice.dueDate}\n` : ''}Description: ${selectedInvoice.description}\n${selectedInvoice.notes ? `\nNotes:\n${selectedInvoice.notes}\n` : ''}${selectedInvoice.stripeLink ? `\nPay online: ${selectedInvoice.stripeLink}\n` : ''}\nThank you!\nVisualize Studio`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="btn btn-primary adm-action-btn"
@@ -1632,6 +1712,33 @@ const admStyles = `
     transition: background 0.2s;
   }
   .adm-inv-mark-overdue:hover { background: rgba(239,68,68,0.18); }
+
+  /* Invoice Stripe link section */
+  .adm-inv-stripe-section { margin-bottom: var(--space-5); }
+  .adm-inv-stripe-linked { display: flex; flex-direction: column; gap: var(--space-2); }
+  .adm-inv-stripe-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25);
+    border-radius: var(--radius); padding: 6px 10px;
+    color: #818cf8;
+  }
+  .adm-inv-stripe-url {
+    font-size: 0.75rem; white-space: nowrap; overflow: hidden;
+    text-overflow: ellipsis; max-width: 260px;
+  }
+  .adm-inv-stripe-btn {
+    font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: var(--radius);
+    background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+    color: var(--text-secondary); cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 4px; transition: background 0.15s;
+  }
+  .adm-inv-stripe-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+  .adm-inv-stripe-btn--danger:hover { background: rgba(239,68,68,0.1); color: #f87171; border-color: rgba(239,68,68,0.3); }
+  .adm-inv-stripe-add { display: flex; flex-direction: column; gap: var(--space-2); }
+  .adm-inv-link-wrap { position: relative; display: flex; align-items: center; }
+  .adm-inv-link-icon { position: absolute; left: 12px; color: var(--text-muted); pointer-events: none; }
+  .adm-inv-link-input { padding-left: 34px !important; }
+  .adm-inv-link-hint { font-size: 0.75rem; color: var(--text-muted); }
 
   /* ── Mobile topbar + bottom nav (hidden on desktop) ── */
   .adm-mobile-topbar { display: none; }
