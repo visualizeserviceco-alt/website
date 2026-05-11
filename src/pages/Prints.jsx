@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { IconArrowLeft, IconCheck, IconSend, IconUser, IconArrowRight } from '@tabler/icons-react';
+import { IconArrowLeft, IconCheck, IconSend, IconUser, IconArrowRight, IconLock } from '@tabler/icons-react';
 
 const TOTAL_STEPS = 7;
 
@@ -26,6 +26,19 @@ const TYPE_OPTIONS = [
         <rect x="8" y="12" width="32" height="24" rx="4" stroke="currentColor" strokeWidth="2.5" />
         <path d="M8 20h32M16 12v24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         <path d="M24 28l4-4-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    ),
+  },
+  {
+    id: 'instagram-vinyl',
+    label: 'Instagram Handle Vinyl',
+    desc: 'Your @handle printed twice — one for each side of your car. $10 flat rate, pay instantly.',
+    badge: '$10',
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="8" y="8" width="32" height="32" rx="10" stroke="currentColor" strokeWidth="2.5" />
+        <circle cx="24" cy="24" r="7" stroke="currentColor" strokeWidth="2.5" />
+        <circle cx="34.5" cy="13.5" r="2" fill="currentColor" />
       </svg>
     ),
   },
@@ -69,22 +82,24 @@ const DESIGN_OPTIONS = [
   { id: 'idea',  label: 'I have a concept/idea', desc: "I'll describe what I'm going for" },
 ];
 
+const IG_FINISH_OPTIONS = [
+  { id: 'gloss',       label: 'Glossy',      desc: 'Vibrant, shiny' },
+  { id: 'matte',       label: 'Matte',       desc: 'Flat, clean look' },
+  { id: 'transparent', label: 'Transparent', desc: 'Clear background' },
+];
+
 const STEP_LABELS = ['Type', 'Shape', 'Size', 'Quantity', 'Finish', 'Design', 'Your Info'];
 
-function ProgressBar({ step }) {
+function ProgressBar({ step, labels = STEP_LABELS }) {
   return (
     <div className="pr-progress">
-      {STEP_LABELS.map((label, i) => (
+      {labels.map((label, i) => (
         <div key={label} className={`pr-progress-step ${i < step ? 'done' : i === step ? 'active' : ''}`}>
           <div className="pr-progress-dot">
-            {i < step ? (
-              <IconCheck size={14} stroke={2.2} />
-            ) : (
-              <span>{i + 1}</span>
-            )}
+            {i < step ? <IconCheck size={14} stroke={2.2} /> : <span>{i + 1}</span>}
           </div>
           <span className="pr-progress-label">{label}</span>
-          {i < STEP_LABELS.length - 1 && <div className="pr-progress-line" />}
+          {i < labels.length - 1 && <div className="pr-progress-line" />}
         </div>
       ))}
     </div>
@@ -103,7 +118,6 @@ function OrderSummary({ order }) {
     { label: 'Design',   value: DESIGN_OPTIONS.find(o => o.id === order.design)?.label },
     { label: 'Social',   value: order.social || null },
   ].filter(r => r.value);
-
   return (
     <div className="pr-summary">
       <p className="pr-summary-title">Your Order</p>
@@ -128,10 +142,6 @@ function StepWrapper({ title, subtitle, children, step, total }) {
   );
 }
 
-function PopularTag() {
-  return <span className="pr-popular-tag">Popular</span>;
-}
-
 function SelectTile({ selected, onClick, children, popular }) {
   return (
     <button
@@ -139,7 +149,7 @@ function SelectTile({ selected, onClick, children, popular }) {
       className={`pr-tile ${selected ? 'pr-tile--active' : ''} ${popular ? 'pr-tile--popular' : ''}`}
       onClick={onClick}
     >
-      {popular && <PopularTag />}
+      {popular && <span className="pr-popular-tag">Popular</span>}
       {children}
     </button>
   );
@@ -147,11 +157,48 @@ function SelectTile({ selected, onClick, children, popular }) {
 
 export default function Prints() {
   const navigate = useNavigate();
-  const [step, setStep]           = useState(0);
-  const [order, setOrder]         = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
-  const [submitted, setSubmitted] = useState(false);
+  const [step, setStep]             = useState(0);
+  const [order, setOrder]           = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
+  const [igForm, setIgForm]         = useState({ handle: '', finish: 'gloss', carColor: '', name: '', email: '', phone: '', notes: '' });
+  const [submitted, setSubmitted]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [errors, setErrors]       = useState({});
+  const [paidReturn, setPaidReturn] = useState(false);
+  const [errors, setErrors]         = useState({});
+
+  // Handle return from Stripe Payment Link (?paid=1)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('paid') === '1') {
+      window.history.replaceState({}, '', '/prints');
+      const raw = sessionStorage.getItem('vz_pending_ig_order');
+      if (raw) {
+        try {
+          const pending = JSON.parse(raw);
+          const confirmed = { ...pending, status: 'pending', paymentConfirmed: true };
+          const existing = JSON.parse(localStorage.getItem('vz_print_orders') || '[]');
+          localStorage.setItem('vz_print_orders', JSON.stringify([confirmed, ...existing]));
+          sessionStorage.removeItem('vz_pending_ig_order');
+          setOrder(confirmed);
+          setPaidReturn(true);
+          setSubmitted(true);
+        } catch {}
+      } else {
+        setPaidReturn(true);
+        setSubmitted(true);
+      }
+    }
+  }, []);
+
+  const isInstagram = order.type === 'instagram-vinyl';
+
+  const resetAll = () => {
+    setStep(0);
+    setOrder({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
+    setIgForm({ handle: '', finish: 'gloss', carColor: '', name: '', email: '', phone: '', notes: '' });
+    setSubmitted(false);
+    setPaidReturn(false);
+    setErrors({});
+  };
 
   const buildSummary = (o) =>
     [
@@ -167,6 +214,11 @@ export default function Prints() {
     setTimeout(() => setStep(s => Math.min(s + 1, TOTAL_STEPS - 1)), 280);
   };
 
+  const selectType = (value) => {
+    setOrder(prev => ({ ...prev, type: value }));
+    setTimeout(() => setStep(1), 280);
+  };
+
   const validate = () => {
     const e = {};
     if (!order.name.trim())  e.name  = 'First name is required';
@@ -180,23 +232,70 @@ export default function Prints() {
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setSubmitting(true);
-
-    const orderData = {
-      id:     Date.now(),
-      date:   new Date().toISOString(),
-      status: 'pending',
-      ...order,
-    };
+    const orderData = { id: Date.now(), date: new Date().toISOString(), status: 'pending', ...order };
     try {
       const existing = JSON.parse(localStorage.getItem('vz_print_orders') || '[]');
       localStorage.setItem('vz_print_orders', JSON.stringify([orderData, ...existing]));
-    } catch (_) {}
-
+    } catch {}
     setTimeout(() => { setSubmitting(false); setSubmitted(true); }, 600);
   };
 
-  // ── Order submitted confirmation ─────────────────────────────────────
+  const handleInstagramPay = (e) => {
+    e.preventDefault();
+    const errs = {};
+    const rawHandle = igForm.handle.trim().replace(/^@+/, '');
+    if (!rawHandle) errs.handle = 'Instagram handle is required';
+    if (!igForm.name.trim()) errs.name = 'Your name is required';
+    if (!igForm.email.trim()) errs.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(igForm.email)) errs.email = 'Enter a valid email';
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+
+    const cleanHandle = `@${rawHandle}`;
+    const orderData = {
+      id: Date.now(),
+      date: new Date().toISOString(),
+      status: 'payment_pending',
+      type: 'instagram-vinyl',
+      name: igForm.name.trim(),
+      email: igForm.email.trim(),
+      phone: igForm.phone.trim(),
+      handle: cleanHandle,
+      finish: igForm.finish,
+      carColor: igForm.carColor.trim(),
+      notes: igForm.notes.trim(),
+      amount: 10,
+    };
+
+    sessionStorage.setItem('vz_pending_ig_order', JSON.stringify(orderData));
+
+    const stripeLink = import.meta.env.VITE_STRIPE_IG_LINK;
+    if (stripeLink) {
+      try {
+        const url = new URL(stripeLink);
+        url.searchParams.set('prefilled_email', igForm.email.trim());
+        window.location.href = url.toString();
+      } catch {
+        window.location.href = stripeLink;
+      }
+    } else {
+      // Dev fallback: skip payment
+      const confirmed = { ...orderData, status: 'pending', paymentConfirmed: true };
+      const existing = JSON.parse(localStorage.getItem('vz_print_orders') || '[]');
+      localStorage.setItem('vz_print_orders', JSON.stringify([confirmed, ...existing]));
+      sessionStorage.removeItem('vz_pending_ig_order');
+      setOrder(confirmed);
+      setPaidReturn(true);
+      setSubmitted(true);
+    }
+  };
+
+  const previewHandle = igForm.handle
+    ? `@${igForm.handle.replace(/^@+/, '')}`
+    : '@yourhandle';
+
+  // ── Success screen ──────────────────────────────────────────────────────
   if (submitted) {
+    const isIgOrder = order.type === 'instagram-vinyl' || paidReturn;
     return (
       <div className="pr-page">
         <div className="pr-success">
@@ -206,15 +305,31 @@ export default function Prints() {
               <path d="M20 32l8 8 16-16" stroke="var(--brand)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </div>
-          <h1 className="pr-success-title">Quote Request Submitted!</h1>
-          <p className="pr-success-sub">
-            Thanks, <strong>{order.name}</strong>. I received your request for{' '}
-            <strong>{buildSummary(order) || 'custom prints'}</strong>.
-            I&apos;ll review your order and reach out to <strong>{order.email}</strong> with a quote and payment details.
-          </p>
-          <p className="pr-success-note">
-            I personally review every order before sending a quote — usually within 1 business day.
-          </p>
+
+          {isIgOrder ? (
+            <>
+              <h1 className="pr-success-title">Payment Confirmed!</h1>
+              <p className="pr-success-sub">
+                Thanks, <strong>{order.name}</strong>! Your Instagram handle vinyl for{' '}
+                <strong>{order.handle}</strong> is confirmed — printed twice, one for each side of your car.
+              </p>
+              <p className="pr-success-note">
+                I&apos;ll send a proof to <strong>{order.email}</strong> before printing. Usually within 1 business day.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="pr-success-title">Quote Request Submitted!</h1>
+              <p className="pr-success-sub">
+                Thanks, <strong>{order.name}</strong>. I received your request for{' '}
+                <strong>{buildSummary(order) || 'custom prints'}</strong>.
+                I&apos;ll reach out to <strong>{order.email}</strong> with a quote and payment details.
+              </p>
+              <p className="pr-success-note">
+                I personally review every order before sending a quote — usually within 1 business day.
+              </p>
+            </>
+          )}
 
           <div className="pr-portal-prompt">
             <div className="pr-portal-prompt-icon" aria-hidden="true">
@@ -222,28 +337,202 @@ export default function Prints() {
             </div>
             <div>
               <p className="pr-portal-title">Track your order status</p>
-              <p className="pr-portal-desc">Create a free client account to see live updates on your order, chat status changes, and book follow-up meetings.</p>
+              <p className="pr-portal-desc">Create a free client account to see live updates on your order and invoices.</p>
             </div>
-            <button
-              className="btn btn-primary pr-portal-btn"
-              onClick={() => navigate('/portal')}
-            >
-              Create Account
-              <IconArrowRight size={14} stroke={2} />
+            <button className="btn btn-primary pr-portal-btn" onClick={() => navigate('/portal')}>
+              Create Account <IconArrowRight size={14} stroke={2} />
             </button>
           </div>
 
           <p className="pr-success-contact">
             Questions? Call or text <a href="tel:+13024687077">(302) 468-7077</a>
           </p>
-          <Link to="/" className="btn btn-secondary pr-success-btn">Back to Home</Link>
+          <div className="pr-success-actions">
+            <button className="btn btn-primary" onClick={resetAll}>
+              Place Another Order
+            </button>
+            <Link to="/" className="btn btn-secondary">Back to Home</Link>
+          </div>
         </div>
         <style>{prStyles}</style>
       </div>
     );
   }
 
-  // ── Main configurator ────────────────────────────────────────────────
+  // ── Instagram Handle Vinyl form ─────────────────────────────────────────
+  if (isInstagram && step >= 1) {
+    return (
+      <div className="pr-page">
+        <div className="pr-bg" aria-hidden="true" />
+        <div className="pr-header">
+          <Link to="/" className="pr-back-home">
+            <IconArrowLeft size={14} stroke={2} /> Back to site
+          </Link>
+          <h1 className="pr-page-title">Instagram Handle Vinyl</h1>
+          <p className="pr-page-sub">Printed twice — one for each side of your car. $10 flat rate.</p>
+        </div>
+
+        <ProgressBar step={1} labels={['Choose Type', 'Details & Pay']} />
+
+        <div className="pr-layout pr-ig-layout">
+          <div className="pr-main">
+            <form onSubmit={handleInstagramPay} noValidate>
+              <div className="pr-step">
+                <p className="pr-step-counter">Step 2 of 2</p>
+                <h2 className="pr-step-title">Your details</h2>
+                <p className="pr-step-sub">Fill in your handle and info, then pay $10 securely via Stripe.</p>
+                <div className="pr-form pr-step-body">
+
+                  {/* Handle field */}
+                  <div className="pr-field">
+                    <label className="pr-label">Instagram Handle <span>*</span></label>
+                    <div className="pr-ig-handle-wrap">
+                      <span className="pr-ig-at">@</span>
+                      <input
+                        className={`pr-input pr-ig-handle-input ${errors.handle ? 'pr-input--error' : ''}`}
+                        value={igForm.handle.replace(/^@+/, '')}
+                        onChange={e => { setIgForm(f => ({ ...f, handle: e.target.value })); setErrors(p => ({ ...p, handle: '' })); }}
+                        placeholder="yourhandle"
+                        autoCorrect="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                      />
+                    </div>
+                    {errors.handle && <span className="pr-error">{errors.handle}</span>}
+                    <span className="pr-field-hint">Printed twice — once for each side of your car.</span>
+                  </div>
+
+                  {/* Finish */}
+                  <div className="pr-field">
+                    <label className="pr-label">Finish</label>
+                    <div className="pr-ig-finish-row">
+                      {IG_FINISH_OPTIONS.map(f => (
+                        <button
+                          key={f.id}
+                          type="button"
+                          className={`pr-tile pr-ig-finish-tile ${igForm.finish === f.id ? 'pr-tile--active' : ''}`}
+                          onClick={() => setIgForm(p => ({ ...p, finish: f.id }))}
+                        >
+                          <strong className="pr-tile-label">{f.label}</strong>
+                          <span className="pr-tile-desc">{f.desc}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Car color */}
+                  <div className="pr-field">
+                    <label className="pr-label">Car Color <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      className="pr-input"
+                      value={igForm.carColor}
+                      onChange={e => setIgForm(f => ({ ...f, carColor: e.target.value }))}
+                      placeholder="e.g. Matte black, White, Silver"
+                    />
+                    <span className="pr-field-hint">Helps with color contrast recommendations.</span>
+                  </div>
+
+                  {/* Name + Email */}
+                  <div className="pr-form-row">
+                    <div className="pr-field">
+                      <label className="pr-label">Your Name <span>*</span></label>
+                      <input
+                        className={`pr-input ${errors.name ? 'pr-input--error' : ''}`}
+                        value={igForm.name}
+                        onChange={e => { setIgForm(f => ({ ...f, name: e.target.value })); setErrors(p => ({ ...p, name: '' })); }}
+                        placeholder="First name"
+                        autoComplete="given-name"
+                      />
+                      {errors.name && <span className="pr-error">{errors.name}</span>}
+                    </div>
+                    <div className="pr-field">
+                      <label className="pr-label">Email <span>*</span></label>
+                      <input
+                        type="email"
+                        className={`pr-input ${errors.email ? 'pr-input--error' : ''}`}
+                        value={igForm.email}
+                        onChange={e => { setIgForm(f => ({ ...f, email: e.target.value })); setErrors(p => ({ ...p, email: '' })); }}
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                      />
+                      {errors.email && <span className="pr-error">{errors.email}</span>}
+                    </div>
+                  </div>
+
+                  <div className="pr-field">
+                    <label className="pr-label">Phone <span className="pr-label-opt">(optional)</span></label>
+                    <input
+                      type="tel"
+                      className="pr-input"
+                      value={igForm.phone}
+                      onChange={e => setIgForm(f => ({ ...f, phone: e.target.value }))}
+                      placeholder="(555) 000-0000"
+                      autoComplete="tel"
+                    />
+                  </div>
+
+                  <div className="pr-field">
+                    <label className="pr-label">Notes <span className="pr-label-opt">(optional)</span></label>
+                    <textarea
+                      className="pr-input pr-textarea"
+                      value={igForm.notes}
+                      onChange={e => setIgForm(f => ({ ...f, notes: e.target.value }))}
+                      placeholder="Any special requests, sizing preferences, etc."
+                      rows={3}
+                    />
+                  </div>
+
+                  {/* Payment box */}
+                  <div className="pr-ig-payment-box">
+                    <div className="pr-ig-payment-price">
+                      <span className="pr-ig-payment-label">Total Today</span>
+                      <span className="pr-ig-payment-amount">$10.00</span>
+                      <span className="pr-ig-payment-desc">Instagram handle vinyl × 2 (both car sides)</span>
+                    </div>
+                    <button type="submit" className="btn btn-primary pr-ig-pay-btn">
+                      <IconLock size={15} stroke={2} />
+                      Pay $10 with Stripe
+                    </button>
+                    <p className="pr-ig-pay-note">
+                      Secure checkout via Stripe. You&apos;ll be redirected to complete payment, then returned here with your confirmation.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <button
+              type="button"
+              className="pr-back-btn"
+              onClick={() => { setStep(0); setOrder(p => ({ ...p, type: '' })); }}
+            >
+              <IconArrowLeft size={14} stroke={2} /> Back
+            </button>
+          </div>
+
+          {/* Preview aside */}
+          <aside className="pr-aside">
+            <div className="pr-ig-preview-card">
+              <p className="pr-ig-preview-title">Handle Preview</p>
+              <div className="pr-ig-preview-vinyl">
+                <span className="pr-ig-preview-handle">{previewHandle}</span>
+              </div>
+              <p className="pr-ig-preview-sub">Printed twice — driver &amp; passenger sides</p>
+            </div>
+            <div className="pr-aside-contact">
+              <p className="pr-aside-contact-text">Have a question?</p>
+              <a href="tel:+13024687077" className="pr-aside-phone">(302) 468-7077</a>
+              <p className="pr-aside-contact-text" style={{ fontSize: '0.78rem', marginTop: '4px' }}>Call or text</p>
+            </div>
+          </aside>
+        </div>
+
+        <style>{prStyles}</style>
+      </div>
+    );
+  }
+
+  // ── Standard configurator ───────────────────────────────────────────────
   return (
     <div className="pr-page">
       <div className="pr-bg" aria-hidden="true" />
@@ -266,7 +555,8 @@ export default function Prints() {
             <StepWrapper step={0} total={TOTAL_STEPS} title="What would you like to print?" subtitle="Choose your product type.">
               <div className="pr-type-grid">
                 {TYPE_OPTIONS.map(opt => (
-                  <SelectTile key={opt.id} selected={order.type === opt.id} onClick={() => select('type', opt.id)}>
+                  <SelectTile key={opt.id} selected={order.type === opt.id} onClick={() => selectType(opt.id)}>
+                    {opt.badge && <span className="pr-type-badge">{opt.badge}</span>}
                     <div className="pr-type-icon">{opt.icon}</div>
                     <strong className="pr-tile-label">{opt.label}</strong>
                     <span className="pr-tile-desc">{opt.desc}</span>
@@ -460,30 +750,21 @@ const prStyles = `
   }
   .pr-back-home {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    margin-bottom: var(--space-4);
-    transition: color 0.2s;
+    font-size: 0.875rem; color: var(--text-muted);
+    margin-bottom: var(--space-4); transition: color 0.2s;
   }
   .pr-back-home:hover { color: var(--text); }
   .pr-page-title {
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--text);
-    margin-bottom: var(--space-2);
+    font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800;
+    letter-spacing: -0.03em; color: var(--text); margin-bottom: var(--space-2);
   }
   .pr-page-sub { color: var(--text-secondary); font-size: 1rem; }
 
   /* Progress */
   .pr-progress {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    max-width: 860px;
-    margin: 0 auto var(--space-10);
-    padding: 0 var(--space-6);
-    overflow-x: auto;
+    display: flex; align-items: flex-start; justify-content: center;
+    max-width: 860px; margin: 0 auto var(--space-10);
+    padding: 0 var(--space-6); overflow-x: auto;
   }
   .pr-progress-step {
     display: flex; flex-direction: column; align-items: center;
@@ -491,8 +772,7 @@ const prStyles = `
   }
   .pr-progress-dot {
     width: 32px; height: 32px; border-radius: 50%;
-    border: 2px solid var(--border-light);
-    background: var(--bg-card);
+    border: 2px solid var(--border-light); background: var(--bg-card);
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
     transition: all 0.25s; z-index: 1; position: relative;
@@ -516,14 +796,8 @@ const prStyles = `
     width: 100%; height: 2px; background: var(--border); z-index: 0;
   }
   .pr-progress-step.done .pr-progress-line { background: var(--brand); }
-
-  /* Mobile: compact progress — just dots, no labels, smaller */
   @media (max-width: 600px) {
-    .pr-progress {
-      margin-bottom: var(--space-6);
-      padding: 0 var(--space-4);
-      gap: 0;
-    }
+    .pr-progress { margin-bottom: var(--space-6); padding: 0 var(--space-4); gap: 0; }
     .pr-progress-step { min-width: 32px; }
     .pr-progress-dot { width: 24px; height: 24px; font-size: 0.65rem; }
     .pr-progress-dot svg { width: 11px; height: 11px; }
@@ -556,13 +830,15 @@ const prStyles = `
   .pr-step-body { margin-bottom: var(--space-8); }
 
   /* Tile grids */
-  .pr-type-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .pr-type-grid   { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
   .pr-shape-grid  { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
   .pr-option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
   .pr-finish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
   .pr-design-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
     .pr-type-grid   { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
     .pr-shape-grid  { grid-template-columns: 1fr 1fr; }
     .pr-option-grid { grid-template-columns: 1fr 1fr; }
     .pr-finish-grid { grid-template-columns: 1fr 1fr; }
@@ -575,8 +851,7 @@ const prStyles = `
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
-    cursor: pointer; width: 100%; position: relative;
-    min-height: 56px;
+    cursor: pointer; width: 100%; position: relative; min-height: 56px;
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s, background 0.2s;
     -webkit-tap-highlight-color: transparent;
   }
@@ -590,14 +865,18 @@ const prStyles = `
     background: rgba(212,76,67,0.1);
     box-shadow: 0 0 0 1px rgba(212,76,67,0.3), 0 8px 32px rgba(0,0,0,0.2);
   }
-  .pr-tile--popular {
-    border-color: rgba(212,76,67,0.35);
-  }
+  .pr-tile--popular { border-color: rgba(212,76,67,0.35); }
   .pr-popular-tag {
     position: absolute; top: -9px; right: 10px;
     font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
     text-transform: uppercase; background: var(--brand);
     color: #fff; padding: 2px 8px; border-radius: 999px;
+  }
+  .pr-type-badge {
+    position: absolute; top: var(--space-3); right: var(--space-3);
+    font-size: 0.7rem; font-weight: 800;
+    background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.35);
+    color: #22c55e; padding: 2px 8px; border-radius: 999px;
   }
   .pr-type-icon { width: 48px; height: 48px; color: var(--brand); margin-bottom: var(--space-3); }
   .pr-type-icon svg { width: 100%; height: 100%; }
@@ -630,6 +909,7 @@ const prStyles = `
   .pr-label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
   .pr-label span { color: var(--brand); }
   .pr-label-opt { color: var(--text-muted); font-weight: 400; }
+  .pr-field-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
   .pr-input {
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius); border: 1px solid var(--border-light);
@@ -645,6 +925,74 @@ const prStyles = `
   @media (max-width: 600px) {
     .pr-submit-btn { width: 100%; justify-content: center; padding: var(--space-4); }
   }
+
+  /* Instagram Handle input */
+  .pr-ig-handle-wrap { display: flex; align-items: center; }
+  .pr-ig-at {
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+    border: 1px solid var(--border-light); border-right: none;
+    border-radius: var(--radius) 0 0 var(--radius);
+    background: rgba(255,255,255,0.04); color: var(--text-muted);
+    font-size: 1rem; font-weight: 700; line-height: 1;
+    display: flex; align-items: center;
+  }
+  .pr-ig-handle-input { border-radius: 0 var(--radius) var(--radius) 0 !important; }
+
+  /* IG finish row */
+  .pr-ig-finish-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+  @media (max-width: 500px) { .pr-ig-finish-row { grid-template-columns: 1fr; } }
+  .pr-ig-finish-tile { padding: var(--space-3) var(--space-4); min-height: 0; }
+
+  /* Payment box */
+  .pr-ig-payment-box {
+    margin-top: var(--space-2);
+    background: linear-gradient(135deg, rgba(212,76,67,0.1), rgba(212,76,67,0.04));
+    border: 1px solid rgba(212,76,67,0.25);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex; flex-direction: column; gap: var(--space-4);
+  }
+  .pr-ig-payment-price { text-align: center; }
+  .pr-ig-payment-label {
+    display: block; font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: var(--space-2);
+  }
+  .pr-ig-payment-amount {
+    display: block; font-size: 2.8rem; font-weight: 900;
+    color: var(--text); letter-spacing: -0.04em; line-height: 1;
+  }
+  .pr-ig-payment-desc { display: block; font-size: 0.8125rem; color: var(--text-muted); margin-top: var(--space-2); }
+  .pr-ig-pay-btn {
+    width: 100%; justify-content: center; gap: 8px;
+    padding: var(--space-4); font-size: 1rem; font-weight: 700;
+  }
+  .pr-ig-pay-note {
+    font-size: 0.78rem; color: var(--text-muted); text-align: center; line-height: 1.55;
+  }
+
+  /* IG Preview card */
+  .pr-ig-preview-card {
+    background: var(--glass-bg-strong); border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg); padding: var(--space-5); text-align: center;
+  }
+  .pr-ig-preview-title {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--space-4);
+  }
+  .pr-ig-preview-vinyl {
+    background: linear-gradient(135deg, #1a1a1a, #111);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pr-ig-preview-handle {
+    font-size: 1.1rem; font-weight: 800; color: #fff;
+    letter-spacing: -0.01em; font-family: 'Inter', sans-serif;
+    word-break: break-all;
+  }
+  .pr-ig-preview-sub { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
 
   /* Aside */
   .pr-aside { display: flex; flex-direction: column; gap: var(--space-4); position: sticky; top: 96px; }
@@ -684,28 +1032,30 @@ const prStyles = `
   .pr-success-note {
     font-size: 0.875rem; color: var(--text-muted);
     background: var(--glass-bg); border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5);
-    line-height: 1.6;
+    border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); line-height: 1.6;
   }
   .pr-success-contact { font-size: 0.875rem; color: var(--text-muted); }
   .pr-success-contact a { color: var(--brand); font-weight: 600; }
-  .pr-success-btn { padding: var(--space-3) var(--space-8); }
+  .pr-success-actions {
+    display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center;
+  }
+  .pr-success-actions .btn { padding: var(--space-3) var(--space-6); }
+  @media (max-width: 500px) {
+    .pr-success-actions { flex-direction: column; width: 100%; }
+    .pr-success-actions .btn { width: 100%; justify-content: center; }
+  }
 
   /* Portal prompt box */
   .pr-portal-prompt {
-    width: 100%;
-    display: flex; align-items: center; gap: var(--space-4);
-    background: var(--glass-bg-strong);
-    border: 1px solid var(--glass-border-brand);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5) var(--space-6);
+    width: 100%; display: flex; align-items: center; gap: var(--space-4);
+    background: var(--glass-bg-strong); border: 1px solid var(--glass-border-brand);
+    border-radius: var(--radius-lg); padding: var(--space-5) var(--space-6);
     text-align: left; flex-wrap: wrap;
   }
   .pr-portal-prompt-icon {
     width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
     background: rgba(212,76,67,0.12);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--brand);
+    display: flex; align-items: center; justify-content: center; color: var(--brand);
   }
   .pr-portal-title { font-size: 0.9375rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
   .pr-portal-desc { font-size: 0.8125rem; color: var(--text-secondary); line-height: 1.55; flex: 1; }

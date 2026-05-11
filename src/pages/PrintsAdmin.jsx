@@ -615,12 +615,15 @@ export default function PrintsAdmin() {
                       {/* Order specs */}
                       <div className="adm-detail-grid">
                         {[
-                          ['Product Type', detail.type],
+                          ['Product Type', detail.type === 'instagram-vinyl' ? 'Instagram Handle Vinyl' : detail.type],
+                          ['Instagram Handle', detail.handle],
+                          ['Car Color',    detail.carColor],
                           ['Shape',        detail.shape],
                           ['Size',         detail.size],
                           ['Quantity',     detail.quantity ? `${detail.quantity} units` : null],
                           ['Finish',       detail.finish],
                           ['Design',       detail.design],
+                          ['Payment',      detail.paymentConfirmed ? '✓ $10 Paid via Stripe' : detail.amount ? `$${detail.amount}` : null],
                         ].filter(([,v]) => v).map(([k, v]) => (
                           <div key={k} className="adm-detail-pair">
                             <span className="adm-detail-key">{k}</span>
