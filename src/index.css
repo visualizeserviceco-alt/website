@@ -65,6 +65,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -90,6 +91,13 @@ a {
 button {
   font-family: inherit;
   cursor: pointer;
+}
+
+/* Prevent iOS input zoom — keep 16px minimum */
+@media (max-width: 768px) {
+  input, textarea, select {
+    font-size: 16px !important;
+  }
 }
 
 /* Typography */
