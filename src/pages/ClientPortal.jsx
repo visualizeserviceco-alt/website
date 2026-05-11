@@ -352,8 +352,11 @@ function DashboardView({ user, orders, invoices, onCalendly, setTab }) {
 
 /* ── Orders view ────────────────────────────────────────────────── */
 function OrdersView({ orders, onCalendly }) {
-  const [selected, setSelected] = useState(orders[0] || null);
+  const [selected, setSelected]         = useState(orders[0] || null);
+  const [mobileDetail, setMobileDetail] = useState(false);
   const selectedOrder = orders.find(o => o.id === selected?.id) || selected;
+
+  const handleSelect = (o) => { setSelected(o); setMobileDetail(true); };
 
   return (
     <div className="cp-view">
@@ -377,7 +380,7 @@ function OrdersView({ orders, onCalendly }) {
           </Link>
         </div>
       ) : (
-        <div className="cp-orders-layout">
+        <div className={`cp-orders-layout ${mobileDetail ? 'cp-detail-open' : ''}`}>
           {/* Left list */}
           <div className="cp-order-list">
             {orders.map(o => {
@@ -385,7 +388,7 @@ function OrdersView({ orders, onCalendly }) {
               return (
                 <button key={o.id} type="button"
                   className={`cp-order-card ${selectedOrder?.id === o.id ? 'active' : ''}`}
-                  onClick={() => setSelected(o)}
+                  onClick={() => handleSelect(o)}
                 >
                   <div className="cp-order-card-top">
                     <span className="cp-order-card-type">{o.type ? o.type.charAt(0).toUpperCase() + o.type.slice(1) : 'Custom Print'}</span>
@@ -409,6 +412,9 @@ function OrdersView({ orders, onCalendly }) {
           {/* Right detail */}
           {selectedOrder && (
             <div className="cp-order-detail">
+              <button className="cp-mobile-back-btn" onClick={() => setMobileDetail(false)}>
+                <IconArrowLeft size={15} stroke={2} />All Orders
+              </button>
               <div className="cp-detail-top">
                 <div>
                   <h3 className="cp-detail-title">
@@ -475,8 +481,11 @@ function OrdersView({ orders, onCalendly }) {
 
 /* ── Invoices view ──────────────────────────────────────────────── */
 function InvoicesView({ invoices, onCalendly }) {
-  const [selected, setSelected] = useState(invoices[0] || null);
+  const [selected, setSelected]         = useState(invoices[0] || null);
+  const [mobileDetail, setMobileDetail] = useState(false);
   const selectedInv = invoices.find(i => i.id === selected?.id) || selected;
+
+  const handleSelect = (inv) => { setSelected(inv); setMobileDetail(true); };
   const totalOwed = invoices
     .filter(i => i.status !== 'paid')
     .reduce((sum, i) => sum + parseFloat(i.amount || 0), 0);
@@ -501,7 +510,7 @@ function InvoicesView({ invoices, onCalendly }) {
           </button>
         </div>
       ) : (
-        <div className="cp-orders-layout">
+        <div className={`cp-orders-layout ${mobileDetail ? 'cp-detail-open' : ''}`}>
           {/* Invoice list */}
           <div className="cp-order-list">
             {invoices.map(inv => {
@@ -509,7 +518,7 @@ function InvoicesView({ invoices, onCalendly }) {
               return (
                 <button key={inv.id} type="button"
                   className={`cp-order-card ${selectedInv?.id === inv.id ? 'active' : ''}`}
-                  onClick={() => setSelected(inv)}
+                  onClick={() => handleSelect(inv)}
                 >
                   <div className="cp-order-card-top">
                     <span className="cp-order-card-type">{inv.invoiceNumber || `INV-${inv.id}`}</span>
@@ -533,6 +542,9 @@ function InvoicesView({ invoices, onCalendly }) {
             const SIcon = s.icon;
             return (
               <div className="cp-order-detail">
+                <button className="cp-mobile-back-btn" onClick={() => setMobileDetail(false)}>
+                  <IconArrowLeft size={15} stroke={2} />All Invoices
+                </button>
                 <div className="cp-detail-top">
                   <div>
                     <h3 className="cp-detail-title">{selectedInv.invoiceNumber || `INV-${selectedInv.id}`}</h3>
@@ -595,10 +607,10 @@ function InvoicesView({ invoices, onCalendly }) {
 
 /* ── Main portal ────────────────────────────────────────────────── */
 function Portal({ user, onLogout }) {
-  const [tab, setTab]             = useState('dashboard');
+  const [tab, setTab]               = useState('dashboard');
   const [showCalendly, setCalendly] = useState(false);
-  const [orders, setOrders]       = useState([]);
-  const [invoices, setInvoices]   = useState([]);
+  const [orders, setOrders]         = useState([]);
+  const [invoices, setInvoices]     = useState([]);
 
   const load = useCallback(() => {
     const allOrders   = getOrders();
@@ -609,14 +621,58 @@ function Portal({ user, onLogout }) {
 
   useEffect(() => { load(); }, [load]);
 
+  const unpaidCount  = invoices.filter(i => i.status !== 'paid').length;
+  const pendingCount = orders.filter(o => (o.status || 'pending') !== 'completed').length;
+
+  const bottomNavItems = [
+    { id: 'dashboard', label: 'Home',     icon: IconLayoutDashboard },
+    { id: 'orders',    label: 'Orders',   icon: IconPackage,  badge: pendingCount },
+    { id: 'invoices',  label: 'Invoices', icon: IconReceipt,  badge: unpaidCount  },
+  ];
+
   return (
     <div className="cp-portal">
+      {/* Mobile-only top bar */}
+      <div className="cp-mobile-topbar">
+        <img src="/logo.svg" alt="Visualize" style={{ height: 22 }} />
+        <div className="cp-mobile-topbar-right">
+          <div className="cp-sidebar-avatar" style={{ width: 30, height: 30, fontSize: '0.75rem' }}>
+            {user.name.charAt(0).toUpperCase()}
+          </div>
+          <button className="cp-sidebar-logout" onClick={onLogout} title="Sign out">
+            <IconLogout size={15} stroke={1.6} />
+          </button>
+        </div>
+      </div>
+
       <Sidebar tab={tab} setTab={setTab} user={user} onLogout={onLogout} onCalendly={() => setCalendly(true)} />
+
       <main className="cp-main">
         {tab === 'dashboard' && <DashboardView user={user} orders={orders} invoices={invoices} onCalendly={() => setCalendly(true)} setTab={setTab} />}
         {tab === 'orders'    && <OrdersView    orders={orders}   onCalendly={() => setCalendly(true)} />}
         {tab === 'invoices'  && <InvoicesView  invoices={invoices} onCalendly={() => setCalendly(true)} />}
       </main>
+
+      {/* Mobile-only bottom tab bar */}
+      <nav className="cp-bottom-nav" aria-label="Main navigation">
+        {bottomNavItems.map(item => {
+          const Icon = item.icon;
+          const active = tab === item.id;
+          return (
+            <button key={item.id} type="button"
+              className={`cp-bottom-nav-item ${active ? 'active' : ''}`}
+              onClick={() => setTab(item.id)}
+            >
+              <span className="cp-bottom-nav-icon">
+                <Icon size={22} stroke={active ? 2 : 1.6} />
+                {item.badge > 0 && <span className="cp-bottom-nav-badge">{item.badge}</span>}
+              </span>
+              <span className="cp-bottom-nav-label">{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
+
       {showCalendly && <CalendlyModal onClose={() => setCalendly(false)} />}
     </div>
   );
@@ -976,20 +1032,127 @@ const cpStyles = `
   }
   .cp-modal-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
 
-  /* ── Mobile ──────────────────────────────── */
+  /* ── Mobile back button (desktop: hidden) ── */
+  .cp-mobile-back-btn { display: none; }
+
+  /* ── Mobile top bar (desktop: hidden) ────── */
+  .cp-mobile-topbar { display: none; }
+
+  /* ── Bottom nav (desktop: hidden) ────────── */
+  .cp-bottom-nav { display: none; }
+
+  /* ── Mobile layout ────────────────────────── */
   @media (max-width: 700px) {
-    .cp-sidebar { width: 56px; }
-    .cp-sidebar-brand-label,
-    .cp-nav-item span,
-    .cp-book-sidebar span,
-    .cp-sidebar-user-info,
-    .cp-sidebar-name,
-    .cp-sidebar-email { display: none; }
-    .cp-sidebar-brand { justify-content: center; padding: var(--space-4) var(--space-3); }
-    .cp-nav-item { justify-content: center; padding: 10px; }
-    .cp-nav-item.active { border-left: none; border-bottom: 2px solid var(--brand); padding-left: 10px; }
-    .cp-book-sidebar { padding: 9px; justify-content: center; }
-    .cp-sidebar-user { justify-content: center; }
-    .cp-view { padding: var(--space-5) var(--space-4); }
+    /* Portal becomes a column so topbar sits above */
+    .cp-portal { flex-direction: column; }
+
+    /* Hide sidebar — replaced by bottom nav + top bar */
+    .cp-sidebar { display: none; }
+
+    /* Mobile top bar */
+    .cp-mobile-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px var(--space-4);
+      padding-top: calc(10px + env(safe-area-inset-top));
+      background: rgba(10,10,10,0.97);
+      border-bottom: 1px solid var(--glass-border);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 50;
+      flex-shrink: 0;
+    }
+    .cp-mobile-topbar-right {
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+
+    /* Main view */
+    .cp-main {
+      flex: 1; overflow-y: auto;
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
+
+    /* Bottom tab nav */
+    .cp-bottom-nav {
+      display: flex; align-items: stretch;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      height: calc(60px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      background: rgba(10,10,10,0.97);
+      border-top: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      z-index: 100;
+    }
+    .cp-bottom-nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 3px;
+      background: none; border: none; cursor: pointer;
+      color: var(--text-muted);
+      transition: color 0.15s;
+      padding: 6px 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cp-bottom-nav-item.active { color: var(--brand); }
+    .cp-bottom-nav-icon {
+      position: relative; display: flex; align-items: center; justify-content: center;
+    }
+    .cp-bottom-nav-badge {
+      position: absolute; top: -4px; right: -6px;
+      background: var(--brand); color: #fff;
+      font-size: 0.55rem; font-weight: 800;
+      width: 14px; height: 14px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cp-bottom-nav-label {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.03em;
+    }
+
+    /* View padding */
+    .cp-view { padding: var(--space-4) var(--space-4); }
+    .cp-view-title { font-size: 1.3rem; }
+
+    /* Stats row: horizontal scroll instead of stacking */
+    .cp-stats-row {
+      display: flex; overflow-x: auto; gap: var(--space-3);
+      padding-bottom: 4px; scrollbar-width: none;
+    }
+    .cp-stats-row::-webkit-scrollbar { display: none; }
+    .cp-stat-card { min-width: 130px; flex: 1; }
+
+    /* Dashboard grid: single column */
+    .cp-dash-grid { grid-template-columns: 1fr; }
+
+    /* Orders/invoices: drill-down */
+    .cp-orders-layout { grid-template-columns: 1fr; }
+    .cp-orders-layout:not(.cp-detail-open) .cp-order-detail { display: none; }
+    .cp-orders-layout.cp-detail-open .cp-order-list { display: none; }
+    .cp-orders-layout.cp-detail-open .cp-order-detail { display: flex !important; }
+
+    /* Mobile back button inside detail */
+    .cp-mobile-back-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: none; cursor: pointer;
+      color: var(--brand); font-size: 0.9rem; font-weight: 600;
+      padding: 0 0 var(--space-4) 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Order cards: bigger tap targets */
+    .cp-order-card { padding: var(--space-5); }
+    .cp-quick-btn { padding: var(--space-4) var(--space-4); }
+
+    /* Detail: no sticky on mobile */
+    .cp-order-detail { position: static; }
+
+    /* Help box: stack vertically */
+    .cp-help-box { flex-direction: column; align-items: flex-start; }
+    .cp-help-actions { width: 100%; }
+    .cp-help-btn { flex: 1; justify-content: center; }
+
+    /* Auth card: full width */
+    .cp-auth-card { padding: var(--space-8) var(--space-5); }
+
+    /* Calendly modal: full screen on mobile */
+    .cp-modal { border-radius: var(--radius-lg) var(--radius-lg) 0 0; position: fixed; bottom: 0; left: 0; right: 0; max-width: 100%; }
+    .cp-modal-overlay { align-items: flex-end; padding: 0; }
+    .calendly-inline-widget { height: 70dvh !important; }
   }
 `;

@@ -443,6 +443,11 @@ const prStyles = `
     padding: var(--space-12) 0 var(--space-24);
     overflow: hidden;
   }
+  @media (max-width: 600px) {
+    .pr-page { padding: var(--space-6) 0 var(--space-16); }
+    .pr-header { margin-bottom: var(--space-6); padding: 0 var(--space-4); }
+    .pr-layout { padding: 0 var(--space-4); }
+  }
   .pr-bg {
     position: absolute; inset: 0;
     background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,76,67,0.09) 0%, transparent 55%);
@@ -512,6 +517,21 @@ const prStyles = `
   }
   .pr-progress-step.done .pr-progress-line { background: var(--brand); }
 
+  /* Mobile: compact progress — just dots, no labels, smaller */
+  @media (max-width: 600px) {
+    .pr-progress {
+      margin-bottom: var(--space-6);
+      padding: 0 var(--space-4);
+      gap: 0;
+    }
+    .pr-progress-step { min-width: 32px; }
+    .pr-progress-dot { width: 24px; height: 24px; font-size: 0.65rem; }
+    .pr-progress-dot svg { width: 11px; height: 11px; }
+    .pr-progress-label { display: none; }
+    .pr-progress-line { top: 12px; }
+    .pr-progress-step.active .pr-progress-label { display: block; font-size: 0.7rem; }
+  }
+
   /* Layout */
   .pr-layout {
     display: grid; grid-template-columns: 1fr 280px;
@@ -556,7 +576,9 @@ const prStyles = `
     backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--glass-border); border-radius: var(--radius-lg);
     cursor: pointer; width: 100%; position: relative;
+    min-height: 56px;
     transition: border-color 0.2s, box-shadow 0.2s, transform 0.18s, background 0.2s;
+    -webkit-tap-highlight-color: transparent;
   }
   .pr-tile:hover {
     border-color: rgba(212,76,67,0.5);
@@ -620,6 +642,9 @@ const prStyles = `
   .pr-error { font-size: 0.8rem; color: rgba(220,80,80,0.9); }
   .pr-submit-btn { display: inline-flex; align-items: center; gap: 7px; padding: var(--space-4) var(--space-8); font-size: 1rem; margin-top: var(--space-2); align-self: flex-start; }
   .pr-submit-btn:disabled { opacity: 0.6; cursor: default; }
+  @media (max-width: 600px) {
+    .pr-submit-btn { width: 100%; justify-content: center; padding: var(--space-4); }
+  }
 
   /* Aside */
   .pr-aside { display: flex; flex-direction: column; gap: var(--space-4); position: sticky; top: 96px; }
