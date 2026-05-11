@@ -116,13 +116,22 @@ function AuthScreen({ onAuth }) {
       onAuth(session);
     } else {
       const uname = username.trim().toLowerCase();
-      // Find by username, or by email for backwards-compat with old accounts
+      if (!uname) return shake('Please enter your username.');
+      if (!pw) return shake('Please enter your password.');
+      // Find by username, email, or old-style name — all backwards compatible
       const client = clients.find(c =>
         (c.username && c.username.toLowerCase() === uname) ||
-        (c.email && c.email.toLowerCase() === uname)
+        (c.email    && c.email.toLowerCase()    === uname) ||
+        (c.name     && c.name.toLowerCase()     === uname)
       );
-      if (!client || client.passwordHash !== hashPassword(pw)) return shake('Incorrect username or password.');
-      const session = { id: client.id, username: client.username || client.email, name: client.name, email: client.email };
+      if (!client) return shake('No account found with that username.');
+      if (client.passwordHash !== hashPassword(pw)) return shake('Incorrect password.');
+      const session = {
+        id:       client.id,
+        username: client.username || client.email || client.name || uname,
+        name:     client.name     || client.username || uname,
+        email:    client.email    || null,
+      };
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
       onAuth(session);
     }
@@ -147,7 +156,8 @@ function AuthScreen({ onAuth }) {
         <form className={`cp-auth-form ${shaking ? 'cp-shake' : ''}`} onSubmit={submit} noValidate>
           <div className="cp-field">
             <label className="cp-label">Username</label>
-            <input className="cp-input" value={username} onChange={e => { setUsername(e.target.value); setError(''); }} placeholder={mode === 'signup' ? 'Choose a username (no spaces)' : 'Your username'} autoComplete="username" autoCapitalize="none" />
+            <input className="cp-input" value={username} onChange={e => { setUsername(e.target.value); setError(''); }} placeholder={mode === 'signup' ? 'Choose a username (no spaces)' : 'Username or email'} autoComplete="username" autoCapitalize="none" autoCorrect="off" spellCheck="false" />
+            {mode === 'login' && <span className="cp-label-opt" style={{ marginTop: 3 }}>Previously signed up with email? Enter your email address here.</span>}
           </div>
           {mode === 'signup' && (
             <>
@@ -244,10 +254,10 @@ function Sidebar({ tab, setTab, user, onLogout, onCalendly }) {
           Book a Meeting
         </button>
         <div className="cp-sidebar-user">
-          <div className="cp-sidebar-avatar">{user.name.charAt(0).toUpperCase()}</div>
+          <div className="cp-sidebar-avatar">{(user.name || user.username || '?').charAt(0).toUpperCase()}</div>
           <div className="cp-sidebar-user-info">
-            <span className="cp-sidebar-name">{user.name}</span>
-            <span className="cp-sidebar-email">@{user.username}</span>
+            <span className="cp-sidebar-name">{user.name || user.username}</span>
+            <span className="cp-sidebar-email">@{user.username || user.email || '—'}</span>
           </div>
           <button className="cp-sidebar-logout" onClick={onLogout} title="Sign out">
             <IconLogout size={15} stroke={1.6} />
@@ -267,7 +277,7 @@ function DashboardView({ user, orders, invoices, onCalendly, setTab }) {
   return (
     <div className="cp-view">
       <div className="cp-view-header">
-        <h1 className="cp-view-title">Welcome back, {user.name.split(' ')[0]}</h1>
+        <h1 className="cp-view-title">Welcome back, {(user.name || user.username || 'there').split(' ')[0]}</h1>
         <p className="cp-view-sub">Here&apos;s a summary of your account.</p>
       </div>
 
@@ -659,7 +669,7 @@ function Portal({ user, onLogout }) {
         <img src="/logo.svg" alt="Visualize" style={{ height: 22 }} />
         <div className="cp-mobile-topbar-right">
           <div className="cp-sidebar-avatar" style={{ width: 30, height: 30, fontSize: '0.75rem' }}>
-            {user.name.charAt(0).toUpperCase()}
+            {(user.name || user.username || '?').charAt(0).toUpperCase()}
           </div>
           <button className="cp-sidebar-logout" onClick={onLogout} title="Sign out">
             <IconLogout size={15} stroke={1.6} />
@@ -701,15 +711,26 @@ function Portal({ user, onLogout }) {
 }
 
 /* ── Root export ────────────────────────────────────────────────── */
+function normalizeSession(raw) {
+  if (!raw) return null;
+  return {
+    id:       raw.id,
+    username: raw.username || raw.email || raw.name || 'user',
+    name:     raw.name     || raw.username || raw.email || 'User',
+    email:    raw.email    || null,
+  };
+}
+
 export default function ClientPortal() {
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { return null; }
+    try { return normalizeSession(JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')); } catch { return null; }
   });
   const logout = () => { sessionStorage.removeItem(SESSION_KEY); setUser(null); };
+  const handleAuth = (session) => setUser(normalizeSession(session));
 
   return (
     <>
-      {user ? <Portal user={user} onLogout={logout} /> : <AuthScreen onAuth={setUser} />}
+      {user ? <Portal user={user} onLogout={logout} /> : <AuthScreen onAuth={handleAuth} />}
       <style>{cpStyles}</style>
     </>
   );
