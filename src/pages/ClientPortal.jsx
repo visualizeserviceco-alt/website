@@ -22,9 +22,10 @@ const STATUS_META = {
 };
 
 const INVOICE_STATUS = {
-  unpaid:  { label: 'Unpaid',  color: '#f59e0b', icon: IconClock },
-  paid:    { label: 'Paid',    color: '#22c55e', icon: IconCheck },
-  overdue: { label: 'Overdue', color: '#ef4444', icon: IconAlertCircle },
+  unpaid:  { label: 'Unpaid',                color: '#f59e0b', icon: IconClock },
+  upfront: { label: 'Upfront Payment Paid',  color: '#60a5fa', icon: IconCheck },
+  paid:    { label: 'Paid in Full',          color: '#22c55e', icon: IconCheck },
+  overdue: { label: 'Overdue',               color: '#ef4444', icon: IconAlertCircle },
 };
 
 function getClients() {
@@ -86,12 +87,13 @@ function CalendlyModal({ onClose }) {
 
 /* ── Auth screen ─────────────────────────────────────────────────── */
 function AuthScreen({ onAuth }) {
-  const [mode, setMode]   = useState('login');
-  const [name, setName]   = useState('');
-  const [email, setEmail] = useState('');
-  const [pw, setPw]       = useState('');
-  const [error, setError] = useState('');
-  const [shaking, setShake] = useState(false);
+  const [mode, setMode]       = useState('login');
+  const [username, setUsername] = useState('');
+  const [name, setName]       = useState('');
+  const [email, setEmail]     = useState('');
+  const [pw, setPw]           = useState('');
+  const [error, setError]     = useState('');
+  const [shaking, setShake]   = useState(false);
 
   const shake = (msg) => { setError(msg); setShake(true); setTimeout(() => setShake(false), 500); };
 
@@ -99,23 +101,34 @@ function AuthScreen({ onAuth }) {
     e.preventDefault(); setError('');
     const clients = getClients();
     if (mode === 'signup') {
-      if (!name.trim())  return shake('Please enter your name.');
-      if (!email.trim()) return shake('Please enter your email.');
-      if (!/\S+@\S+\.\S+/.test(email)) return shake('Enter a valid email address.');
+      const uname = username.trim().toLowerCase();
+      if (!uname) return shake('Please choose a username.');
+      if (/\s/.test(uname)) return shake('Username cannot contain spaces.');
       if (pw.length < 6) return shake('Password must be at least 6 characters.');
-      if (clients.find(c => c.email.toLowerCase() === email.toLowerCase()))
-        return shake('An account with this email already exists. Try logging in.');
-      const client = { id: Date.now(), name: name.trim(), email: email.toLowerCase().trim(), passwordHash: hashPassword(pw), password: pw, createdAt: new Date().toISOString() };
+      if (email.trim() && !/\S+@\S+\.\S+/.test(email)) return shake('Enter a valid email address or leave it blank.');
+      if (clients.find(c => (c.username || '').toLowerCase() === uname))
+        return shake('That username is taken. Try a different one or sign in.');
+      const displayName = name.trim() || uname;
+      const client = { id: Date.now(), username: uname, name: displayName, email: email.toLowerCase().trim() || null, passwordHash: hashPassword(pw), password: pw, createdAt: new Date().toISOString() };
       saveClients([...clients, client]);
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ id: client.id, name: client.name, email: client.email }));
-      onAuth({ name: client.name, email: client.email });
+      const session = { id: client.id, username: client.username, name: client.name, email: client.email };
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      onAuth(session);
     } else {
-      const client = clients.find(c => c.email.toLowerCase() === email.toLowerCase().trim());
-      if (!client || client.passwordHash !== hashPassword(pw)) return shake('Incorrect email or password.');
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ id: client.id, name: client.name, email: client.email }));
-      onAuth({ name: client.name, email: client.email });
+      const uname = username.trim().toLowerCase();
+      // Find by username, or by email for backwards-compat with old accounts
+      const client = clients.find(c =>
+        (c.username && c.username.toLowerCase() === uname) ||
+        (c.email && c.email.toLowerCase() === uname)
+      );
+      if (!client || client.passwordHash !== hashPassword(pw)) return shake('Incorrect username or password.');
+      const session = { id: client.id, username: client.username || client.email, name: client.name, email: client.email };
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      onAuth(session);
     }
   };
+
+  const switchMode = (m) => { setMode(m); setError(''); setUsername(''); setName(''); setEmail(''); setPw(''); };
 
   return (
     <div className="cp-auth-wrap">
@@ -123,28 +136,34 @@ function AuthScreen({ onAuth }) {
         <div className="cp-auth-logo"><img src="/logo.svg" alt="Visualize Studio" style={{ height: 32 }} /></div>
         <h1 className="cp-auth-title">{mode === 'login' ? 'Client Portal' : 'Create an Account'}</h1>
         <p className="cp-auth-sub">
-          {mode === 'login' ? 'Sign in to track your orders and view invoices.' : 'Create an account to track orders, view invoices, and book meetings.'}
+          {mode === 'login' ? 'Sign in with your username and password.' : 'Create an account to track orders, view invoices, and book meetings.'}
         </p>
         {mode === 'signup' && (
           <div className="cp-auth-notice">
             <IconInfoCircle size={15} stroke={1.5} style={{ flexShrink: 0, marginTop: 1 }} />
-            <span>Use a <strong>new password</strong> created just for this portal — not one you use anywhere else.</span>
+            <span>Use a <strong>new password</strong> created just for this portal — not one you use elsewhere.</span>
           </div>
         )}
         <form className={`cp-auth-form ${shaking ? 'cp-shake' : ''}`} onSubmit={submit} noValidate>
+          <div className="cp-field">
+            <label className="cp-label">Username</label>
+            <input className="cp-input" value={username} onChange={e => { setUsername(e.target.value); setError(''); }} placeholder={mode === 'signup' ? 'Choose a username (no spaces)' : 'Your username'} autoComplete="username" autoCapitalize="none" />
+          </div>
           {mode === 'signup' && (
-            <div className="cp-field">
-              <label className="cp-label">Your Name</label>
-              <input className="cp-input" value={name} onChange={e => { setName(e.target.value); setError(''); }} placeholder="First name" autoComplete="name" />
-            </div>
+            <>
+              <div className="cp-field">
+                <label className="cp-label">Display Name <span className="cp-label-opt">(optional)</span></label>
+                <input className="cp-input" value={name} onChange={e => { setName(e.target.value); setError(''); }} placeholder="How we'll address you" autoComplete="name" />
+              </div>
+              <div className="cp-field">
+                <label className="cp-label">Email <span className="cp-label-opt">(optional — for order notifications)</span></label>
+                <input className="cp-input" type="email" value={email} onChange={e => { setEmail(e.target.value); setError(''); }} placeholder="you@example.com" autoComplete="email" />
+              </div>
+            </>
           )}
           <div className="cp-field">
-            <label className="cp-label">Email</label>
-            <input className="cp-input" type="email" value={email} onChange={e => { setEmail(e.target.value); setError(''); }} placeholder="you@example.com" autoComplete="email" />
-          </div>
-          <div className="cp-field">
             <label className="cp-label">Password</label>
-            <input className="cp-input" type="password" value={pw} onChange={e => { setPw(e.target.value); setError(''); }} placeholder={mode === 'signup' ? 'Create a new password (6+ chars)' : 'Your password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
+            <input className="cp-input" type="password" value={pw} onChange={e => { setPw(e.target.value); setError(''); }} placeholder={mode === 'signup' ? 'Create a password (6+ chars)' : 'Your password'} autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} />
           </div>
           {error && <p className="cp-auth-error">{error}</p>}
           <button type="submit" className="btn btn-primary cp-auth-btn">
@@ -154,8 +173,8 @@ function AuthScreen({ onAuth }) {
         </form>
         <p className="cp-auth-switch">
           {mode === 'login'
-            ? <> Don&apos;t have an account?{' '}<button type="button" className="cp-switch-btn" onClick={() => { setMode('signup'); setError(''); }}>Sign up</button></>
-            : <> Already have an account?{' '}<button type="button" className="cp-switch-btn" onClick={() => { setMode('login'); setError(''); }}>Sign in</button></>}
+            ? <> Don&apos;t have an account?{' '}<button type="button" className="cp-switch-btn" onClick={() => switchMode('signup')}>Sign up</button></>
+            : <> Already have an account?{' '}<button type="button" className="cp-switch-btn" onClick={() => switchMode('login')}>Sign in</button></>}
         </p>
         <Link to="/" className="cp-back-link"><IconArrowLeft size={13} stroke={2} />Back to site</Link>
       </div>
@@ -228,7 +247,7 @@ function Sidebar({ tab, setTab, user, onLogout, onCalendly }) {
           <div className="cp-sidebar-avatar">{user.name.charAt(0).toUpperCase()}</div>
           <div className="cp-sidebar-user-info">
             <span className="cp-sidebar-name">{user.name}</span>
-            <span className="cp-sidebar-email">{user.email}</span>
+            <span className="cp-sidebar-email">@{user.username}</span>
           </div>
           <button className="cp-sidebar-logout" onClick={onLogout} title="Sign out">
             <IconLogout size={15} stroke={1.6} />
@@ -615,9 +634,12 @@ function Portal({ user, onLogout }) {
   const load = useCallback(() => {
     const allOrders   = getOrders();
     const allInvoices = getInvoices();
-    setOrders(allOrders.filter(o => o.email?.toLowerCase() === user.email.toLowerCase()));
-    setInvoices(allInvoices.filter(i => i.clientEmail?.toLowerCase() === user.email.toLowerCase()));
-  }, [user.email]);
+    setOrders(allOrders.filter(o => user.email && o.email?.toLowerCase() === user.email.toLowerCase()));
+    setInvoices(allInvoices.filter(i =>
+      (i.clientId && i.clientId === user.id) ||
+      (user.email && i.clientEmail?.toLowerCase() === user.email.toLowerCase())
+    ));
+  }, [user.id, user.email]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -755,7 +777,7 @@ const cpStyles = `
   }
   .cp-sidebar-user-info { flex: 1; min-width: 0; }
   .cp-sidebar-name { display: block; font-size: 0.8125rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cp-sidebar-email { display: block; font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cp-sidebar-email { display: block; font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: monospace; }
   .cp-sidebar-logout {
     width: 28px; height: 28px; flex-shrink: 0; border-radius: var(--radius);
     display: flex; align-items: center; justify-content: center;
@@ -985,6 +1007,7 @@ const cpStyles = `
   .cp-auth-form { display: flex; flex-direction: column; gap: var(--space-4); }
   .cp-field { display: flex; flex-direction: column; gap: var(--space-2); }
   .cp-label { font-size: 0.875rem; font-weight: 600; color: var(--text); }
+  .cp-label-opt { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
   .cp-input {
     padding: var(--space-3) var(--space-4);
     border-radius: var(--radius); border: 1px solid var(--border-light);
