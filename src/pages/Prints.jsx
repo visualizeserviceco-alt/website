@@ -29,16 +29,30 @@ const TYPE_OPTIONS = [
       </svg>
     ),
   },
+];
+
+const VINYL_PRESET_OPTIONS = [
   {
-    id: 'instagram-vinyl',
+    id: 'instagram',
     label: 'Instagram Handle Vinyl',
-    desc: 'Your @handle printed twice — one for each side of your car. $10 flat rate, pay instantly.',
-    badge: '$10',
+    desc: 'Your @handle printed twice — one for each side of your car.',
+    badge: '$10 flat',
     icon: (
       <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="8" y="8" width="32" height="32" rx="10" stroke="currentColor" strokeWidth="2.5" />
         <circle cx="24" cy="24" r="7" stroke="currentColor" strokeWidth="2.5" />
         <circle cx="34.5" cy="13.5" r="2" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    id: 'custom',
+    label: 'Custom Vinyl Design',
+    desc: 'Any shape, size, and design. Die-cut, window decal, vehicle wrap, and more.',
+    icon: (
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 38 L24 10 L38 38 Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+        <circle cx="24" cy="26" r="4" stroke="currentColor" strokeWidth="2" />
       </svg>
     ),
   },
@@ -160,6 +174,7 @@ export default function Prints() {
   const [step, setStep]             = useState(0);
   const [order, setOrder]           = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
   const [igForm, setIgForm]         = useState({ handle: '', finish: 'gloss', carColor: '', name: '', email: '', phone: '', notes: '' });
+  const [vinylSubtype, setVinylSubtype] = useState(''); // '' | 'instagram' | 'custom'
   const [submitted, setSubmitted]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [paidReturn, setPaidReturn] = useState(false);
@@ -189,15 +204,24 @@ export default function Prints() {
     }
   }, []);
 
-  const isInstagram = order.type === 'instagram-vinyl';
+  const isInstagram = order.type === 'vinyl' && vinylSubtype === 'instagram';
 
   const resetAll = () => {
     setStep(0);
     setOrder({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
     setIgForm({ handle: '', finish: 'gloss', carColor: '', name: '', email: '', phone: '', notes: '' });
+    setVinylSubtype('');
     setSubmitted(false);
     setPaidReturn(false);
     setErrors({});
+  };
+
+  const handleBack = () => {
+    if (order.type === 'vinyl' && vinylSubtype) {
+      setVinylSubtype('');
+    } else {
+      setStep(s => s - 1);
+    }
   };
 
   const buildSummary = (o) =>
@@ -255,7 +279,8 @@ export default function Prints() {
       id: Date.now(),
       date: new Date().toISOString(),
       status: 'payment_pending',
-      type: 'instagram-vinyl',
+      type: 'vinyl',
+      subtype: 'instagram-vinyl',
       name: igForm.name.trim(),
       email: igForm.email.trim(),
       phone: igForm.phone.trim(),
@@ -295,7 +320,7 @@ export default function Prints() {
 
   // ── Success screen ──────────────────────────────────────────────────────
   if (submitted) {
-    const isIgOrder = order.type === 'instagram-vinyl' || paidReturn;
+    const isIgOrder = order.subtype === 'instagram-vinyl' || paidReturn;
     return (
       <div className="pr-page">
         <div className="pr-success">
@@ -504,7 +529,7 @@ export default function Prints() {
             <button
               type="button"
               className="pr-back-btn"
-              onClick={() => { setStep(0); setOrder(p => ({ ...p, type: '' })); }}
+              onClick={() => setVinylSubtype('')}
             >
               <IconArrowLeft size={14} stroke={2} /> Back
             </button>
@@ -566,7 +591,23 @@ export default function Prints() {
             </StepWrapper>
           )}
 
-          {step === 1 && (
+          {/* Vinyl preset picker — shown before shape when vinyl type is not yet chosen */}
+          {step === 1 && order.type === 'vinyl' && !vinylSubtype && (
+            <StepWrapper step={1} total={TOTAL_STEPS} title="What kind of vinyl?" subtitle="Choose a preset or go fully custom.">
+              <div className="pr-vinyl-preset-grid">
+                {VINYL_PRESET_OPTIONS.map(opt => (
+                  <SelectTile key={opt.id} onClick={() => setVinylSubtype(opt.id)}>
+                    {opt.badge && <span className="pr-type-badge">{opt.badge}</span>}
+                    <div className="pr-type-icon">{opt.icon}</div>
+                    <strong className="pr-tile-label">{opt.label}</strong>
+                    <span className="pr-tile-desc">{opt.desc}</span>
+                  </SelectTile>
+                ))}
+              </div>
+            </StepWrapper>
+          )}
+
+          {step === 1 && (order.type !== 'vinyl' || vinylSubtype === 'custom') && (
             <StepWrapper step={1} total={TOTAL_STEPS} title="Choose a shape">
               <div className="pr-shape-grid">
                 {SHAPE_OPTIONS.map(opt => (
@@ -703,7 +744,7 @@ export default function Prints() {
           )}
 
           {step > 0 && (
-            <button type="button" className="pr-back-btn" onClick={() => setStep(s => s - 1)}>
+            <button type="button" className="pr-back-btn" onClick={handleBack}>
               <IconArrowLeft size={14} stroke={2} />
               Back
             </button>
@@ -830,15 +871,15 @@ const prStyles = `
   .pr-step-body { margin-bottom: var(--space-8); }
 
   /* Tile grids */
-  .pr-type-grid   { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
-  .pr-shape-grid  { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
-  .pr-option-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
-  .pr-finish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
-  .pr-design-grid { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
-  @media (max-width: 700px) {
-    .pr-type-grid   { grid-template-columns: 1fr; }
-  }
+  .pr-type-grid         { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .pr-vinyl-preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .pr-shape-grid        { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+  .pr-option-grid       { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); }
+  .pr-finish-grid       { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+  .pr-design-grid       { display: grid; grid-template-columns: 1fr; gap: var(--space-3); }
   @media (max-width: 600px) {
+    .pr-type-grid         { grid-template-columns: 1fr; }
+    .pr-vinyl-preset-grid { grid-template-columns: 1fr; }
     .pr-shape-grid  { grid-template-columns: 1fr 1fr; }
     .pr-option-grid { grid-template-columns: 1fr 1fr; }
     .pr-finish-grid { grid-template-columns: 1fr 1fr; }

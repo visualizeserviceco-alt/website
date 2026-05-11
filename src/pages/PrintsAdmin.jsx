@@ -615,7 +615,7 @@ export default function PrintsAdmin() {
                       {/* Order specs */}
                       <div className="adm-detail-grid">
                         {[
-                          ['Product Type', detail.type === 'instagram-vinyl' ? 'Instagram Handle Vinyl' : detail.type],
+                          ['Product Type', detail.subtype === 'instagram-vinyl' ? 'Instagram Handle Vinyl' : detail.type],
                           ['Instagram Handle', detail.handle],
                           ['Car Color',    detail.carColor],
                           ['Shape',        detail.shape],
