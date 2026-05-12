@@ -7,6 +7,7 @@ import {
   IconClock, IconAlertCircle, IconChevronRight, IconLock,
   IconRefresh, IconExternalLink,
 } from '@tabler/icons-react';
+import SplashScreen from '../components/SplashScreen';
 
 const CLIENTS_KEY  = 'vz_clients';
 const ORDERS_KEY   = 'vz_print_orders';
@@ -887,12 +888,35 @@ export default function ClientPortal() {
   const [user, setUser] = useState(() => {
     try { return normalizeSession(JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null')); } catch { return null; }
   });
+
+  const [splash, setSplash] = useState(() => {
+    // If session already exists on page load, show a quick splash
+    try {
+      const s = normalizeSession(JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'));
+      if (s) return { name: s.name, subtitle: 'Loading your portal…', duration: 900 };
+    } catch {}
+    return null;
+  });
+
   const logout = () => { sessionStorage.removeItem(SESSION_KEY); setUser(null); };
-  const handleAuth = (session) => setUser(normalizeSession(session));
+
+  const handleAuth = (session) => {
+    const s = normalizeSession(session);
+    setUser(s);
+    setSplash({ name: s.name, subtitle: 'Setting up your portal…', duration: 1800 });
+  };
 
   return (
     <>
       {user ? <Portal user={user} onLogout={logout} /> : <AuthScreen onAuth={handleAuth} />}
+      {splash && (
+        <SplashScreen
+          name={splash.name}
+          subtitle={splash.subtitle}
+          duration={splash.duration}
+          onDone={() => setSplash(null)}
+        />
+      )}
       <style>{cpStyles}</style>
     </>
   );

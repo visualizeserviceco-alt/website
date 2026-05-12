@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { IconArrowLeft, IconCheck, IconSend, IconUser, IconArrowRight, IconLock } from '@tabler/icons-react';
+import SplashScreen from '../components/SplashScreen';
 
 const TOTAL_STEPS = 7;
 
@@ -167,6 +168,7 @@ function SelectTile({ selected, onClick, children, popular }) {
 
 export default function Prints() {
   const navigate = useNavigate();
+  const [splashDone, setSplashDone] = useState(false);
   const [step, setStep]             = useState(0);
   const [order, setOrder]           = useState({ type: '', shape: '', size: '', quantity: '', finish: '', design: '', name: '', email: '', phone: '', social: '', notes: '' });
   const [igForm, setIgForm]         = useState({ handle: '', finish: 'gloss', carColor: '', name: '', email: '', phone: '', notes: '' });
@@ -532,6 +534,13 @@ export default function Prints() {
   // ── Standard configurator ───────────────────────────────────────────────
   return (
     <div className="pr-page">
+      {!splashDone && (
+        <SplashScreen
+          subtitle="Loading order system…"
+          duration={800}
+          onDone={() => setSplashDone(true)}
+        />
+      )}
       <div className="pr-bg" aria-hidden="true" />
 
       <div className="pr-header">
